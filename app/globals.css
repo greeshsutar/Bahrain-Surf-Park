@@ -336,6 +336,17 @@ a.bg-black\/30 {
   transform: scale(1.05);
 }
 
+/* Desktop Pinned Carousel Safety Height Clamps */
+@media (min-width: 1024px) {
+  .tier-card {
+    height: clamp(440px, 76svh, 560px);
+  }
+
+  .tier-card .card-image-wrapper {
+    height: clamp(160px, 30svh, 220px);
+  }
+}
+
 .tier-card-starter,
 .tier-card-pinnacle {
   border: 1px solid rgba(6, 59, 69, 0.12) !important;

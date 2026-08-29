@@ -73,14 +73,16 @@ const CARDS_DATA = [
 
 export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const pinWrapperRef = useRef<HTMLDivElement>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const container = containerRef.current;
+    const pinWrapper = pinWrapperRef.current || container?.parentElement;
     const section = sectionRef.current;
-    if (!container || !section) return;
+    if (!container || !pinWrapper || !section) return;
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const supportsHover = window.matchMedia("(hover: hover)").matches;
@@ -99,20 +101,19 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
       container.classList.add("overflow-x-hidden", "w-max");
 
       const cards = gsap.utils.toArray<HTMLElement>(".tier-card");
-      const parentWrapper = container.parentElement;
-      if (parentWrapper) {
-        parentWrapper.style.overflowX = "hidden";
+      if (pinWrapper) {
+        pinWrapper.style.overflowX = "hidden";
       }
 
       const getScrollAmount = () => {
-        return container.scrollWidth - (parentWrapper ? parentWrapper.offsetWidth : window.innerWidth);
+        return container.scrollWidth - (pinWrapper ? pinWrapper.offsetWidth : window.innerWidth);
       };
 
       const scrollTween = gsap.to(container, {
         x: () => -getScrollAmount(),
         ease: "none",
         scrollTrigger: {
-          trigger: section,
+          trigger: pinWrapper,
           pin: true,
           scrub: 0.8,
           start: "top top",
@@ -231,7 +232,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
       };
 
       const sectionTrigger = ScrollTrigger.create({
-        trigger: section,
+        trigger: pinWrapper,
         start: "top 75%",
         end: "bottom 25%",
         onEnter: () => startAutoProgression(),
@@ -241,7 +242,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
       });
 
       ScrollTrigger.create({
-        trigger: section,
+        trigger: pinWrapper,
         start: "top top",
         end: () => `+=${getScrollAmount()}`,
         scrub: true,
@@ -398,8 +399,11 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
         </div>
       </div>
 
-      {/* Outer Wrapper */}
-      <div className="w-full overflow-x-auto no-scrollbar relative z-10">
+      {/* Outer Pin Wrapper */}
+      <div
+        ref={pinWrapperRef}
+        className="w-full overflow-x-auto no-scrollbar relative z-10 lg:min-h-[100svh] lg:flex lg:flex-col lg:justify-center"
+      >
         {/* Inner Track Container */}
         <div
           id="wave-cards-container"
