@@ -2,39 +2,75 @@
 
 export default function WaveDivider() {
   return (
-    <div className="wave-divider-wrap relative z-20 w-full overflow-visible pointer-events-none leading-none -mb-[1px]">
-      <section id="wave-divider-section" className="select-none pointer-events-none w-full">
-        <svg
-          className="block w-full h-[60px] sm:h-[80px] md:h-[95px] lg:h-[110px] leading-none"
-          viewBox="0 0 1440 95"
-          preserveAspectRatio="none"
-          style={{ overflow: "visible" }}
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <filter id="wave-soft-shadow" x="-5%" y="-10%" width="110%" height="200%">
-              {/* Close defined soft shadow following wave contour */}
-              <feDropShadow dx="0" dy="5" stdDeviation="6" floodColor="#06232D" floodOpacity="0.10" />
-              <feDropShadow dx="0" dy="12" stdDeviation="12" floodColor="#06232D" floodOpacity="0.06" />
-            </filter>
-          </defs>
-          {/* Pure White Wave Body with Soft Shadow */}
-          <path
-            d="M 0,0 L 1440,0 L 1440,65 C 1380,50 1350,50 1320,50 C 1220,50 1180,80 1100,80 C 1000,80 940,55 880,55 C 780,55 700,90 600,90 C 420,90 320,50 200,50 C 100,50 50,75 0,80 Z"
-            fill="#FFFFFF"
-            stroke="none"
-            filter="url(#wave-soft-shadow)"
-          />
-          {/* Subtle dark edge line along wave curve */}
-          <path
-            d="M 0,80 C 50,75 100,50 200,50 C 320,50 420,90 600,90 C 700,90 780,55 880,55 C 940,55 1000,80 1100,80 C 1180,80 1220,50 1320,50 C 1350,50 1380,50 1440,65"
-            stroke="rgba(10, 25, 38, 0.16)"
-            strokeWidth="1"
-            fill="none"
-            strokeLinecap="round"
-          />
-        </svg>
-      </section>
+    <div
+      className="
+        absolute
+        left-0
+        right-0
+      bottom-0
+        w-full
+        h-[100px]
+sm:h-[120px]
+lg:h-[145px]
+        z-20
+        pointer-events-none
+        overflow-hidden
+      "
+      aria-hidden="true"
+    >
+      <svg
+        className="w-full h-full block"
+        viewBox="0 0 1440 200"
+        preserveAspectRatio="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <filter
+            id="wave-shadow"
+            x="-10%"
+            y="-30%"
+            width="120%"
+            height="170%"
+          >
+            <feDropShadow
+              dx="0"
+              dy="-5"
+              stdDeviation="7"
+              floodColor="#063B45"
+              floodOpacity="0.14"
+            />
+            <feDropShadow
+              dx="0"
+              dy="-2"
+              stdDeviation="3"
+              floodColor="#063B45"
+              floodOpacity="0.07"
+            />
+          </filter>
+        </defs>
+
+        {/* 
+          Organic White Wave Overlay:
+          Positioned low at the bottom of the section (covering only bottom ~15-20% of video),
+          leaving ~80% of the ocean video and breaking wave fully visible above.
+        */}
+        <path
+          d="
+    M 0 160
+    C 150 130, 300 130, 450 158
+    C 600 188, 730 198, 875 164
+    C 1020 130, 1160 128, 1300 150
+    C 1360 160, 1405 164, 1440 155
+    L 1440 200
+    L 0 200
+    Z
+  "
+          fill="#FFFFFF"
+          filter="url(#wave-shadow)"
+        />
+      </svg>
     </div>
   );
 }
+
+

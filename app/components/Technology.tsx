@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import WaveDivider from "./WaveDivider";
 
 export default function Technology() {
   const stat1Ref = useRef<HTMLSpanElement>(null);
@@ -83,7 +84,7 @@ export default function Technology() {
   };
 
   return (
-    <section id="technology" className="relative bg-[#FBFDFD] overflow-hidden pt-16 sm:pt-24 pb-32 sm:pb-44 min-h-[850px] lg:min-h-[920px] z-10">
+    <section id="technology" className="relative bg-[#FBFDFD] pt-12 sm:pt-16 pb-40 sm:pb-52 min-h-[900px] lg:min-h-[1020px] z-10 overflow-visible">
       {/* Background Subtle Contour Lines & Ambient Glow */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
         {/* Topographic contour curves */}
@@ -97,12 +98,12 @@ export default function Technology() {
         <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-[#00C8A0]/[0.04] rounded-full blur-3xl"></div>
       </div>
 
-      {/* Real Ocean Video Layer (Emerging Below CTA in Lower Breathing Room) */}
+      {/* Real Ocean Video Layer (Positioned behind lower portion with smooth top gradient blend) */}
       <div
-        className="absolute bottom-0 left-0 right-0 w-full h-[220px] sm:h-[280px] lg:h-[320px] pointer-events-none z-0 overflow-hidden"
+        className="absolute bottom-0 left-0 right-0 w-full h-[500px] sm:h-[600px] lg:h-[680px] pointer-events-none z-0 overflow-hidden"
         style={{
-          maskImage: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.08) 18%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.75) 70%, black 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.08) 18%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.75) 70%, black 100%)"
+          maskImage: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 10%, black 28%, black 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 10%, black 28%, black 100%)"
         }}
       >
         <video
@@ -110,7 +111,7 @@ export default function Technology() {
           muted
           loop
           playsInline
-          className="w-full h-full object-cover object-top"
+          className="w-full h-full object-cover object-center"
         >
           <source src="/videos/ocean.mp4" type="video/mp4" />
         </video>
@@ -254,6 +255,9 @@ export default function Technology() {
 
         </div>
       </div>
+
+      <WaveDivider />
     </section>
   );
 }
+
