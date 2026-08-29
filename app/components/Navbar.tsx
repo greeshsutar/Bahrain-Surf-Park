@@ -49,7 +49,7 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
             <img
               src="/images/logo.png"
               alt="Bahrain Surf Park"
-              className="h-8 sm:h-10 md:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow"
+              className="h-12 sm:h-14 md:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow"
             />
           </a>
 

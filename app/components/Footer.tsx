@@ -11,8 +11,8 @@ export default function Footer() {
     <footer className="bg-[#0A1926] text-white py-12 border-t border-white/10 relative z-10">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-white/60">
         <div className="flex items-center gap-3">
-          <img src="/images/logo.png" alt="Bahrain Surf Park" className="h-8 w-auto object-contain" />
-          <span className="text-white/80 font-bold tracking-wider uppercase text-[11px]">Bahrain Surf Park</span>
+          <img src="/images/logo.png" alt="Bahrain Surf Park" className="h-12 sm:h-14 w-auto object-contain" />
+          <span className="text-white/80 font-bold tracking-wider uppercase text-xs">Bahrain Surf Park</span>
         </div>
         <div className="flex flex-wrap justify-center gap-6 font-semibold uppercase tracking-widest text-[10px]">
           <a
