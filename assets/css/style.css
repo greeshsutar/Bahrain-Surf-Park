@@ -1,0 +1,584 @@
+/* ==========================================================================
+   Bahrain Surf Park - Architectural Design System & Horizontal Card Gallery
+   ========================================================================== */
+
+/* Google Fonts Import */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+  --color-canvas: #FFFFFF;
+  --color-ocean-blue: #0B7FB5;
+  --color-ocean-hover: #0077B6;
+  --color-surf-green: #00C8A0;
+  --color-deep-ocean: #063B45;
+  --color-deep-slate: #0A1926;
+  --color-subtle-border: #E2E8F0;
+
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Plus Jakarta Sans', Inter, sans-serif;
+
+  /* Architectural Max 6-8px Border Radius Token for Buttons */
+  --radius-btn: 8px;
+  --radius-card: 12px;
+}
+
+/* Base Canvas & Viewport Sizing */
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-canvas);
+  color: var(--color-deep-slate);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-canvas);
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* Lenis Smooth Scroll Core Layout */
+html.lenis {
+  height: auto;
+}
+
+.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis-smooth [data-lenis-prevent] {
+  overflow: clip;
+}
+
+.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+.font-serif {
+  font-family: var(--font-heading);
+}
+
+.font-sans {
+  font-family: var(--font-body);
+}
+
+.hero-vh-screen {
+  height: 100vh;
+  height: 100dvh;
+}
+
+/* Hero Typography Shadows for Crisp Video Legibility */
+.hero-headline {
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.65), 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.hero-subtitle {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+}
+
+/* Architectural Plain Typographic Eyebrow Tag (No Pill Container, No Dot) */
+.hero-eyebrow {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  color: #00C8A0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* Navbar Dynamics - Luxury Floating Header */
+.nav-transparent {
+  background-color: transparent;
+  color: #FFFFFF;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.nav-transparent .nav-anchor {
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.nav-transparent .nav-anchor:hover {
+  color: var(--color-surf-green);
+}
+
+.nav-scrolled {
+  background-color: rgba(255, 255, 255, 0.95);
+  color: var(--color-deep-slate);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+  box-shadow: 0 4px 20px -2px rgba(10, 25, 38, 0.06);
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.nav-scrolled .nav-anchor {
+  color: rgba(10, 25, 38, 0.85);
+  text-shadow: none;
+}
+
+.nav-scrolled .nav-anchor:hover {
+  color: var(--color-ocean-blue);
+}
+
+/* Navigation Link Underline Accent */
+.nav-anchor {
+  position: relative;
+  transition: color 0.25s ease;
+}
+
+.nav-anchor::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: var(--color-surf-green);
+  border-radius: 2px;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-anchor:hover::after {
+  width: 100%;
+}
+
+.nav-scrolled .nav-anchor::after {
+  background-color: var(--color-ocean-blue);
+}
+
+/* ALL BUTTONS: Strict Max 6-8px Border Radius (No Rounded Pill Buttons) */
+button,
+.btn-primary,
+.btn-secondary,
+a.bg-[#0B7FB5],
+a.bg-[#00C8A0],
+a.bg-black\/30 {
+  border-radius: 8px !important;
+}
+
+/* Vertical Side-Rail Scroll Tracker Component (Hidden in Video Section) */
+.tracker-container {
+  position: fixed;
+  right: 1.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 40;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+
+.tracker-container.tracker-visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+.tracker-line-bg {
+  width: 2.5px;
+  height: 360px;
+  background-color: rgba(226, 232, 240, 0.9);
+  position: relative;
+  border-radius: 9999px;
+}
+
+#tracker-surfboard {
+  position: absolute;
+  top: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 6px 12px rgba(10, 25, 38, 0.22));
+  will-change: transform;
+}
+
+.waypoint-dot {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.waypoint-tooltip {
+  position: absolute;
+  right: 1.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #0A1926;
+  color: #FFFFFF;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.3rem 0.75rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.waypoint-dot:hover .waypoint-tooltip {
+  opacity: 1;
+}
+
+/* Wave Canvas SVG styling */
+.wave-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: bottom;
+  overflow: visible;
+}
+
+.wave-path-main {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+
+/* Surfer Boy SVG object */
+#surfer-boy {
+  transform-origin: center bottom;
+}
+
+/* Horizontal Scroll Gallery Rules */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.snap-x-mandatory {
+  scroll-snap-type: x mandatory;
+}
+
+.snap-start-card {
+  scroll-snap-align: start;
+}
+
+/* Progression Tier Cards: Premium White Card Theme */
+.tier-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(6, 59, 69, 0.10);
+  border-radius: 18px;
+  padding: 14px;
+  color: var(--color-deep-slate);
+  box-shadow: 0 10px 30px rgba(6, 59, 69, 0.06);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, opacity 0.4s ease;
+  position: relative;
+  height: 620px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+
+/* Desktop Hover Zoom Transitions */
+.tier-card:hover {
+  border-color: rgba(6, 59, 69, 0.20);
+  box-shadow: 0 15px 35px rgba(6, 59, 69, 0.10);
+}
+
+.tier-card .card-image-wrapper {
+  height: 285px; /* Desktop image height */
+  width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+/* Subtle gradient overlay at the bottom of the image */
+.tier-card .card-image-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(6, 25, 35, 0.58),
+    rgba(6, 25, 35, 0.12) 45%,
+    transparent 75%
+  );
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Technical Level Badge overlay on the card image */
+.tier-card[data-level] .card-image-wrapper::before {
+  content: "LEVEL " attr(data-level);
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(10, 25, 38, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: #FFFFFF;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 4px 8px;
+  border-radius: 4px;
+  z-index: 10;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.tier-card .card-image-wrapper img {
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.tier-card:hover .card-image-wrapper img {
+  transform: scale(1.07);
+}
+
+.tier-card-starter,
+.tier-card-pinnacle {
+  border: 1px solid rgba(6, 59, 69, 0.10) !important;
+  box-shadow: 0 10px 30px rgba(6, 59, 69, 0.06) !important;
+}
+
+/* Card typography mappings */
+.tier-card h3 {
+  font-family: var(--font-heading);
+  color: var(--color-deep-slate) !important;
+  font-size: 30px !important;
+  font-weight: 600 !important;
+  line-height: 1.05 !important;
+  letter-spacing: -0.025em !important;
+}
+
+.tier-card p {
+  font-size: 14px !important;
+  line-height: 1.65 !important;
+  color: rgba(10, 25, 38, 0.7) !important;
+}
+
+/* ==========================================================================
+   CTA Button Water Fill Hover Effect
+   ========================================================================== */
+
+.water-btn {
+  position: relative;
+  overflow: hidden !important;
+  /* Force overflow clip for rounded corners */
+  z-index: 1;
+  transition: color 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-water-fill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  transform: translateY(100%);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+  pointer-events: none;
+}
+
+/* On hover, slide the water fill up to cover the button completely */
+.water-btn:hover .btn-water-fill {
+  transform: translateY(-35%);
+}
+
+/* Double SVG horizontal scrolling track for button */
+.btn-water-track {
+  position: absolute;
+  top: -12px;
+  /* sit slightly above the button top to show the wave curve */
+  left: 0;
+  width: 200%;
+  height: calc(100% + 12px);
+  display: flex;
+  transform: translate3d(0, 0, 0);
+}
+
+.water-btn:hover .btn-water-track {
+  animation: btn-wave-scroll 4s linear infinite;
+}
+
+.btn-water-svg {
+  width: 50%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes btn-wave-scroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Scrolled Navbar Button States */
+.nav-scrolled .nav-book-btn {
+  color: var(--color-deep-slate) !important;
+  border-color: rgba(10, 25, 38, 0.3) !important;
+}
+
+.nav-scrolled .nav-book-btn:hover {
+  background-color: rgba(10, 25, 38, 0.05) !important;
+  border-color: var(--color-deep-slate) !important;
+}
+
+.nav-scrolled .nav-toggle-btn {
+  color: var(--color-deep-slate) !important;
+  border-color: rgba(10, 25, 38, 0.2) !important;
+}
+
+.nav-scrolled .nav-toggle-btn:hover {
+  background-color: rgba(10, 25, 38, 0.05) !important;
+}
+
+/* ================================================================
+   BAHRAIN SURF PARK — ORGANIC WATER TRANSITION
+   No SVG wave. No giant spacer. Soft overlapping edge.
+   ================================================================ */
+
+/* Hide the old SVG visual layer */
+.wave-svg {
+  display: none !important;
+}
+
+/* Wave wrapper */
+.wave-divider-wrap {
+  position: relative;
+  width: 100%;
+  height: 100px; /* Mobile */
+  margin: 0;
+  padding: 0;
+  z-index: 20;
+  overflow: visible;
+}
+
+/* The water body body */
+#wave-divider-section {
+  position: relative;
+  width: 100%;
+  height: 100px; /* Mobile */
+  margin: 0;
+  padding: 0;
+  background: #EAF6FA;
+  overflow: visible;
+  z-index: 2;
+  border-radius: 0 0 48% 42% / 0 0 25% 20%;
+}
+
+/* Create the soft white ocean-edge overlap */
+#wave-divider-section::after {
+  content: "";
+  position: absolute;
+  left: -5%;
+  right: -5%;
+  bottom: -45px;
+  height: 95px;
+  background: #FFFFFF;
+  border-radius: 50% 45% 0 0 / 65% 55% 0 0;
+  transform: rotate(-0.4deg);
+  z-index: 5;
+  filter: drop-shadow(0 -8px 12px rgba(10, 25, 38, 0.10));
+}
+
+/* Additional organic curvature */
+#wave-divider-section::before {
+  content: "";
+  position: absolute;
+  left: -12%;
+  width: 124%;
+  bottom: -30px;
+  height: 75px;
+  background: #FFFFFF;
+  border-radius: 48% 52% 0 0 / 70% 62% 0 0;
+  transform: translateX(-1%) rotate(0.25deg);
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* ================================================================
+   FIND YOUR WAVE — DIRECT CONNECTION
+   ================================================================ */
+#find-your-wave {
+  position: relative;
+  z-index: 10;
+  margin-top: 0 !important;
+  padding-top: 56px; /* Mobile */
+}
+
+/* ================================================================
+   TABLET REFINEMENT
+   ================================================================ */
+@media (min-width: 768px) {
+  .wave-divider-wrap {
+    height: 120px;
+  }
+  #wave-divider-section {
+    height: 120px;
+    border-radius: 0 0 48% 42% / 0 0 20% 16%;
+  }
+  #wave-divider-section::after {
+    bottom: -55px;
+    height: 115px;
+  }
+  #wave-divider-section::before {
+    bottom: -35px;
+    height: 90px;
+  }
+  #find-your-wave {
+    padding-top: 68px;
+  }
+}
+
+/* ================================================================
+   DESKTOP REFINEMENT
+   ================================================================ */
+@media (min-width: 1200px) {
+  .wave-divider-wrap {
+    height: 135px;
+  }
+  #wave-divider-section {
+    height: 135px;
+    border-radius: 0 0 48% 42% / 0 0 18% 14%;
+  }
+  #wave-divider-section::after {
+    bottom: -62px;
+    height: 130px;
+  }
+  #wave-divider-section::before {
+    bottom: -42px;
+    height: 105px;
+  }
+  #find-your-wave {
+    padding-top: 76px;
+  }
+}
+
+/* ================================================================
+   REDUCED MOTION
+   ================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .wave-divider-wrap,
+  #wave-divider-section,
+  #wave-divider-section::before,
+  #wave-divider-section::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
