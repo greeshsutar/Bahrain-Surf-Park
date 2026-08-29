@@ -55,22 +55,28 @@ export default function Visit({ onOpenBooking }: VisitProps) {
               </div>
             </div>
 
-            {/* Clearly Marked Map Integration Placeholder */}
-            <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 mb-8 text-center flex flex-col items-center justify-center relative overflow-hidden">
-              <div className="w-10 h-10 rounded-lg bg-[#0B7FB5]/10 text-[#0B7FB5] flex items-center justify-center mb-3">
+            {/* Official Google Maps Location Card */}
+            <a
+              href="https://maps.app.goo.gl/qcxXGozrQb9vLgnX8"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group rounded-xl border border-[#0B7FB5]/20 bg-[#F0F8FF] hover:bg-[#E6F4FE] p-6 mb-8 text-center flex flex-col items-center justify-center relative overflow-hidden transition-all shadow-sm hover:shadow-md cursor-pointer"
+            >
+              <div className="w-11 h-11 rounded-full bg-[#0B7FB5] text-white flex items-center justify-center mb-3 shadow-md transition-transform duration-300 group-hover:scale-110">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
               </div>
-              <span className="text-xs font-bold uppercase tracking-wider text-[#0A1926] block mb-1">
+              <span className="text-xs font-extrabold uppercase tracking-wider text-[#0A1926] block mb-1 group-hover:text-[#0B7FB5] transition-colors">
                 Bilaj Al Jazayer, Kingdom of Bahrain
               </span>
-              <span className="text-[11px] font-mono text-slate-400 block mb-2">26.0125° N, 50.4850° E</span>
-              <span className="inline-block px-2.5 py-1 rounded bg-slate-200/70 text-[10px] font-extrabold uppercase tracking-widest text-[#063B45]/80">
-                [MAP INTEGRATION REQUIRED]
+              <span className="text-[11px] font-mono text-slate-500 block mb-3">26.0125° N, 50.4850° E</span>
+              <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#0B7FB5] text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-all group-hover:bg-[#063B45]">
+                <span>VIEW ON GOOGLE MAPS</span>
+                <span className="text-sm">↗</span>
               </span>
-            </div>
+            </a>
 
             {/* Primary CTA Button */}
             <div>

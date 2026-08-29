@@ -235,7 +235,15 @@ export default function Technology() {
                   <span className="text-xs font-bold text-[#063B45]">Wave Generator Active</span>
                 </div>
                 <div className="border-l border-slate-300 h-4 mx-2"></div>
-                <span className="text-xs font-medium text-slate-600 truncate">Bilaj Al Jazayer, Bahrain</span>
+                <a
+                  href="https://maps.app.goo.gl/qcxXGozrQb9vLgnX8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs font-medium text-slate-600 hover:text-[#0B7FB5] truncate transition-colors flex items-center gap-1"
+                >
+                  <span>Bilaj Al Jazayer, Bahrain</span>
+                  <span className="text-[10px]">↗</span>
+                </a>
               </div>
             </div>
 

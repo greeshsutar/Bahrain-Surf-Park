@@ -52,7 +52,16 @@ export default function Footer() {
           </a>
         </div>
         <div>
-          <span>&copy; 2026 Bahrain Surf Park. Bilaj Al Jazayer, Kingdom of Bahrain.</span>
+          <span>&copy; 2026 Bahrain Surf Park. </span>
+          <a
+            href="https://maps.app.goo.gl/qcxXGozrQb9vLgnX8"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-[#00C8A0] underline underline-offset-2 transition-colors inline-flex items-center gap-1"
+          >
+            <span>Bilaj Al Jazayer, Kingdom of Bahrain</span>
+            <span className="text-[10px]">↗</span>
+          </a>
         </div>
       </div>
     </footer>
