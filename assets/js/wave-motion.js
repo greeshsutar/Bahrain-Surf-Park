@@ -114,31 +114,49 @@ function initWaveMotion() {
 }
 
 /**
- * Luxury Hero Entrance Stagger Animations
+ * Luxury Hero Entrance & Subtle Video Lifecycle Animation
  */
 function initHeroAnimations() {
   if (typeof gsap === "undefined") return;
 
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // 1. Subtle, imperceptible cinematic Ken Burns video scale
+  const heroVideo = document.getElementById("hero-video");
+  if (heroVideo && !prefersReducedMotion) {
+    gsap.fromTo(heroVideo, 
+      { scale: 1.00 }, 
+      { 
+        scale: 1.035, 
+        duration: 12, 
+        ease: "sine.inOut", 
+        repeat: -1, 
+        yoyo: true 
+      }
+    );
+  }
+
+  // 2. Elegant Staggered Editorial Reveal
   const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
   tl.fromTo(".hero-eyebrow", 
-    { opacity: 0, y: -15, scale: 0.95 }, 
-    { opacity: 1, y: 0, scale: 1, duration: 0.7, delay: 0.1 }
+    { opacity: 0, y: -12, scale: 0.96 }, 
+    { opacity: 1, y: 0, scale: 1, duration: 0.8, delay: 0.15 }
   )
   .fromTo(".hero-headline", 
-    { opacity: 0, y: 30 }, 
-    { opacity: 1, y: 0, duration: 0.9 }, 
-    "-=0.4"
+    { opacity: 0, y: 25 }, 
+    { opacity: 1, y: 0, duration: 1.0 }, 
+    "-=0.5"
   )
   .fromTo(".hero-subtitle", 
-    { opacity: 0, y: 20 }, 
-    { opacity: 1, y: 0, duration: 0.8 }, 
-    "-=0.5"
+    { opacity: 0, y: 16 }, 
+    { opacity: 1, y: 0, duration: 0.85 }, 
+    "-=0.6"
   )
   .fromTo(".hero-buttons", 
-    { opacity: 0, y: 20 }, 
-    { opacity: 1, y: 0, duration: 0.7 }, 
-    "-=0.5"
+    { opacity: 0, y: 16 }, 
+    { opacity: 1, y: 0, duration: 0.8 }, 
+    "-=0.6"
   );
 }
 

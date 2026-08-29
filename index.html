@@ -88,6 +88,9 @@
   <!-- ==========================================================================
        LUXURY EDITORIAL NAVBAR (100% TRANSPARENT TOP TO WHITE GLASS SCROLLED)
        ========================================================================== -->
+  <!-- ==========================================================================
+       LUXURY EDITORIAL NAVBAR (100% TRANSPARENT TOP TO WHITE GLASS SCROLLED)
+       ========================================================================== -->
   <header>
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-30 transition-all duration-300 bg-transparent text-white py-4 sm:py-5 px-6 sm:px-10 flex items-center justify-between nav-transparent">
       <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
@@ -95,7 +98,9 @@
         <!-- Left: Clean Single Brand Logo Asset -->
         <a href="#" class="flex items-center group focus:outline-none">
           <img src="assets/images/logo.png" alt="Bahrain Surf Park" class="h-8 sm:h-10 md:h-11 w-auto object-contain transition-transform duration-300 group-hover:scale-105 filter drop-shadow">
-        </a>         <!-- Center: Spaced Tracking Navigation Links -->
+        </a>
+
+        <!-- Center: Spaced Tracking Navigation Links -->
         <div class="hidden lg:flex items-center gap-8 text-xs font-semibold tracking-widest uppercase text-white/90">
           <a href="#technology" class="nav-anchor py-1 hover:text-[#00C8A0] transition-colors">TECHNOLOGY</a>
           <a href="#find-your-wave" class="nav-anchor py-1 hover:text-[#00C8A0] transition-colors">THE WAVE</a>
@@ -104,14 +109,14 @@
           <a href="#visit" class="nav-anchor py-1 hover:text-[#00C8A0] transition-colors">PLAN YOUR VISIT</a>
         </div>
 
-        <!-- Right: Ocean Blue Button (Max 8px Radius, NO Pill) & Mobile Toggle -->
+        <!-- Right: Ocean Blue / Teal Button & Mobile Toggle -->
         <div class="flex items-center gap-3 sm:gap-4">
-          <a href="#find-your-wave" class="nav-book-btn border border-white/40 hover:border-white text-white px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all">
+          <a href="#find-your-wave" class="nav-book-btn bg-[#00C8A0]/90 hover:bg-[#00C8A0] text-[#063B45] font-extrabold px-6 py-2 rounded-lg text-xs uppercase tracking-widest transition-all shadow-md">
             BOOK NOW
           </a>
 
           <!-- Mobile Menu Button -->
-          <button id="mobile-menu-btn" class="nav-toggle-btn p-2 border border-white/20 rounded-full text-white hover:bg-white/10 transition-all flex items-center justify-center" aria-label="Toggle Navigation">
+          <button id="mobile-menu-btn" class="nav-toggle-btn w-9 h-9 border border-white/30 rounded-full text-white hover:bg-white/15 transition-all flex items-center justify-center bg-black/20" aria-label="Toggle Navigation">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
             </svg>
@@ -134,44 +139,52 @@
   </header>
 
   <!-- ==========================================================================
-       HERO COMPONENT: ASYMMETRIC LEFT-ALIGNED (55% VIEWPORT WIDTH, OPEN RIGHT)
+       HERO COMPONENT: ASYMMETRIC EDITORIAL (ISLAND LUXURY. PERFECT WAVES.)
        ========================================================================== -->
-  <section id="hero" class="relative w-full hero-vh-screen min-h-[550px] sm:min-h-[700px] overflow-hidden flex flex-col justify-between z-0">
+  <section id="hero" class="relative w-full hero-vh-screen min-h-[580px] sm:min-h-[720px] overflow-hidden flex flex-col justify-between z-0">
     
-    <!-- 1. Fullscreen Background Video -->
-    <video id="hero-video" autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover z-0">
-      <source src="assets/videos/create_a_video.mp4?v=20260828_clear" type="video/mp4">
-    </video>
+    <!-- 1. Fullscreen Background Video with Subtle Dark Scrim Overlay -->
+    <div class="absolute inset-0 w-full h-full overflow-hidden z-0">
+      <video id="hero-video" autoplay muted loop playsinline class="w-full h-full object-cover">
+        <source src="assets/videos/create_a_video.mp4?v=20260828_clear" type="video/mp4">
+      </video>
+      <!-- Editorial Left Gradient Scrim for Contrast -->
+      <div class="absolute inset-0 bg-gradient-to-r from-[#06232D]/70 via-[#06232D]/35 to-transparent z-10 pointer-events-none"></div>
+      <!-- Top Navbar Scrim -->
+      <div class="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#061922]/60 to-transparent z-10 pointer-events-none"></div>
+    </div>
 
-    <!-- 2. Asymmetric Left-Aligned Text Block (55% Width, Lower-Left Third) -->
-    <div class="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 my-auto pt-24 pb-12 flex flex-col justify-end">
+    <!-- 2. Asymmetric Left-Aligned Text Block (Lower-Left Third) -->
+    <div class="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 my-auto pt-28 pb-16 flex flex-col justify-end">
       
       <div class="max-w-xl lg:max-w-2xl text-left">
-                <!-- Plain Typographic Label -->
-        <span class="text-white text-xs font-extrabold tracking-[0.25em] uppercase mb-4 inline-block">
-          BAHRAIN SURF PARK
+        
+        <!-- Location Eyebrow (Bilaj Al Jazayer · Bahrain) -->
+        <span class="hero-eyebrow text-[#00C8A0] text-xs sm:text-sm font-extrabold tracking-[0.25em] uppercase mb-3 inline-block">
+          BILAJ AL JAZAYER · BAHRAIN
         </span>
 
-        <!-- Left-Aligned Display Headline -->
-        <h1 class="hero-headline font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1]">
+        <!-- Left-Aligned Display Headline (Editorial Scale & Tight Leading) -->
+        <h1 class="hero-headline font-serif text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] font-bold text-white tracking-tight leading-[1.08] mb-5">
           Island Luxury.<br>Perfect Waves.
         </h1>
 
         <!-- Left-Aligned Subtitle -->
-        <p class="hero-subtitle text-sm sm:text-base text-white/95 mt-6 font-medium leading-relaxed max-w-lg">
+        <p class="hero-subtitle text-sm sm:text-base text-white/90 font-medium leading-relaxed max-w-[500px] mb-8 font-sans">
           The world's most advanced wave technology meeting the spirit of island living in the heart of Bahrain.
         </p>
 
-        <!-- Left-Aligned Dual Action Buttons (Max 8px Radius, NO Pill) -->
-        <div class="hero-buttons flex flex-wrap items-center gap-6 mt-10">
+        <!-- Left-Aligned Dual Action Buttons (Rounded-lg, Max 8-10px) -->
+        <div class="hero-buttons flex flex-wrap items-center gap-6">
           <!-- Primary Action Button -->
-          <a href="#find-your-wave" class="bg-gradient-to-r from-[#00C8A0] to-[#0B7FB5] hover:opacity-95 text-white px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-xl transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+          <a href="#find-your-wave" class="bg-gradient-to-r from-[#00C8A0] to-[#0B7FB5] hover:opacity-95 text-white px-7 py-3.5 rounded-lg text-xs font-bold uppercase tracking-widest shadow-xl transition-all transform hover:-translate-y-0.5 inline-flex items-center gap-2">
             <span>DISCOVER THE PARK</span>
+            <span class="text-sm font-normal">→</span>
           </a>
 
-          <!-- Secondary Action Button -->
-          <a href="#technology" class="flex items-center gap-3 text-white text-xs font-bold uppercase tracking-wider hover:text-[#00C8A0] transition-colors group">
-            <span class="w-10 h-10 border border-white/40 rounded-full flex items-center justify-center bg-black/10 group-hover:border-white transition-all">
+          <!-- Secondary Action Button (Editorial Circular Play) -->
+          <a href="#technology" class="inline-flex items-center gap-3 text-white text-xs font-bold uppercase tracking-wider hover:text-[#00C8A0] transition-colors group">
+            <span class="w-9 h-9 border border-white/40 rounded-full flex items-center justify-center bg-black/15 group-hover:border-white transition-all">
               <svg class="w-3.5 h-3.5 fill-current text-white translate-x-[1px]" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z"/>
               </svg>
@@ -184,154 +197,91 @@
 
     </div>
 
-    <!-- 3. Scroll Cue at Bottom Left of Hero -->
-    <div class="relative z-10 text-left px-6 sm:px-12 pb-8 pointer-events-none opacity-90 max-w-7xl mx-auto w-full">
-      <div class="inline-flex items-center gap-2 text-white text-[11px] font-bold tracking-widest uppercase shadow-sm">
-        <span class="hero-subtitle">SCROLL TO EXPLORE</span>
-        <svg class="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
-        </svg>
-      </div>
-    </div>
-
-    <!-- 4. Organic Jagged Wave Divider Overlay -->
+    <!-- 3. Organic Shoreline Water Transition (Matching Reference Design) -->
     <div class="absolute bottom-0 left-0 right-0 z-20 pointer-events-none translate-y-[1px]" aria-hidden="true">
-      <svg class="block w-full h-[50px] sm:h-[80px] md:h-[110px] lg:h-[135px]" viewBox="0 0 1440 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="
-          M 0,70
-          C 20,65 40,55 60,58
-          C 80,60 90,70 100,72
-          C 115,70 125,50 140,52
-          C 155,54 165,72 180,75
-          C 195,72 205,48 220,50
-          C 235,52 245,75 260,78
-          C 275,75 285,55 300,58
-          C 315,60 325,70 340,72
-          C 360,68 375,55 390,48
-          L 405,42
-          C 415,48 420,48 425,44
-          L 440,32
-          C 460,50 480,70 500,74
-          C 520,70 535,52 550,45
-          L 560,40
-          C 568,45 572,45 575,42
-          L 585,28
-          C 605,48 625,68 645,70
-          C 665,68 680,45 695,35
-          L 705,30
-          C 712,35 716,35 718,32
-          L 728,15
-          C 748,40 768,62 788,65
-          C 805,62 825,45 845,35
-          L 858,22
-          C 878,45 898,70 918,72
-          C 938,70 955,42 970,32
-          L 980,28
-          C 988,32 992,32 995,28
-          L 1005,12
-          C 1025,38 1045,62 1065,68
-          C 1085,65 1105,48 1125,38
-          L 1138,26
-          C 1158,45 1178,68 1198,72
-          C 1218,70 1235,42 1250,32
-          L 1260,28
-          C 1268,32 1272,32 1275,28
-          L 1285,15
-          C 1305,38 1325,58 1345,62
-          C 1365,60 1385,45 1405,48
-          C 1425,50 1435,58 1440,60
-          L 1440,120
-          L 0,120 Z
-        " fill="#FFFFFF"/>
+      <svg class="block w-full h-[60px] sm:h-[90px] md:h-[120px] lg:h-[145px] leading-none" viewBox="0 0 1440 180" preserveAspectRatio="none" style="overflow: visible;" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Subtle Soft Shadow following organic water contour -->
+          <filter id="shoreline-shadow" x="-10%" y="-30%" width="120%" height="220%">
+            <feDropShadow dx="0" dy="-8" stdDeviation="12" flood-color="#06232D" flood-opacity="0.16" />
+            <feDropShadow dx="0" dy="-2" stdDeviation="4" flood-color="#06232D" flood-opacity="0.10" />
+          </filter>
+        </defs>
+
+        <!-- Layer 1: Semi-transparent Cyan/Ocean Water Underlayer for Depth -->
+        <path d="M 0,110 C 220,135 440,145 680,95 C 920,40 1160,95 1440,65 L 1440,180 L 0,180 Z" fill="rgba(11, 127, 181, 0.22)" />
+
+        <!-- Layer 2: Pure White Foreground Shoreline Wave with Soft Shadow -->
+        <path d="M 0,95 C 240,128 480,138 720,85 C 960,32 1200,88 1440,55 L 1440,180 L 0,180 Z" fill="#FFFFFF" filter="url(#shoreline-shadow)" />
       </svg>
     </div>
 
   </section>
 
   <!-- ==========================================================================
-       SECTION 2: QUICK NAVIGATION (5-COLUMN ICON GRID MATCHING REFERENCE)
+       SECTION 2: QUICK NAVIGATION (4-COLUMN EDITORIAL FEATURE GRID)
        ========================================================================== -->
-  <section id="quick-nav" class="bg-white pt-4 pb-4 sm:pb-6 relative z-10 border-b border-slate-100">
+  <section id="quick-nav" class="bg-white pt-6 pb-8 sm:pb-12 relative z-10 border-b border-slate-100">
     <div class="max-w-7xl mx-auto px-6 lg:px-12">
-      <!-- 5-Column Grid with thin vertical lines between items on desktop -->
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 md:gap-2 text-center items-stretch">
+      <!-- 4-Column Grid matching reference composition -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 text-left items-start">
         
-        <!-- Column 1: Wave Technology -->
-        <div class="flex flex-col items-center px-4 justify-between min-h-[160px]">
-          <div class="flex flex-col items-center">
-            <svg class="h-16 w-16 text-[#0A1926] mb-3" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M32 4 C38 15 40 35 32 48 C24 35 26 15 32 4 Z" />
-              <path d="M12 40 C18 37 22 43 28 40 C34 37 38 43 44 40 C50 37 54 43 60 40" />
-              <path d="M16 48 C21 45 25 51 30 48 C35 45 39 51 44 48 C49 45 53 51 58 48" stroke-opacity="0.6" />
+        <!-- Column 1: World-Class Waves -->
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0 text-[#0B7FB5]">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 12c.6 0 1.2-.2 1.6-.6 1-.8 2.2-.8 3.2 0 .8.6 1.8.8 2.8.4 1-.4 2.2-.4 3.2.2.8.5 1.8.6 2.8.2 1-.4 2.2-.4 3.2.2.6.4 1.4.6 2.2.6"/>
+              <path d="M2 17c.6 0 1.2-.2 1.6-.6 1-.8 2.2-.8 3.2 0 .8.6 1.8.8 2.8.4 1-.4 2.2-.4 3.2.2.8.5 1.8.6 2.8.2 1-.4 2.2-.4 3.2.2.6.4 1.4.6 2.2.6"/>
             </svg>
-            <h3 class="font-sans text-xs font-black uppercase tracking-widest text-[#0A1926]">WAVE TECHNOLOGY</h3>
-            <p class="text-[#0A1926]/60 text-[11px] font-medium leading-normal mt-1 max-w-[140px]">Powered by Wavegarden Cove</p>
+          </div>
+          <div>
+            <h3 class="font-sans text-xs font-black uppercase tracking-wider text-[#0A1926] mb-1">WORLD-CLASS WAVES</h3>
+            <p class="text-[#063B45]/70 text-xs font-medium leading-relaxed">Consistent, perfect waves for every ability.</p>
           </div>
         </div>
 
-        <!-- Column 2: Rentals -->
-        <div class="flex flex-col items-center px-4 justify-between border-l border-slate-100 min-h-[160px]">
-          <div class="flex flex-col items-center">
-            <svg class="h-16 w-16 text-[#0A1926] mb-3" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 54 C28 52 36 52 44 54" />
-              <path d="M34 53 Q30 35 26 18" stroke-dasharray="1 1" />
-              <path d="M32 53 Q28 35 25 18" stroke-width="1.8" />
-              <path d="M25 18 Q14 16 10 26" />
-              <path d="M25 18 Q12 24 18 34" />
-              <path d="M25 18 Q32 10 44 14" />
-              <path d="M25 18 Q36 20 40 30" />
-              <path d="M25 18 Q26 6 22 8" />
+        <!-- Column 2: Island Living -->
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0 text-[#00C8A0]">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a10 10 0 0 0-7.07 17.07l.07.07A10 10 0 0 0 12 22a10 10 0 0 0 7-2.93l.07-.07A10 10 0 0 0 12 2z"/>
+              <path d="M12 22v-9"/>
+              <path d="M8 7c2 2 4 4 4 6"/>
+              <path d="M16 7c-2 2-4 4-4 6"/>
             </svg>
-            <h3 class="font-sans text-xs font-black uppercase tracking-widest text-[#0A1926]">RENTALS</h3>
-            <p class="text-[#0A1926]/60 text-[11px] font-medium leading-normal mt-1 max-w-[140px]">Premium Gear & Equipment</p>
+          </div>
+          <div>
+            <h3 class="font-sans text-xs font-black uppercase tracking-wider text-[#0A1926] mb-1">ISLAND LIVING</h3>
+            <p class="text-[#063B45]/70 text-xs font-medium leading-relaxed">Luxury facilities surrounded by natural beauty.</p>
           </div>
         </div>
 
-        <!-- Column 3: Services -->
-        <div class="flex flex-col items-center px-4 justify-between border-l border-slate-100 min-h-[160px]">
-          <div class="flex flex-col items-center">
-            <svg class="h-16 w-16 text-[#0A1926] mb-3" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 40 C16 38 12 32 11 26 C10 23 7 24 8 28 C9 36 15 45 24 45 C33 45 42 40 46 34 C48 31 50 26 48 24 C46 22 44 26 42 29 Q39 34 32 34" />
-              <path d="M22 22 C22 18 26 18 26 22 L26 28" />
-              <path d="M26 22 C26 18 30 18 30 22 L30 28" />
-              <path d="M30 24 C30 20 34 20 34 24 L34 28" />
-              <path d="M11 26 C13 22 17 20 20 24" />
-              <path d="M42 29 C44 32 46 36 44 40" stroke-opacity="0.6" />
+        <!-- Column 3: Advanced Technology -->
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0 text-[#0B7FB5]">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 3v3m0 12v3M3 12h3m12 0h3"/>
+              <circle cx="12" cy="12" r="3"/>
             </svg>
-            <h3 class="font-sans text-xs font-black uppercase tracking-widest text-[#0A1926]">SERVICES</h3>
-            <p class="text-[#0A1926]/60 text-[11px] font-medium leading-normal mt-1 max-w-[140px]">Design, Build & Support</p>
+          </div>
+          <div>
+            <h3 class="font-sans text-xs font-black uppercase tracking-wider text-[#0A1926] mb-1">ADVANCED TECHNOLOGY</h3>
+            <p class="text-[#063B45]/70 text-xs font-medium leading-relaxed">Powered by next-generation wave technology.</p>
           </div>
         </div>
 
-        <!-- Column 4: About Us -->
-        <div class="flex flex-col items-center px-4 justify-between border-l border-slate-100 min-h-[160px]">
-          <div class="flex flex-col items-center">
-            <svg class="h-16 w-16 text-[#0A1926] mb-3" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 16 L48 16 L52 46 L36 46 L34 32 L30 32 L28 46 L12 46 Z" />
-              <path d="M16 22 L48 22" />
-              <circle cx="32" cy="22" r="2.5" fill="currentColor" />
-              <path d="M29 22 Q27 28 25 30" stroke-width="1.2" />
-              <path d="M35 22 Q37 28 39 30" stroke-width="1.2" />
+        <!-- Column 4: Authentic Bahrain -->
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0 text-[#00C8A0]">
+            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polygon points="12 2 15 9 22 12 15 15 12 22 9 15 2 12 9 9 12 2" fill="none" stroke="currentColor" stroke-width="1.5"/>
             </svg>
-            <h3 class="font-sans text-xs font-black uppercase tracking-widest text-[#0A1926]">ABOUT US</h3>
-            <p class="text-[#0A1926]/60 text-[11px] font-medium leading-normal mt-1 max-w-[140px]">Our Story & Expertise</p>
           </div>
-        </div>
-
-        <!-- Column 5: Markets -->
-        <div class="flex flex-col items-center px-4 justify-between border-l border-slate-100 min-h-[160px]">
-          <div class="flex flex-col items-center">
-            <svg class="h-16 w-16 text-[#0A1926] mb-3" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 12 L22 48 C22 51 24 53 28 53 L36 53 C40 53 42 51 42 48 L46 12 Z" />
-              <path d="M20 26 L44 26" stroke-dasharray="2 2" />
-              <path d="M34 40 L48 4" stroke-width="1.8" />
-              <path d="M48 4 L52 8" stroke-width="1.8" />
-              <circle cx="18" cy="12" r="6" />
-              <path d="M14 12 L22 12" />
-              <path d="M18 8 L18 16" />
-            </svg>
-            <h3 class="font-sans text-xs font-black uppercase tracking-widest text-[#0A1926]">MARKETS</h3>
-            <p class="text-[#0A1926]/60 text-[11px] font-medium leading-normal mt-1 max-w-[140px]">Industries We Serve</p>
+          <div>
+            <h3 class="font-sans text-xs font-black uppercase tracking-wider text-[#0A1926] mb-1">AUTHENTIC BAHRAIN</h3>
+            <p class="text-[#063B45]/70 text-xs font-medium leading-relaxed">Inspired by our culture, connected to our island.</p>
           </div>
         </div>
 
@@ -340,74 +290,152 @@
   </section>
 
   <!-- ==========================================================================
-       SECTION 3: WAVEGARDEN COVE TECHNOLOGY (PLAIN TYPOGRAPHIC BADGES)
+       SECTION 3: WAVEGARDEN COVE® ENGINEERING (THE PHYSICS OF PERFECTION)
        ========================================================================== -->
-  <section id="technology" class="bg-white pt-6 sm:pt-10 pb-4 sm:pb-6 relative z-10 overflow-hidden">
-    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+  <section id="technology" class="relative bg-[#FBFDFD] overflow-hidden pt-12 sm:pt-16 pb-4 sm:pb-6 z-10">
+    
+    <!-- Background Subtle Contour Lines & Atmospheric Teal Haze -->
+    <div class="absolute inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
+      <!-- Topographic contour curves -->
+      <svg class="absolute top-0 left-0 w-full h-full opacity-[0.045]" viewBox="0 0 1440 900" fill="none" stroke="#063B45" stroke-width="1.2">
+        <path d="M-100,100 C200,80 400,250 800,200 C1200,150 1400,300 1600,250" />
+        <path d="M-100,220 C180,200 380,380 780,320 C1180,260 1380,420 1600,370" />
+        <path d="M-100,340 C160,320 360,510 760,440 C1160,370 1360,540 1600,490" />
+        <path d="M-100,460 C140,440 340,640 740,560 C1140,480 1340,660 1600,610" />
+      </svg>
+      <!-- Ambient Atmospheric Glow -->
+      <div class="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-[#00C8A0]/[0.04] rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#0B7FB5]/[0.06] via-transparent to-transparent"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
         
-        <!-- Left Column: Engineering Narrative & Specs (55% Width on Desktop) -->
+        <!-- Left Column: Engineering Narrative & Editorial Stats (48% Width on Desktop) -->
         <div class="lg:col-span-7 text-left tech-left-col">
           
-          <!-- Plain Typographic Eyebrow -->
-          <span class="text-[#00C8A0] text-xs font-extrabold tracking-[0.2em] uppercase mb-4 block">
-            PROPRIETARY WAVEGARDEN COVE TECHNOLOGY
-          </span>
+          <!-- Eyebrow with Subtle Line Accent -->
+          <div class="mb-3">
+            <span class="text-[#0B7FB5] text-xs font-extrabold tracking-[0.22em] uppercase inline-block">
+              WAVEGARDEN COVE® ENGINEERING
+            </span>
+            <div class="w-12 h-[2px] bg-[#0B7FB5] mt-1.5 opacity-80"></div>
+          </div>
 
-          <!-- Headline -->
-          <h2 class="font-serif text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-[#0A1926] leading-[1.18] tracking-tight mb-6">
-            The Science of the <span class="italic text-[#0B7FB5] font-normal">Infinite Wave</span>
+          <!-- Headline (Playfair Display) -->
+          <h2 class="font-serif text-4xl sm:text-5xl lg:text-[3.5rem] font-bold text-[#063B45] leading-[1.08] tracking-tight mb-6">
+            The Physics of<br>Perfection
           </h2>
 
           <!-- Narrative Paragraph 1 -->
-          <p class="text-[#0A1926]/80 text-sm sm:text-base leading-relaxed mb-4 font-sans">
-            At the heart of Bahrain Surf Park lies the world's most advanced electro-mechanical wave generation technology. Developed by Wavegarden Cove, our state-of-the-art lagoon utilizes modular hydraulic modules that push water with extreme precision, creating clean, ocean-grade waves on demand.
+          <p class="text-[#063B45]/85 text-sm sm:text-[15px] leading-relaxed mb-5 font-sans max-w-xl">
+            Our lagoon is powered by industry-leading Wavegarden Cove technology, capable of generating up to 1,000 ocean-like waves per hour. Each wave profile is programmatically controlled to modify height, speed, and shape in real time.
           </p>
 
           <!-- Narrative Paragraph 2 -->
-          <p class="text-[#0A1926]/80 text-sm sm:text-base leading-relaxed mb-8 font-sans">
-            Unlike traditional ocean swells subject to unpredictable winds and tides, our technology allows complete custom control over wave height, peel angle, speed, and frequency — delivering flawless peeling waves and hollow barrel tubes tailored to every skill tier.
+          <p class="text-[#063B45]/80 text-sm sm:text-[15px] leading-relaxed mb-8 font-sans max-w-xl">
+            Through custom hydrodynamic modules, we optimize energy usage while delivering precise wave geometries. This creates the most consistent and customizable surfing environment in the world.
           </p>
 
-          <!-- 3-Column Technical Metric Bar (Placeholders) -->
-          <div class="grid grid-cols-3 gap-4 pt-6 mt-6 border-t border-[#E2E8F0]">
-            <div>
-              <div class="text-xs font-bold text-[#0A1926] uppercase tracking-wider">[CONTENT REQUIRED: VERIFIED SPEC]</div>
-              <span class="block text-[11px] uppercase font-medium text-[#0A1926]/60 mt-1 tracking-wider">Waves Per Hour</span>
+          <!-- Thin Horizontal Divider -->
+          <div class="border-t border-slate-200/90 my-8"></div>
+
+          <!-- Exact 3-Column Technical Statistics Row -->
+          <div class="grid grid-cols-3 gap-3 sm:gap-6 text-left mb-8">
+            
+            <!-- Stat 1: Waves / Hour -->
+            <div class="flex flex-col">
+              <div class="flex items-center gap-1.5 mb-2 text-[#0B7FB5]">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12c.6 0 1.2-.2 1.6-.6 1-.8 2.2-.8 3.2 0 .8.6 1.8.8 2.8.4 1-.4 2.2-.4 3.2.2.8.5 1.8.6 2.8.2 1-.4 2.2-.4 3.2.2.6.4 1.4.6 2.2.6"/>
+                </svg>
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">WAVES / HOUR</span>
+              </div>
+              <div class="flex items-baseline gap-1 my-1">
+                <span class="text-xs font-serif italic text-slate-500 font-normal">up to</span>
+                <span class="font-serif text-3xl sm:text-4xl font-bold text-[#063B45] tracking-tight">1,000</span>
+              </div>
+              <p class="text-[11px] text-slate-500 font-medium leading-normal mt-1 max-w-[130px]">
+                Industry-leading capacity for endless wave sessions.
+              </p>
             </div>
-            <div>
-              <div class="text-xs font-bold text-[#0A1926] uppercase tracking-wider">[CONTENT REQUIRED: VERIFIED SPEC]</div>
-              <span class="block text-[11px] uppercase font-medium text-[#0A1926]/60 mt-1 tracking-wider">Wave Profiles</span>
+
+            <!-- Stat 2: Wave Profiles -->
+            <div class="border-l border-slate-200/90 pl-3 sm:pl-6 flex flex-col">
+              <div class="flex items-center gap-1.5 mb-2 text-[#00C8A0]">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 6c.6 0 1.2-.2 1.6-.6 1-.8 2.2-.8 3.2 0 .8.6 1.8.8 2.8.4 1-.4 2.2-.4 3.2.2"/>
+                  <path d="M2 12c.6 0 1.2-.2 1.6-.6 1-.8 2.2-.8 3.2 0 .8.6 1.8.8 2.8.4 1-.4 2.2-.4 3.2.2"/>
+                  <path d="M2 18c.6 0 1.2-.2 1.6-.6 1-.8 2.2-.8 3.2 0 .8.6 1.8.8 2.8.4 1-.4 2.2-.4 3.2.2"/>
+                </svg>
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">WAVE PROFILES</span>
+              </div>
+              <div class="my-1">
+                <span class="font-serif text-3xl sm:text-4xl font-bold text-[#063B45] tracking-tight">20+</span>
+              </div>
+              <p class="text-[11px] text-slate-500 font-medium leading-normal mt-1 max-w-[130px]">
+                Programable wave profiles for every ability and style.
+              </p>
             </div>
-            <div>
-              <div class="text-xs font-bold text-[#0A1926] uppercase tracking-wider">[CONTENT REQUIRED: VERIFIED SPEC]</div>
-              <span class="block text-[11px] uppercase font-medium text-[#0A1926]/60 mt-1 tracking-wider">Energy Efficiency</span>
+
+            <!-- Stat 3: Energy Efficiency -->
+            <div class="border-l border-slate-200/90 pl-3 sm:pl-6 flex flex-col">
+              <div class="flex items-center gap-1.5 mb-2 text-[#00C8A0]">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 2a10 10 0 0 0-7.07 17.07l.07.07A10 10 0 0 0 12 22a10 10 0 0 0 7-2.93l.07-.07A10 10 0 0 0 12 2z"/>
+                  <path d="M12 22v-9"/>
+                </svg>
+                <span class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">ENERGY EFFICIENCY</span>
+              </div>
+              <div class="my-1">
+                <span class="font-serif text-3xl sm:text-4xl font-bold text-[#063B45] tracking-tight">35%</span>
+              </div>
+              <p class="text-[11px] text-slate-500 font-medium leading-normal mt-1 max-w-[130px]">
+                More efficient than traditional wave pool systems.
+              </p>
             </div>
+
           </div>
 
-          <!-- Action Button -->
-          <a href="#find-your-wave" class="inline-flex items-center gap-2 bg-[#0B7FB5] hover:bg-[#0077B6] text-white px-8 py-3.5 rounded-lg font-bold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 mt-8">
-            <span>Explore Wave Tiers</span>
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-            </svg>
+          <!-- Action Button (Explore Wave Tiers) -->
+          <a href="#find-your-wave" class="bg-[#0B7FB5] hover:bg-[#063B45] text-white px-8 py-3.5 rounded-xl font-bold text-xs uppercase tracking-widest transition-all transform hover:-translate-y-0.5 shadow-md inline-flex items-center gap-2.5">
+            <span>EXPLORE WAVE TIERS</span>
+            <span class="text-sm font-normal">→</span>
           </a>
 
         </div>
 
-        <!-- Right Column: Technology Video Canvas (45% Width on Desktop) -->
-        <div class="lg:col-span-5 tech-right-col">
-          <div class="rounded-2xl border border-[#E2E8F0] shadow-2xl overflow-hidden relative aspect-[4/3] lg:aspect-square bg-slate-900 group">
+        <!-- Right Column: Technology Portrait Video/Image Container (42% Width on Desktop) -->
+        <div class="lg:col-span-5 tech-right-col flex flex-col items-center justify-center">
+          
+          <div class="w-full max-w-[480px] lg:max-w-none rounded-[22px] overflow-hidden shadow-2xl relative border border-white/70 aspect-[4/5] sm:aspect-[3/4] max-h-[620px] bg-slate-900 group">
             <video autoplay muted loop playsinline class="w-full h-full object-cover">
               <source src="assets/videos/create_a_video.mp4" type="video/mp4">
             </video>
 
-            <!-- Floating Overlay Status Label -->
-            <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md border border-white/40 rounded-xl p-4 shadow-lg flex items-center justify-between">
-              <span class="text-xs font-bold text-[#0A1926]">Wave Generator Active</span>
-              <span class="text-xs font-semibold text-[#0A1926]/60">Bilaj Al Jazayer, Bahrain</span>
+            <!-- Translucent White Status Bar Overlapping Bottom of Image -->
+            <div class="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md border border-white/70 rounded-xl px-4 py-3 shadow-lg flex items-center justify-between z-20">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#00C8A0] animate-pulse"></span>
+                <span class="text-xs font-bold text-[#063B45]">Wave Generator Active</span>
+              </div>
+              <div class="border-l border-slate-300 h-4 mx-2"></div>
+              <span class="text-xs font-medium text-slate-600 truncate">Bilaj Al Jazayer, Bahrain</span>
             </div>
           </div>
+
+          <!-- Subtle Live System Status Indicator Below Image -->
+          <div class="w-full flex items-center gap-2.5 mt-4 text-left px-2">
+            <span class="relative flex h-2.5 w-2.5">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00C8A0] opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00C8A0]"></span>
+            </span>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-extrabold uppercase tracking-widest text-[#0B7FB5]">LIVE SYSTEM STATUS</span>
+              <span class="text-[11px] text-slate-500 font-medium">— Real-time wave generation in progress</span>
+            </div>
+          </div>
+
         </div>
 
       </div>
@@ -415,28 +443,40 @@
   </section>
 
   <!-- ==========================================================================
-       SIGNATURE WAVE DIVIDER (EXACT MATCH TO REFERENCE DESIGN SPECIFICATION)
+       ORGANIC WAVE SHAPE DIVIDER (SEAMLESS SECTION CONNECTION)
        ========================================================================== -->
-  <div class="wave-divider-wrap">
-    <section id="wave-divider-section" class="select-none">
-      <!-- Visually empty container: shape and shadow are rendered entirely via responsive CSS pseudo-elements -->
+  <div class="wave-divider-wrap relative z-20 w-full overflow-visible pointer-events-none leading-none -mb-[1px]">
+    <section id="wave-divider-section" class="select-none pointer-events-none w-full">
+      <svg class="block w-full h-[60px] sm:h-[80px] md:h-[95px] lg:h-[110px] leading-none" viewBox="0 0 1440 95" preserveAspectRatio="none" style="overflow: visible;" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="wave-soft-shadow" x="-5%" y="-10%" width="110%" height="200%">
+            <!-- Close defined soft shadow following wave contour -->
+            <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#06232D" flood-opacity="0.10" />
+            <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#06232D" flood-opacity="0.06" />
+          </filter>
+        </defs>
+        <!-- Pure White Wave Body with Soft Shadow -->
+        <path d="M 0,0 L 1440,0 L 1440,65 C 1380,50 1350,50 1320,50 C 1220,50 1180,80 1100,80 C 1000,80 940,55 880,55 C 780,55 700,90 600,90 C 420,90 320,50 200,50 C 100,50 50,75 0,80 Z" fill="#FFFFFF" stroke="none" filter="url(#wave-soft-shadow)" />
+        <!-- Subtle dark edge line along wave curve -->
+        <path d="M 0,80 C 50,75 100,50 200,50 C 320,50 420,90 600,90 C 700,90 780,55 880,55 C 940,55 1000,80 1100,80 C 1180,80 1220,50 1320,50 C 1350,50 1380,50 1440,65" stroke="rgba(10, 25, 38, 0.16)" stroke-width="1" fill="none" stroke-linecap="round" />
+      </svg>
     </section>
   </div>
 
   <!-- ==========================================================================
        SECTION 3: "FIND YOUR PERFECT WAVE" (HORIZONTAL SCROLL CARD GALLERY)
        ========================================================================== -->
-  <section id="find-your-wave" class="relative pt-20 sm:pt-24 md:pt-28 lg:pt-32 pb-8 sm:pb-12 md:pb-16 overflow-hidden z-10 bg-white">
+  <section id="find-your-wave" class="relative pt-4 sm:pt-6 pb-16 sm:pb-24 overflow-hidden z-10 bg-white">
     
     <!-- Section Content -->
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 mb-10 sm:mb-14">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 mb-8 sm:mb-10">
       <!-- Section Header (Plain Typographic Eyebrow) -->
       <div class="text-left max-w-3xl">
-        <span class="text-[#0B7FB5] text-xs font-extrabold tracking-[0.2em] uppercase mb-3 block">
+        <span class="text-[#0B7FB5] text-xs font-extrabold tracking-[0.2em] uppercase mb-2.5 block">
           FIND YOUR WAVE
         </span>
 
-        <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#0A1926] tracking-tight mb-4">
+        <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#0A1926] tracking-tight mb-3.5">
           One Place.<br>Many Ways.
         </h2>
 
@@ -450,364 +490,255 @@
     <div class="w-full overflow-x-auto no-scrollbar relative z-10">
       
       <!-- Inner Track Container (w-max prevents card wrapping, translated horizontally by GSAP) -->
-      <div id="wave-cards-container" class="flex flex-row flex-nowrap gap-6 sm:gap-8 no-scrollbar px-6 sm:px-12 md:px-20 pb-8 w-max">
+      <div id="wave-cards-container" class="flex flex-row flex-nowrap gap-6 sm:gap-8 no-scrollbar px-6 sm:px-12 md:px-16 pb-8 w-max">
         
         <!-- CARD 1: BEGINNER -->
-        <div class="tier-card w-[360px] sm:w-[400px] md:w-[420px] shrink-0 snap-start-card flex flex-col justify-between" data-level="01">
-          
-          <div>
-            <!-- Top Image (16px Rounded Radius) -->
-            <div class="card-image-wrapper">
-              <img src="assets/images/tier1.jpg" alt="Beginner Session" class="w-full h-full object-cover">
-            </div>
-
-            <!-- Title & Icon Line -->
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-3">
-                <svg class="h-6 w-6 text-[#82C341]" fill="currentColor" viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="10"/>
-                </svg>
-                <span class="font-sans text-xl font-black uppercase tracking-wider text-[#0A1926]">BEGINNER</span>
-              </div>
-            </div>
-
-            <p class="text-slate-600 text-sm leading-relaxed mb-6 font-sans">
-              Our Beginner session offers gentle, slow-moving whitewater waves, perfect for newcomers to practice, pop up, and catch their first waves in a fun and supportive setting.
-            </p>
-
-            <!-- Specifications -->
-            <div class="space-y-1.5 text-xs text-slate-500 mb-6 border-t border-slate-100 pt-4">
-              <div class="flex justify-between">
-                <span class="font-medium text-slate-400">Wave Height:</span>
-                <span class="font-bold text-slate-700">0.5m – 0.8m</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="font-medium text-slate-400">Ride Length:</span>
-                <span class="font-bold text-slate-700">120 meters</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="font-medium text-slate-400">Recommended Board:</span>
-                <span class="font-bold text-slate-700">Soft-top / Malibu</span>
-              </div>
+        <div class="tier-card w-[350px] sm:w-[380px] md:w-[395px] shrink-0 snap-start-card flex flex-col justify-start" data-level="01">
+          <!-- Top Hero Image with Editorial Overlay -->
+          <div class="card-image-wrapper">
+            <img src="assets/images/tier1.jpg" alt="Beginner Session" class="w-full h-full object-cover">
+            <div class="absolute bottom-3 left-3.5 z-10 text-white flex flex-col text-left pointer-events-none">
+              <span class="font-mono text-[9px] font-bold tracking-[0.2em] text-[#00C8A0] uppercase">WAVE 01</span>
+              <span class="font-sans text-xs font-extrabold uppercase tracking-wider text-white">BEGINNER</span>
             </div>
           </div>
 
-          <!-- Card Footer (Price & Button) -->
-          <div class="pt-4 flex items-center justify-between border-t border-slate-100 mt-auto">
-            <div class="flex flex-col text-[#0A1926]">
-              <span class="text-[9px] font-extrabold uppercase tracking-widest text-[#0A1926]/55">Session Price</span>
-              <span class="text-xs font-semibold text-slate-500 mt-0.5 uppercase tracking-wider">[CONTENT REQUIRED: PRICING CONFIG]</span>
-            </div>
-            <a href="#book" class="water-btn bg-black text-white rounded-lg px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all shadow-md flex items-center justify-center">
-              <!-- Water Fill Layer -->
-              <div class="btn-water-fill">
-                <div class="btn-water-track">
-                  <!-- SVG 1 -->
-                  <svg class="btn-water-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                      <linearGradient id="btn-water-grad-1" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#00C8A0" stop-opacity="0.95" />
-                        <stop offset="100%" stop-color="#0B7FB5" stop-opacity="0.95" />
-                      </linearGradient>
-                    </defs>
-                    <path d="M 0 35 C 20 25, 30 45, 50 35 C 70 25, 80 45, 100 35 L 100 100 L 0 100 Z" fill="url(#btn-water-grad-1)" />
-                  </svg>
-                  <!-- SVG 2 (Duplicate) -->
-                  <svg class="btn-water-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M 0 35 C 20 25, 30 45, 50 35 C 70 25, 80 45, 100 35 L 100 100 L 0 100 Z" fill="url(#btn-water-grad-1)" />
-                  </svg>
-                </div>
+          <!-- Card Content Body -->
+          <div class="text-left flex flex-col">
+            <span class="text-xs uppercase font-extrabold tracking-[0.18em] text-[#0B7FB5] mb-0.5 block">Tier 01</span>
+            <h3 class="font-serif text-[28px] sm:text-[30px] font-semibold text-[#0A1926] tracking-tight leading-[1.05] mb-2 uppercase">BEGINNER</h3>
+            <p class="text-slate-600 text-sm leading-[1.55] mb-3.5 font-sans">
+              Gentle, slow-moving waves perfect for catching your very first waves in a safe, supportive environment.
+            </p>
+
+            <!-- Compact Technical Specification Row -->
+            <div class="grid grid-cols-3 gap-2 py-2.5 border-y border-slate-100 mb-3 text-left">
+              <div>
+                <span class="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">HEIGHT</span>
+                <span class="block text-xs font-bold text-[#0A1926] mt-0.5">0.5–0.8m</span>
               </div>
-              <!-- Button Text -->
-              <span class="relative z-10">Book Beginner Session</span>
-            </a>
+              <div class="border-l border-slate-100 pl-2.5">
+                <span class="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">RIDE</span>
+                <span class="block text-xs font-bold text-[#0A1926] mt-0.5">120m</span>
+              </div>
+              <div class="border-l border-slate-100 pl-2.5">
+                <span class="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">BOARD</span>
+                <span class="block text-xs font-bold text-[#0A1926] mt-0.5 truncate">Soft-top</span>
+              </div>
+            </div>
+
+            <!-- Price & Circular CTA Row -->
+            <div class="flex items-center justify-between pt-0.5">
+              <div class="flex flex-col text-left">
+                <span class="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">FROM</span>
+                <span class="text-xs font-bold text-[#0A1926] uppercase tracking-wider mt-0.5">[CONTENT REQUIRED: PRICING CONFIG] BHD</span>
+              </div>
+              <a href="#book" data-tier="Beginner" class="w-9 h-9 bg-[#0B7FB5] hover:bg-[#0077B6] text-white rounded-full flex items-center justify-center transition-all shadow-md shrink-0" aria-label="Book Beginner Session">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
 
         <!-- CARD 2: NOVICE -->
-        <div class="tier-card w-[360px] sm:w-[400px] md:w-[420px] shrink-0 snap-start-card flex flex-col justify-between" data-level="02">
-          
-          <div>
-            <!-- Top Image -->
-            <div class="card-image-wrapper">
-              <img src="assets/images/tier2.jpg" alt="Novice Session" class="w-full h-full object-cover">
-            </div>
-
-            <!-- Title & Icon Line -->
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-3">
-                <svg class="h-6 w-6 text-[#1B8A5A]" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12,2 C12,2 20,10 20,15 C20,19.4 16.4,23 12,23 C7.6,23 4,19.4 4,15 C4,10 12,2 12,2 Z"/>
-                </svg>
-                <span class="font-sans text-xl font-black uppercase tracking-wider text-[#0A1926]">NOVICE</span>
-              </div>
-            </div>
-
-            <p class="text-slate-600 text-sm leading-relaxed mb-6 font-sans">
-              Our Novice session is ideal for those who have mastered beginner waves and want to progress to gentle, open-face waves in a supportive setting.
-            </p>
-
-            <!-- Specifications -->
-            <div class="space-y-1.5 text-xs text-slate-500 mb-6 border-t border-slate-100 pt-4">
-              <div class="flex justify-between">
-                <span class="font-medium text-slate-400">Wave Height:</span>
-                <span class="font-bold text-slate-700">0.8m – 1.2m</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="font-medium text-slate-400">Ride Length:</span>
-                <span class="font-bold text-slate-700">140 meters</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="font-medium text-slate-400">Recommended Board:</span>
-                <span class="font-bold text-slate-700">Funboard / Longboard</span>
-              </div>
+        <div class="tier-card w-[350px] sm:w-[380px] md:w-[395px] shrink-0 snap-start-card flex flex-col justify-start" data-level="02">
+          <!-- Top Hero Image with Editorial Overlay -->
+          <div class="card-image-wrapper">
+            <img src="assets/images/tier2.jpg" alt="Novice Session" class="w-full h-full object-cover">
+            <div class="absolute bottom-3 left-3.5 z-10 text-white flex flex-col text-left pointer-events-none">
+              <span class="font-mono text-[9px] font-bold tracking-[0.2em] text-[#00C8A0] uppercase">WAVE 02</span>
+              <span class="font-sans text-xs font-extrabold uppercase tracking-wider text-white">NOVICE</span>
             </div>
           </div>
-          <!-- Card Footer (Price & Button) -->
-          <div class="pt-4 flex items-center justify-between border-t border-slate-100 mt-auto">
-            <div class="flex flex-col text-[#0A1926]">
-              <span class="text-[9px] font-extrabold uppercase tracking-widest text-[#0A1926]/55">Session Price</span>
-              <span class="text-xs font-semibold text-slate-500 mt-0.5 uppercase tracking-wider">[CONTENT REQUIRED: PRICING CONFIG]</span>
-            </div>
-            <a href="#book" class="water-btn bg-black text-white rounded-lg px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all shadow-md flex items-center justify-center">
-              <!-- Water Fill Layer -->
-              <div class="btn-water-fill">
-                <div class="btn-water-track">
-                  <!-- SVG 1 -->
-                  <svg class="btn-water-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                      <linearGradient id="btn-water-grad-2" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#00BFAE" stop-opacity="0.95" />
-                        <stop offset="100%" stop-color="#0B7FB5" stop-opacity="0.95" />
-                      </linearGradient>
-                    </defs>
-                    <path d="M 0 35 C 20 25, 30 45, 50 35 C 70 25, 80 45, 100 35 L 100 100 L 0 100 Z" fill="url(#btn-water-grad-2)" />
-                  </svg>
-                  <!-- SVG 2 (Duplicate) -->
-                  <svg class="btn-water-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M 0 35 C 20 25, 30 45, 50 35 C 70 25, 80 45, 100 35 L 100 100 L 0 100 Z" fill="url(#btn-water-grad-2)" />
-                  </svg>
-                </div>
+
+          <!-- Card Content Body -->
+          <div class="text-left flex flex-col">
+            <span class="text-xs uppercase font-extrabold tracking-[0.18em] text-[#0B7FB5] mb-0.5 block">Tier 02</span>
+            <h3 class="font-serif text-[28px] sm:text-[30px] font-semibold text-[#0A1926] tracking-tight leading-[1.05] mb-2 uppercase">NOVICE</h3>
+            <p class="text-slate-600 text-sm leading-[1.55] mb-3.5 font-sans">
+              Designed for riders who can pop up and are ready to learn board control on soft open-face waves.
+            </p>
+
+            <!-- Compact Technical Specification Row -->
+            <div class="grid grid-cols-3 gap-2 py-2.5 border-y border-slate-100 mb-3 text-left">
+              <div>
+                <span class="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">HEIGHT</span>
+                <span class="block text-xs font-bold text-[#0A1926] mt-0.5">0.8–1.2m</span>
               </div>
-              <!-- Button Text -->
-              <span class="relative z-10">Book Novice Session</span>
-            </a>
+              <div class="border-l border-slate-100 pl-2.5">
+                <span class="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">RIDE</span>
+                <span class="block text-xs font-bold text-[#0A1926] mt-0.5">140m</span>
+              </div>
+              <div class="border-l border-slate-100 pl-2.5">
+                <span class="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">BOARD</span>
+                <span class="block text-xs font-bold text-[#0A1926] mt-0.5 truncate">Funboard</span>
+              </div>
+            </div>
+
+            <!-- Price & Circular CTA Row -->
+            <div class="flex items-center justify-between pt-0.5">
+              <div class="flex flex-col text-left">
+                <span class="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">FROM</span>
+                <span class="text-xs font-bold text-[#0A1926] uppercase tracking-wider mt-0.5">[CONTENT REQUIRED: PRICING CONFIG] BHD</span>
+              </div>
+              <a href="#book" data-tier="Novice" class="w-9 h-9 bg-[#0B7FB5] hover:bg-[#0077B6] text-white rounded-full flex items-center justify-center transition-all shadow-md shrink-0" aria-label="Book Novice Session">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
 
         <!-- CARD 3: PROGRESSIVE -->
-        <div class="tier-card w-[360px] sm:w-[400px] md:w-[420px] shrink-0 snap-start-card flex flex-col justify-between" data-level="03">
-          
-          <div>
-            <!-- Top Image -->
-            <div class="card-image-wrapper">
-              <img src="assets/images/tier3.jpg" alt="Progressive Session" class="w-full h-full object-cover">
-            </div>
-
-            <!-- Title & Icon Line -->
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-3">
-                <svg class="h-6 w-6 text-[#85CCD8]" fill="currentColor" viewBox="0 0 24 24">
-                  <polygon points="12,2 2,22 22,22"/>
-                </svg>
-                <span class="font-sans text-xl font-black uppercase tracking-wider text-[#0A1926]">PROGRESSIVE</span>
-              </div>
-            </div>
-
-            <p class="text-slate-600 text-sm leading-relaxed mb-6 font-sans">
-              Our Progressive session features waist-high, slow-peeling open-face waves, perfect for surfers refining their take-off, board control, and trimming.
-            </p>
-
-            <!-- Specifications -->
-            <div class="space-y-1.5 text-xs text-slate-500 mb-6 border-t border-slate-100 pt-4">
-              <div class="flex justify-between">
-                <span class="font-medium text-slate-400">Wave Height:</span>
-                <span class="font-bold text-slate-700">1.2m – 1.5m</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="font-medium text-slate-400">Ride Length:</span>
-                <span class="font-bold text-slate-700">160 meters</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="font-medium text-slate-400">Recommended Board:</span>
-                <span class="font-bold text-slate-700">Fish / Performance Longboard</span>
-              </div>
+        <div class="tier-card w-[350px] sm:w-[380px] md:w-[395px] shrink-0 snap-start-card flex flex-col justify-start" data-level="03">
+          <!-- Top Hero Image with Editorial Overlay -->
+          <div class="card-image-wrapper">
+            <img src="assets/images/tier3.jpg" alt="Progressive Session" class="w-full h-full object-cover">
+            <div class="absolute bottom-3 left-3.5 z-10 text-white flex flex-col text-left pointer-events-none">
+              <span class="font-mono text-[9px] font-bold tracking-[0.2em] text-[#00C8A0] uppercase">WAVE 03</span>
+              <span class="font-sans text-xs font-extrabold uppercase tracking-wider text-white">PROGRESSIVE</span>
             </div>
           </div>
 
-          <!-- Card Footer (Price & Button) -->
-          <div class="pt-4 flex items-center justify-between border-t border-slate-100 mt-auto">
-            <div class="flex flex-col text-[#0A1926]">
-              <span class="text-[9px] font-extrabold uppercase tracking-widest text-[#0A1926]/55">Session Price</span>
-              <span class="text-xs font-semibold text-slate-500 mt-0.5 uppercase tracking-wider">[CONTENT REQUIRED: PRICING CONFIG]</span>
-            </div>
-            <a href="#book" class="water-btn bg-black text-white rounded-lg px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all shadow-md flex items-center justify-center">
-              <!-- Water Fill Layer -->
-              <div class="btn-water-fill">
-                <div class="btn-water-track">
-                  <!-- SVG 1 -->
-                  <svg class="btn-water-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                      <linearGradient id="btn-water-grad-3" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#00BFAE" stop-opacity="0.95" />
-                        <stop offset="100%" stop-color="#0B7FB5" stop-opacity="0.95" />
-                      </linearGradient>
-                    </defs>
-                    <path d="M 0 35 C 25 25, 35 45, 60 35 C 75 25, 85 45, 100 35 L 100 100 L 0 100 Z" fill="url(#btn-water-grad-3)" />
-                  </svg>
-                  <!-- SVG 2 (Duplicate) -->
-                  <svg class="btn-water-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M 0 35 C 25 25, 35 45, 60 35 C 75 25, 85 45, 100 35 L 100 100 L 0 100 Z" fill="url(#btn-water-grad-3)" />
-                  </svg>
-                </div>
+          <!-- Card Content Body -->
+          <div class="text-left flex flex-col">
+            <span class="text-xs uppercase font-extrabold tracking-[0.18em] text-[#0B7FB5] mb-0.5 block">Tier 03</span>
+            <h3 class="font-serif text-[28px] sm:text-[30px] font-semibold text-[#0A1926] tracking-tight leading-[1.05] mb-2 uppercase">PROGRESSIVE</h3>
+            <p class="text-slate-600 text-sm leading-[1.55] mb-3.5 font-sans">
+              Waist-high, slow-peeling waves ideal for refining take-offs, trimming, and basic turns.
+            </p>
+
+            <!-- Compact Technical Specification Row -->
+            <div class="grid grid-cols-3 gap-2 py-2.5 border-y border-slate-100 mb-3 text-left">
+              <div>
+                <span class="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">HEIGHT</span>
+                <span class="block text-xs font-bold text-[#0A1926] mt-0.5">1.2–1.5m</span>
               </div>
-              <!-- Button Text -->
-              <span class="relative z-10">Book Progressive Session</span>
-            </a>
+              <div class="border-l border-slate-100 pl-2.5">
+                <span class="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">RIDE</span>
+                <span class="block text-xs font-bold text-[#0A1926] mt-0.5">160m</span>
+              </div>
+              <div class="border-l border-slate-100 pl-2.5">
+                <span class="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">BOARD</span>
+                <span class="block text-xs font-bold text-[#0A1926] mt-0.5 truncate">Fish / Longboard</span>
+              </div>
+            </div>
+
+            <!-- Price & Circular CTA Row -->
+            <div class="flex items-center justify-between pt-0.5">
+              <div class="flex flex-col text-left">
+                <span class="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">FROM</span>
+                <span class="text-xs font-bold text-[#0A1926] uppercase tracking-wider mt-0.5">[CONTENT REQUIRED: PRICING CONFIG] BHD</span>
+              </div>
+              <a href="#book" data-tier="Progressive" class="w-9 h-9 bg-[#0B7FB5] hover:bg-[#0077B6] text-white rounded-full flex items-center justify-center transition-all shadow-md shrink-0" aria-label="Book Progressive Session">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
 
         <!-- CARD 4: INTERMEDIATE -->
-        <div class="tier-card w-[360px] sm:w-[400px] md:w-[420px] shrink-0 snap-start-card flex flex-col justify-between" data-level="04">
-          
-          <div>
-            <!-- Top Image -->
-            <div class="card-image-wrapper">
-              <img src="assets/images/tier4.jpg" alt="Intermediate Session" class="w-full h-full object-cover">
-            </div>
-
-            <!-- Title & Icon Line -->
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-3">
-                <svg class="h-6 w-6 text-[#1E7FB8]" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2 L2 12 H6 V22 H18 V12 H22 L12 2 Z"/>
-                </svg>
-                <span class="font-sans text-xl font-black uppercase tracking-wider text-[#0A1926]">INTERMEDIATE</span>
-              </div>
-            </div>
-
-            <p class="text-slate-600 text-sm leading-relaxed mb-6 font-sans">
-              Our Intermediate session features chest-high, faster-peeling waves, designed for surfers looking to practice turns, cutbacks, and build speed.
-            </p>
-
-            <!-- Specifications -->
-            <div class="space-y-1.5 text-xs text-slate-500 mb-6 border-t border-slate-100 pt-4">
-              <div class="flex justify-between">
-                <span class="font-medium text-slate-400">Wave Height:</span>
-                <span class="font-bold text-slate-700">1.5m – 1.8m</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="font-medium text-slate-400">Ride Length:</span>
-                <span class="font-bold text-slate-700">180 meters</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="font-medium text-slate-400">Recommended Board:</span>
-                <span class="font-bold text-slate-700">Performance Shortboard</span>
-              </div>
+        <div class="tier-card w-[350px] sm:w-[380px] md:w-[395px] shrink-0 snap-start-card flex flex-col justify-start" data-level="04">
+          <!-- Top Hero Image with Editorial Overlay -->
+          <div class="card-image-wrapper">
+            <img src="assets/images/tier4.jpg" alt="Intermediate Session" class="w-full h-full object-cover">
+            <div class="absolute bottom-3 left-3.5 z-10 text-white flex flex-col text-left pointer-events-none">
+              <span class="font-mono text-[9px] font-bold tracking-[0.2em] text-[#00C8A0] uppercase">WAVE 04</span>
+              <span class="font-sans text-xs font-extrabold uppercase tracking-wider text-white">INTERMEDIATE</span>
             </div>
           </div>
 
-          <!-- Card Footer (Price & Button) -->
-          <div class="pt-4 flex items-center justify-between border-t border-slate-100 mt-auto">
-            <div class="flex flex-col text-[#0A1926]">
-              <span class="text-[9px] font-extrabold uppercase tracking-widest text-[#0A1926]/55">Session Price</span>
-              <span class="text-xs font-semibold text-slate-500 mt-0.5 uppercase tracking-wider">[CONTENT REQUIRED: PRICING CONFIG]</span>
-            </div>
-            <a href="#book" class="water-btn bg-black text-white rounded-lg px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all shadow-md flex items-center justify-center">
-              <!-- Water Fill Layer -->
-              <div class="btn-water-fill">
-                <div class="btn-water-track">
-                  <!-- SVG 1 -->
-                  <svg class="btn-water-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                      <linearGradient id="btn-water-grad-4" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#0B7FB5" stop-opacity="0.95" />
-                        <stop offset="100%" stop-color="#063B45" stop-opacity="0.95" />
-                      </linearGradient>
-                    </defs>
-                    <path d="M 0 35 C 25 25, 35 45, 60 35 C 75 25, 85 45, 100 35 L 100 100 L 0 100 Z" fill="url(#btn-water-grad-4)" />
-                  </svg>
-                  <!-- SVG 2 (Duplicate) -->
-                  <svg class="btn-water-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M 0 35 C 25 25, 35 45, 60 35 C 75 25, 85 45, 100 35 L 100 100 L 0 100 Z" fill="url(#btn-water-grad-4)" />
-                  </svg>
-                </div>
+          <!-- Card Content Body -->
+          <div class="text-left flex flex-col">
+            <span class="text-xs uppercase font-extrabold tracking-[0.18em] text-[#0B7FB5] mb-0.5 block">Tier 04</span>
+            <h3 class="font-serif text-[28px] sm:text-[30px] font-semibold text-[#0A1926] tracking-tight leading-[1.05] mb-2 uppercase">INTERMEDIATE</h3>
+            <p class="text-slate-600 text-sm leading-[1.55] mb-3.5 font-sans">
+              Chest-high, faster-peeling waves perfect for building speed and practicing cutbacks.
+            </p>
+
+            <!-- Compact Technical Specification Row -->
+            <div class="grid grid-cols-3 gap-2 py-2.5 border-y border-slate-100 mb-3 text-left">
+              <div>
+                <span class="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">HEIGHT</span>
+                <span class="block text-xs font-bold text-[#0A1926] mt-0.5">1.5–1.8m</span>
               </div>
-              <!-- Button Text -->
-              <span class="relative z-10">Book Intermediate Session</span>
-            </a>
+              <div class="border-l border-slate-100 pl-2.5">
+                <span class="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">RIDE</span>
+                <span class="block text-xs font-bold text-[#0A1926] mt-0.5">180m</span>
+              </div>
+              <div class="border-l border-slate-100 pl-2.5">
+                <span class="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">BOARD</span>
+                <span class="block text-xs font-bold text-[#0A1926] mt-0.5 truncate">Shortboard</span>
+              </div>
+            </div>
+
+            <!-- Price & Circular CTA Row -->
+            <div class="flex items-center justify-between pt-0.5">
+              <div class="flex flex-col text-left">
+                <span class="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">FROM</span>
+                <span class="text-xs font-bold text-[#0A1926] uppercase tracking-wider mt-0.5">[CONTENT REQUIRED: PRICING CONFIG] BHD</span>
+              </div>
+              <a href="#book" data-tier="Intermediate" class="w-9 h-9 bg-[#0B7FB5] hover:bg-[#0077B6] text-white rounded-full flex items-center justify-center transition-all shadow-md shrink-0" aria-label="Book Intermediate Session">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
 
         <!-- CARD 5: EXPERT -->
-        <div class="tier-card w-[360px] sm:w-[400px] md:w-[420px] shrink-0 snap-start-card flex flex-col justify-between" data-level="05">
-          
-          <div>
-            <!-- Top Image -->
-            <div class="card-image-wrapper">
-              <img src="assets/images/tier5.jpg" alt="Expert Session" class="w-full h-full object-cover">
-            </div>
-
-            <!-- Title & Icon Line -->
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-3">
-                <svg class="h-6 w-6 text-[#0A1926]" fill="currentColor" viewBox="0 0 24 24">
-                  <polygon points="12,2 22,12 12,22 2,12"/>
-                </svg>
-                <span class="font-sans text-xl font-black uppercase tracking-wider text-[#0A1926]">EXPERT</span>
-              </div>
-            </div>
-
-            <p class="text-slate-600 text-sm leading-relaxed mb-6 font-sans">
-              Our Expert session features head-high, powerful barreling waves with maximum speed, engineered for advanced surfers performing critical maneuvers.
-            </p>
-
-            <!-- Specifications -->
-            <div class="space-y-1.5 text-xs text-slate-500 mb-6 border-t border-slate-100 pt-4">
-              <div class="flex justify-between">
-                <span class="font-medium text-slate-400">Wave Height:</span>
-                <span class="font-bold text-slate-700">1.8m – 2.2m</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="font-medium text-slate-400">Ride Length:</span>
-                <span class="font-bold text-slate-700">200 meters</span>
-              </div>
-              <div class="flex justify-between">
-                <span class="font-medium text-slate-400">Recommended Board:</span>
-                <span class="font-bold text-slate-700">Step-Up / Shortboard</span>
-              </div>
+        <div class="tier-card w-[350px] sm:w-[380px] md:w-[395px] shrink-0 snap-start-card flex flex-col justify-start" data-level="05">
+          <!-- Top Hero Image with Editorial Overlay -->
+          <div class="card-image-wrapper">
+            <img src="assets/images/tier5.jpg" alt="Expert Session" class="w-full h-full object-cover">
+            <div class="absolute bottom-3 left-3.5 z-10 text-white flex flex-col text-left pointer-events-none">
+              <span class="font-mono text-[9px] font-bold tracking-[0.2em] text-[#00C8A0] uppercase">WAVE 05</span>
+              <span class="font-sans text-xs font-extrabold uppercase tracking-wider text-white">EXPERT</span>
             </div>
           </div>
 
-          <!-- Card Footer (Price & Button) -->
-          <div class="pt-4 flex items-center justify-between border-t border-slate-100 mt-auto">
-            <div class="flex flex-col text-[#0A1926]">
-              <span class="text-[9px] font-extrabold uppercase tracking-widest text-[#0A1926]/55">Session Price</span>
-              <span class="text-xs font-semibold text-slate-500 mt-0.5 uppercase tracking-wider">[CONTENT REQUIRED: PRICING CONFIG]</span>
-            </div>
-            <a href="#book" class="water-btn bg-black text-white rounded-lg px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all shadow-md flex items-center justify-center">
-              <!-- Water Fill Layer -->
-              <div class="btn-water-fill">
-                <div class="btn-water-track">
-                  <!-- SVG 1 -->
-                  <svg class="btn-water-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                      <linearGradient id="btn-water-grad-5" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#0B7FB5" stop-opacity="0.95" />
-                        <stop offset="100%" stop-color="#063B45" stop-opacity="0.95" />
-                      </linearGradient>
-                    </defs>
-                    <path d="M 0 35 C 20 25, 30 45, 50 35 C 70 25, 80 45, 100 35 L 100 100 L 0 100 Z" fill="url(#btn-water-grad-5)" />
-                  </svg>
-                  <!-- SVG 2 (Duplicate) -->
-                  <svg class="btn-water-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M 0 35 C 20 25, 30 45, 50 35 C 70 25, 80 45, 100 35 L 100 100 L 0 100 Z" fill="url(#btn-water-grad-5)" />
-                  </svg>
-                </div>
+          <!-- Card Content Body -->
+          <div class="text-left flex flex-col">
+            <span class="text-xs uppercase font-extrabold tracking-[0.18em] text-[#0B7FB5] mb-0.5 block">Tier 05</span>
+            <h3 class="font-serif text-[28px] sm:text-[30px] font-semibold text-[#0A1926] tracking-tight leading-[1.05] mb-2 uppercase">EXPERT</h3>
+            <p class="text-slate-600 text-sm leading-[1.55] mb-3.5 font-sans">
+              Powerful, head-high barreling waves engineered for advanced maneuvers and heavy barrels.
+            </p>
+
+            <!-- Compact Technical Specification Row -->
+            <div class="grid grid-cols-3 gap-2 py-2.5 border-y border-slate-100 mb-3 text-left">
+              <div>
+                <span class="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">HEIGHT</span>
+                <span class="block text-xs font-bold text-[#0A1926] mt-0.5">1.8–2.2m</span>
               </div>
-              <!-- Button Text -->
-              <span class="relative z-10">Book Expert Session</span>
-            </a>
+              <div class="border-l border-slate-100 pl-2.5">
+                <span class="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">RIDE</span>
+                <span class="block text-xs font-bold text-[#0A1926] mt-0.5">200m</span>
+              </div>
+              <div class="border-l border-slate-100 pl-2.5">
+                <span class="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">BOARD</span>
+                <span class="block text-xs font-bold text-[#0A1926] mt-0.5 truncate">Step-Up</span>
+              </div>
+            </div>
+
+            <!-- Price & Circular CTA Row -->
+            <div class="flex items-center justify-between pt-0.5">
+              <div class="flex flex-col text-left">
+                <span class="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">FROM</span>
+                <span class="text-xs font-bold text-[#0A1926] uppercase tracking-wider mt-0.5">[CONTENT REQUIRED: PRICING CONFIG] BHD</span>
+              </div>
+              <a href="#book" data-tier="Expert" class="w-9 h-9 bg-[#0B7FB5] hover:bg-[#0077B6] text-white rounded-full flex items-center justify-center transition-all shadow-md shrink-0" aria-label="Book Expert Session">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -931,6 +862,341 @@
   </section>
 
   <!-- ==========================================================================
+       SECTION 6: PLAN YOUR VISIT (PRACTICAL VISITOR INFO & FAQ ACCORDION)
+       ========================================================================== -->
+  <section id="visit" class="bg-white py-16 sm:py-24 relative z-10 overflow-hidden border-t border-slate-100">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        
+        <!-- Left Column: Practical Visit Logistics & Map Integration Placeholder (5 Cols) -->
+        <div class="lg:col-span-5 text-left flex flex-col justify-start">
+          
+          <!-- Plain Typographic Eyebrow (No pill badge, no dot marker) -->
+          <span class="text-[#0B7FB5] text-xs font-extrabold tracking-[0.2em] uppercase mb-4 block">
+            PLAN YOUR VISIT
+          </span>
+
+          <!-- Headline (Playfair Display) -->
+          <h2 class="font-serif text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-[#0A1926] leading-[1.18] tracking-tight mb-6">
+            Essential Details Before You Paddle Out
+          </h2>
+
+          <p class="text-[#063B45]/80 text-sm sm:text-base leading-relaxed mb-8 font-sans">
+            Located along the scenic coast of Bilaj Al Jazayer, Bahrain Surf Park is designed to make your surf day seamless from arrival to departure.
+          </p>
+
+          <!-- Practical Logistics Summary Blocks -->
+          <div class="space-y-4 mb-8">
+            <div class="border-l-2 border-[#0B7FB5] pl-4 py-1">
+              <span class="text-xs font-bold text-[#0A1926] uppercase tracking-wider block">Arrival Protocol</span>
+              <p class="text-xs text-[#063B45]/75 mt-1 leading-relaxed">
+                Please check in 45 minutes prior to your session time for equipment fitting and the mandatory safety briefing.
+              </p>
+            </div>
+            
+            <div class="border-l-2 border-[#00C8A0] pl-4 py-1">
+              <span class="text-xs font-bold text-[#0A1926] uppercase tracking-wider block">Operating Hours & Parking</span>
+              <p class="text-xs text-[#063B45]/75 mt-1 leading-relaxed">
+                <span class="font-semibold text-[#0A1926]">[CONTENT REQUIRED: VISIT DETAILS]</span> — Dedicated visitor parking and valet drop-off available.
+              </p>
+            </div>
+          </div>
+
+          <!-- Clearly Marked Map Integration Placeholder (Not a fake static picture) -->
+          <div class="rounded-xl border border-slate-200 bg-slate-50 p-6 mb-8 text-center flex flex-col items-center justify-center relative overflow-hidden">
+            <div class="w-10 h-10 rounded-lg bg-[#0B7FB5]/10 text-[#0B7FB5] flex items-center justify-center mb-3">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </div>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#0A1926] block mb-1">
+              Bilaj Al Jazayer, Kingdom of Bahrain
+            </span>
+            <span class="text-[11px] font-mono text-slate-400 block mb-2">26.0125° N, 50.4850° E</span>
+            <span class="inline-block px-2.5 py-1 rounded bg-slate-200/70 text-[10px] font-extrabold uppercase tracking-widest text-[#063B45]/80">
+              [MAP INTEGRATION REQUIRED]
+            </span>
+          </div>
+
+          <!-- Primary CTA Button (Max 8px radius, Ocean Blue fill) -->
+          <div>
+            <a href="#find-your-wave" class="bg-[#0B7FB5] hover:bg-[#0077B6] text-white px-8 py-3.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all transform hover:-translate-y-0.5 inline-flex items-center gap-2 shadow-md">
+              <span>BOOK YOUR SESSION</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Editorial FAQ Accordion (7 Cols) -->
+        <div class="lg:col-span-7 text-left">
+          
+          <div class="border-b border-slate-200 pb-4 mb-2">
+            <span class="text-xs font-bold text-[#0A1926]/60 uppercase tracking-widest block">
+              FREQUENTLY ASKED QUESTIONS
+            </span>
+          </div>
+
+          <!-- Plain Typographic Accordion List (No card containers, no pill shapes) -->
+          <div class="divide-y divide-slate-200">
+            
+            <!-- Question 1 -->
+            <details class="group py-5" open>
+              <summary class="flex justify-between items-center cursor-pointer list-none font-sans font-bold text-base text-[#0A1926] hover:text-[#0B7FB5] transition-colors pr-2">
+                <span>What should I bring to my session?</span>
+                <span class="text-[#0B7FB5] text-lg font-light transition-transform duration-300 group-open:rotate-45 ml-4 shrink-0">+</span>
+              </summary>
+              <div class="pt-3 text-sm text-[#063B45]/80 leading-relaxed font-sans">
+                Bring proper swimwear, a towel, reef-safe sun protection, and dry clothes for after your session. Standard boards and safety equipment are included with your booking. <span class="text-xs font-semibold text-slate-500">[CONTENT REQUIRED: VISIT DETAILS]</span> for personal locker and changing suite access.
+              </div>
+            </details>
+
+            <!-- Question 2 -->
+            <details class="group py-5">
+              <summary class="flex justify-between items-center cursor-pointer list-none font-sans font-bold text-base text-[#0A1926] hover:text-[#0B7FB5] transition-colors pr-2">
+                <span>Do I need prior surfing experience?</span>
+                <span class="text-[#0B7FB5] text-lg font-light transition-transform duration-300 group-open:rotate-45 ml-4 shrink-0">+</span>
+              </summary>
+              <div class="pt-3 text-sm text-[#063B45]/80 leading-relaxed font-sans">
+                Not at all. Our lagoon features calibrated beginner wave profiles and ISA-certified coaching designed specifically for first-timers, alongside progressively challenging waves for intermediate and expert riders.
+              </div>
+            </details>
+
+            <!-- Question 3 -->
+            <details class="group py-5">
+              <summary class="flex justify-between items-center cursor-pointer list-none font-sans font-bold text-base text-[#0A1926] hover:text-[#0B7FB5] transition-colors pr-2">
+                <span>Are wetsuits and surfboards provided?</span>
+                <span class="text-[#0B7FB5] text-lg font-light transition-transform duration-300 group-open:rotate-45 ml-4 shrink-0">+</span>
+              </summary>
+              <div class="pt-3 text-sm text-[#063B45]/80 leading-relaxed font-sans">
+                Yes, soft-top boards and essential gear are provided for Beginner and Novice sessions. Surfers can also bring their own boards or upgrade to high-performance rental options. <span class="text-xs font-semibold text-slate-500">[CONTENT REQUIRED: VISIT DETAILS]</span> for specialty demo fleet rates.
+              </div>
+            </details>
+
+            <!-- Question 4 -->
+            <details class="group py-5">
+              <summary class="flex justify-between items-center cursor-pointer list-none font-sans font-bold text-base text-[#0A1926] hover:text-[#0B7FB5] transition-colors pr-2">
+                <span>What happens if the weather conditions change?</span>
+                <span class="text-[#0B7FB5] text-lg font-light transition-transform duration-300 group-open:rotate-45 ml-4 shrink-0">+</span>
+              </summary>
+              <div class="pt-3 text-sm text-[#063B45]/80 leading-relaxed font-sans">
+                Unlike open ocean breaks, our electro-mechanical Wavegarden Cove generator operates in standard weather conditions. In the event of lightning or severe wind, sessions will be rescheduled in accordance with park safety policies. <span class="text-xs font-semibold text-slate-500">[CONTENT REQUIRED: VISIT DETAILS]</span> for rescheduling guidelines.
+              </div>
+            </details>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer class="bg-[#0A1926] text-white py-12 border-t border-white/10 relative z-10">
+    <div class="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-white/60">
+      <div class="flex items-center gap-3">
+        <img src="assets/images/logo.png" alt="Bahrain Surf Park" class="h-8 w-auto object-contain">
+        <span class="text-white/80 font-bold tracking-wider uppercase text-[11px]">Bahrain Surf Park</span>
+      </div>
+      <div class="flex flex-wrap justify-center gap-6 font-semibold uppercase tracking-widest text-[10px]">
+        <a href="#technology" class="hover:text-[#00C8A0] transition-colors">Technology</a>
+        <a href="#find-your-wave" class="hover:text-[#00C8A0] transition-colors">The Wave</a>
+        <a href="#academy" class="hover:text-[#00C8A0] transition-colors">Academy</a>
+        <a href="#cabanas" class="hover:text-[#00C8A0] transition-colors">Cabanas</a>
+        <a href="#visit" class="hover:text-[#00C8A0] transition-colors">Plan Your Visit</a>
+      </div>
+      <div>
+        <span>&copy; 2026 Bahrain Surf Park. Bilaj Al Jazayer, Kingdom of Bahrain.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       ACCESSIBLE BOOKING REQUEST MODAL (DEEP OCEAN OVERLAY & FOCUS TRAP)
+       ========================================================================== -->
+  <div id="booking-modal-overlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-[#063B45]/60 backdrop-blur-sm p-4 sm:p-6 transition-opacity duration-200" aria-modal="true" role="dialog" aria-labelledby="booking-modal-title">
+    
+    <div id="booking-modal-container" class="relative w-full max-w-[480px] bg-white rounded-lg shadow-2xl border border-slate-200 overflow-hidden my-auto max-h-[90vh] flex flex-col transform transition-transform duration-200">
+      
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between px-6 py-5 border-b border-slate-100">
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-widest text-[#0B7FB5] block mb-0.5">BAHRAIN SURF PARK</span>
+          <h3 id="booking-modal-title" class="text-lg font-bold text-[#0A1926] font-sans">
+            Request Session Booking
+          </h3>
+        </div>
+        <!-- Close Button (Simple X icon, no round button background) -->
+        <button id="booking-modal-close" class="text-slate-400 hover:text-[#0A1926] p-1.5 transition-colors focus:outline-none focus:ring-2 focus:ring-[#063B45] rounded" aria-label="Close Booking Modal">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Body (Form State) -->
+      <div id="booking-form-state" class="p-6 overflow-y-auto font-sans">
+        <form id="booking-form" class="space-y-4 text-left" novalidate>
+          
+          <!-- Field 1: Session Type -->
+          <div>
+            <label for="booking-session-type" class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              1. Session Type
+            </label>
+            <select id="booking-session-type" class="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm text-[#0A1926] font-medium focus:border-[#063B45] focus:ring-1 focus:ring-[#063B45] outline-none transition-all cursor-pointer" required>
+              <option value="Beginner">Beginner (Gentle Whitewater)</option>
+              <option value="Novice">Novice (Open-Face Waves)</option>
+              <option value="Progressive">Progressive (Waist-High Peeling)</option>
+              <option value="Intermediate">Intermediate (Chest-High Turns)</option>
+              <option value="Expert">Expert (Head-High Barreling)</option>
+            </select>
+            <span class="text-[10px] text-slate-400 mt-1 block">[CONTENT REQUIRED: PRICING CONFIG]</span>
+          </div>
+
+          <!-- Field 2: Date -->
+          <div>
+            <label for="booking-date" class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              2. Preferred Date
+            </label>
+            <input type="date" id="booking-date" class="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm text-[#0A1926] font-medium focus:border-[#063B45] focus:ring-1 focus:ring-[#063B45] outline-none transition-all" required>
+          </div>
+
+          <!-- Field 3: Number of Guests -->
+          <div>
+            <label for="booking-guests" class="block text-[11px] font-bold uppercase tracking-wider text-slate-700 mb-1.5">
+              3. Number of Surfers
+            </label>
+            <select id="booking-guests" class="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm text-[#0A1926] font-medium focus:border-[#063B45] focus:ring-1 focus:ring-[#063B45] outline-none transition-all cursor-pointer" required>
+              <option value="1">1 Surfer</option>
+              <option value="2">2 Surfers</option>
+              <option value="3">3 Surfers</option>
+              <option value="4">4 Surfers</option>
+              <option value="5">5 Surfers</option>
+              <option value="6">6 Surfers</option>
+              <option value="7">7 Surfers</option>
+              <option value="8">8 Surfers (Private Group)</option>
+            </select>
+          </div>
+
+          <!-- Field 4: Contact Details -->
+          <div class="space-y-3 pt-2 border-t border-slate-100">
+            <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-700">
+              4. Contact Information
+            </span>
+            
+            <div>
+              <input type="text" id="booking-name" placeholder="Full Name *" class="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm text-[#0A1926] placeholder-slate-400 focus:border-[#063B45] focus:ring-1 focus:ring-[#063B45] outline-none transition-all" required>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <input type="email" id="booking-email" placeholder="Email Address *" class="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm text-[#0A1926] placeholder-slate-400 focus:border-[#063B45] focus:ring-1 focus:ring-[#063B45] outline-none transition-all" required>
+              </div>
+              <div>
+                <input type="tel" id="booking-phone" placeholder="Phone Number *" class="w-full bg-white border border-slate-300 rounded-lg px-3.5 py-2.5 text-sm text-[#0A1926] placeholder-slate-400 focus:border-[#063B45] focus:ring-1 focus:ring-[#063B45] outline-none transition-all" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Integration Disclaimer -->
+          <div class="pt-2">
+            <span class="text-[10px] text-slate-400 block tracking-wide">
+              [CONTENT REQUIRED: BOOKING SYSTEM INTEGRATION]
+            </span>
+          </div>
+
+          <!-- Submit Button (Max 8px radius, Ocean Blue fill) -->
+          <div class="pt-2">
+            <button type="submit" class="w-full bg-[#0B7FB5] hover:bg-[#0077B6] text-white py-3.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all shadow-md focus:ring-2 focus:ring-[#063B45] focus:outline-none">
+              Confirm Booking Request
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Modal Body (Success State) -->
+      <div id="booking-success-state" class="hidden p-8 text-center font-sans my-auto">
+        <div class="w-12 h-12 rounded-full bg-[#00C8A0]/15 text-[#00C8A0] flex items-center justify-center mx-auto mb-4">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+          </svg>
+        </div>
+        <h4 class="text-lg font-bold text-[#0A1926] mb-2">Request Received</h4>
+        <p class="text-xs text-[#063B45]/80 leading-relaxed max-w-sm mx-auto mb-6">
+          Thanks — we'll be in touch to confirm your session and finalize your wave schedule at Bilaj Al Jazayer.
+        </p>
+        <button id="booking-reset-btn" class="bg-[#0A1926] hover:bg-[#063B45] text-white px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all">
+          Done
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       FIRST-VISIT WELCOME MODAL (CINEMATIC BACKGROUND & LUXURY EDITORIAL CTA)
+       ========================================================================== -->
+  <div id="welcome-modal-overlay" class="fixed inset-0 z-50 hidden items-center justify-center bg-[#063B45]/70 backdrop-blur-sm p-4 sm:p-6 transition-opacity duration-300" aria-modal="true" role="dialog" aria-labelledby="welcome-modal-title">
+    
+    <div id="welcome-modal-container" class="relative w-full max-w-[540px] rounded-xl shadow-2xl overflow-hidden my-auto flex flex-col text-left border border-white/20 bg-[#063B45] transform transition-transform duration-300">
+      
+      <!-- 1. Full-Bleed Real Photography Background -->
+      <div class="absolute inset-0 z-0 overflow-hidden">
+        <img src="assets/images/tier5.jpg" alt="Bahrain Surf Park Waves" class="w-full h-full object-cover">
+        <!-- Cinematic Dark Gradient Scrim -->
+        <div class="absolute inset-0 bg-gradient-to-t from-[#063B45] via-[#063B45]/75 to-[#063B45]/40 z-10"></div>
+      </div>
+
+      <!-- 2. Close Button (Simple X Icon Top-Right, No Circular Background) -->
+      <button id="welcome-modal-close" class="absolute top-4 right-4 z-30 text-white/80 hover:text-white p-2 transition-colors focus:outline-none focus:ring-2 focus:ring-[#00C8A0] rounded" aria-label="Close Welcome Dialog">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <!-- 3. Modal Content Layer -->
+      <div class="relative z-20 px-8 pt-14 pb-10 sm:px-10 sm:pt-16 sm:pb-12 flex flex-col items-start">
+        
+        <!-- Brand Eyebrow -->
+        <div class="flex items-center gap-2 mb-3">
+          <span class="font-mono text-[10px] font-bold tracking-[0.25em] text-[#00C8A0] uppercase">
+            BAHRAIN SURF PARK
+          </span>
+        </div>
+
+        <!-- Headline (Playfair Display) -->
+        <h2 id="welcome-modal-title" class="font-serif text-3xl sm:text-4xl lg:text-[2.5rem] font-bold text-white leading-[1.14] tracking-tight mb-4">
+          Welcome to the Kingdom's Premier Wave Destination
+        </h2>
+
+        <!-- Short Supporting Copy -->
+        <p class="text-white/85 text-sm sm:text-base leading-relaxed mb-8 font-sans max-w-md">
+          Experience world-class surf technology, calibrated ocean waves, and luxury island living at Bilaj Al Jazayer.
+        </p>
+
+        <!-- CTA Button (Max 8px radius, Surf Green) -->
+        <a href="#find-your-wave" id="welcome-modal-cta" class="bg-[#00C8A0] hover:bg-[#00B590] text-[#063B45] font-extrabold px-8 py-3.5 rounded-lg text-xs uppercase tracking-widest transition-all transform hover:-translate-y-0.5 shadow-lg inline-flex items-center gap-2.5 focus:outline-none focus:ring-2 focus:ring-white">
+          <span>EXPLORE THE PARK</span>
+          <svg class="w-4 h-4 text-[#063B45]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+          </svg>
+        </a>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==========================================================================
        LENIS SMOOTH SCROLL, FRAMER MOTION (MOTION ONE) & GSAP CDN SCRIPTS
        ========================================================================== -->
   <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.36/dist/lenis.min.js"></script>
@@ -945,6 +1211,10 @@
   <script src="assets/js/scroll-tracker.js?v=2"></script>
   <!-- Framer Motion Physics Effects Controller -->
   <script src="assets/js/framer-motion-effects.js"></script>
+  <!-- Booking Modal Controller -->
+  <script src="assets/js/booking-modal.js"></script>
+  <!-- First-Visit Welcome Modal Controller -->
+  <script src="assets/js/welcome-modal.js"></script>
 
 </body>
 </html>

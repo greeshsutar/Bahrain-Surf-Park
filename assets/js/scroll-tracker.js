@@ -200,9 +200,9 @@ function initWaveCardsPinScroll() {
             });
           } else {
             gsap.to(card, {
-              scale: 0.96,
+              scale: 0.97,
               y: 0,
-              opacity: 0.70,
+              opacity: 0.74,
               zIndex: 1,
               duration: 0.45,
               ease: "power2.out",
@@ -222,9 +222,9 @@ function initWaveCardsPinScroll() {
             });
           } else {
             gsap.to(card, {
-              scale: 0.96,
+              scale: 0.97,
               y: 0,
-              opacity: 0.70,
+              opacity: 0.76,
               zIndex: 1,
               duration: 0.8,
               ease: "power2.out",

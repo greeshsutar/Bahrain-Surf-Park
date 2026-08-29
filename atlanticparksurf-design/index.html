@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bahrain Surf Park — Ride Perfect, On Repeat</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0A2E3D;
+    --deep:#0F5C8C;
+    --blue:#1E7EC8;
+    --mint:#2ED9A8;
+    --aqua:#00E0C0;
+    --foam:#F7FAFA;
+    --dark:#071A1E;
+    --white:#FFFFFF;
+    --line: rgba(247,250,250,0.14);
+    --ink-line: rgba(10,46,61,0.12);
+    --font-display:'Fraunces', serif;
+    --font-body:'Plus Jakarta Sans', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--font-body);
+    background:var(--foam);
+    color:var(--ink);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    font-weight:500;
+  }
+  .wrap{max-width:1280px;margin:0 auto;padding:0 40px;}
+  @media (max-width:700px){.wrap{padding:0 22px;}}
+
+  /* ---------- Focus ---------- */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--aqua);
+    outline-offset:3px;
+    border-radius:2px;
+  }
+
+  /* ---------- Buttons ---------- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--font-body);
+    font-weight:600;
+    font-size:14px;
+    letter-spacing:0.01em;
+    padding:15px 26px;
+    border-radius:100px;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:transform .35s cubic-bezier(.2,.8,.2,1), background .35s, color .35s, border-color .35s;
+    white-space:nowrap;
+  }
+  .btn-primary{ background:var(--mint); color:var(--dark); }
+  .btn-primary:hover{ background:var(--aqua); transform:translateY(-2px); }
+  .btn-ghost{ background:transparent; color:var(--white); border-color:rgba(247,250,250,0.4); }
+  .btn-ghost:hover{ border-color:var(--white); transform:translateY(-2px); }
+  .btn-dark{ background:var(--ink); color:var(--white); }
+  .btn-dark:hover{ background:var(--dark); transform:translateY(-2px); }
+  .btn svg{width:14px;height:14px;transition:transform .35s;}
+  .btn:hover svg{transform:translateX(3px);}
+
+  /* ================= SPLASH / INTRO ================= */
+  .splash{
+    position:fixed; inset:0; z-index:999;
+    background:var(--dark);
+    display:flex; align-items:center; justify-content:center;
+    flex-direction:column;
+    transition:opacity 1s cubic-bezier(.2,.7,.2,1), visibility 1s;
+  }
+  .splash video{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    opacity:0.34;
+  }
+  .splash.hide{ opacity:0; visibility:hidden; pointer-events:none; }
+  .splash-inner{position:relative; z-index:2; display:flex; flex-direction:column; align-items:center; text-align:center;}
+  .splash-mark{width:64px;height:64px;margin-bottom:26px;}
+  .splash-wordmark{
+    font-family:var(--font-body); font-weight:800; color:var(--white);
+    font-size:15px; letter-spacing:0.06em;
+  }
+  .splash-wordmark span{display:block; font-size:11px; font-weight:600; letter-spacing:0.24em; color:var(--aqua); margin-top:5px;}
+  .splash-bar{
+    width:180px; height:1px; background:rgba(247,250,250,0.18); margin-top:34px; position:relative; overflow:hidden;
+  }
+  .splash-bar-fill{position:absolute; left:0; top:0; height:100%; width:0%; background:var(--mint); transition:width 2.4s cubic-bezier(.2,.7,.2,1);}
+  .splash-pct{font-family:var(--font-mono); font-size:11px; color:rgba(247,250,250,0.5); margin-top:14px; letter-spacing:0.08em;}
+  .splash-enter{
+    margin-top:38px; opacity:0; transform:translateY(10px); pointer-events:none;
+    transition:opacity .6s, transform .6s;
+  }
+  .splash-enter.show{opacity:1; transform:translateY(0); pointer-events:auto;}
+
+  /* ================= NAV ================= */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    padding:22px 0;
+    transition:background .4s, padding .4s, box-shadow .4s;
+  }
+  header.scrolled{
+    background:rgba(7,26,30,0.86);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    padding:14px 0;
+    box-shadow:0 1px 0 rgba(255,255,255,0.06);
+  }
+  nav{display:flex; align-items:center; justify-content:space-between;}
+  .logo-mark{display:flex;align-items:center;gap:11px;color:var(--white);}
+  .logo-mark svg{width:34px;height:34px;flex-shrink:0;}
+  .logo-text{font-family:var(--font-body);font-weight:800;font-size:14.5px;letter-spacing:0.02em;line-height:1.15;}
+  .logo-text span{display:block;font-weight:600;font-size:11px;letter-spacing:0.16em;color:var(--aqua);}
+  .nav-links{display:flex;gap:34px;list-style:none;}
+  .nav-links a{
+    font-size:13.5px; font-weight:600; letter-spacing:0.02em; color:rgba(247,250,250,0.82);
+    position:relative; padding:4px 0;
+  }
+  .nav-links a::after{
+    content:"";position:absolute;left:0;bottom:0;height:1.5px;width:0;background:var(--mint);
+    transition:width .3s;
+  }
+  .nav-links a:hover{color:var(--white);}
+  .nav-links a:hover::after{width:100%;}
+  .nav-right{display:flex;align-items:center;gap:18px;}
+  .burger{display:none;background:none;border:none;color:var(--white);cursor:pointer;}
+  @media (max-width:980px){
+    .nav-links{display:none;}
+    .burger{display:block;}
+  }
+
+  /* ================= SECTION DOTS ================= */
+  .section-dots{
+    position:fixed; right:34px; top:50%; transform:translateY(-50%);
+    z-index:60; display:flex; flex-direction:column; gap:16px;
+    mix-blend-mode:difference;
+  }
+  .section-dots a{
+    width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.35);
+    transition:all .3s; position:relative;
+  }
+  .section-dots a.active{background:#fff; transform:scale(1.3);}
+  @media (max-width:980px){.section-dots{display:none;}}
+
+  /* ================= HERO ================= */
+  .hero{
+    position:relative;
+    min-height:100vh;
+    display:flex; flex-direction:column; justify-content:flex-end;
+    overflow:hidden;
+    padding-top:120px;
+    padding-bottom:0;
+    background:var(--dark);
+  }
+  .hero-media{position:absolute; inset:0; z-index:0;}
+  .hero-media video, .hero-media .fallback-canvas{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  }
+  .hero-media::after{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      linear-gradient(180deg, rgba(7,26,30,0.55) 0%, rgba(7,26,30,0.15) 32%, rgba(7,26,30,0.35) 62%, rgba(7,26,30,0.92) 100%),
+      linear-gradient(100deg, rgba(15,92,140,0.35), transparent 55%);
+  }
+  .hero-grain{
+    position:absolute; inset:0; z-index:1; opacity:0.05; mix-blend-mode:overlay; pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .hero-frame{
+    position:absolute; inset:18px; z-index:1; border:1px solid rgba(247,250,250,0.14);
+    pointer-events:none; border-radius:2px;
+  }
+  .hero-frame::before, .hero-frame::after{
+    content:""; position:absolute; width:20px; height:20px;
+  }
+  .hero-corner{position:absolute; width:18px; height:18px; z-index:1; pointer-events:none;}
+  .hero-corner svg{width:100%;height:100%;}
+  .hc-tl{top:16px; left:16px;}
+  .hc-tr{top:16px; right:16px; transform:rotate(90deg);}
+  .hc-bl{bottom:16px; left:16px; transform:rotate(-90deg);}
+  .hc-br{bottom:16px; right:16px; transform:rotate(180deg);}
+
+  .hero-content{position:relative; z-index:2; padding-top:64px;}
+  .hero-eyebrow{color:var(--aqua); display:flex; align-items:center; gap:10px; margin-bottom:22px;}
+  .hero-eyebrow .dash{width:34px;height:1px;background:var(--aqua);display:inline-block;}
+  h1.hero-title{
+    font-family:var(--font-display);
+    font-weight:500;
+    color:var(--white);
+    font-size:clamp(52px, 9.2vw, 130px);
+    line-height:0.94;
+    letter-spacing:-0.015em;
+    max-width:980px;
+  }
+  h1.hero-title .line{display:block; overflow:hidden;}
+  h1.hero-title .line span{
+    display:inline-block; transform:translateY(105%);
+    transition:transform 1s cubic-bezier(.16,.86,.2,1);
+  }
+  .hero-content.loaded h1.hero-title .line:nth-child(1) span{transition-delay:.15s;}
+  .hero-content.loaded h1.hero-title .line:nth-child(2) span{transition-delay:.3s;}
+  .hero-content.loaded h1.hero-title .line span{transform:translateY(0);}
+  h1.hero-title em{
+    font-style:italic;
+    font-weight:400;
+    background:linear-gradient(100deg, var(--mint), var(--aqua) 60%, #7FE9D6);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero-sub{
+    margin-top:30px;
+    font-size:18px;
+    line-height:1.6;
+    color:rgba(247,250,250,0.72);
+    max-width:480px;
+    font-weight:400;
+    opacity:0; transform:translateY(14px);
+    transition:opacity .9s ease .55s, transform .9s cubic-bezier(.2,.7,.2,1) .55s;
+  }
+  .hero-content.loaded .hero-sub{opacity:1; transform:translateY(0);}
+  .hero-actions{
+    display:flex; gap:16px; margin-top:44px; flex-wrap:wrap;
+    opacity:0; transform:translateY(14px);
+    transition:opacity .9s ease .7s, transform .9s cubic-bezier(.2,.7,.2,1) .7s;
+  }
+  .hero-content.loaded .hero-actions{opacity:1; transform:translateY(0);}
+
+  .hero-watch{
+    display:inline-flex; align-items:center; gap:12px; color:var(--white); font-size:13px; font-weight:600;
+  }
+  .hero-watch .play-dot{
+    width:44px;height:44px;border-radius:50%;border:1px solid rgba(247,250,250,0.4);
+    display:flex;align-items:center;justify-content:center; transition:all .3s;
+    position:relative;
+  }
+  .hero-watch .play-dot::before{
+    content:""; position:absolute; inset:-1px; border-radius:50%; border:1px solid var(--aqua);
+    opacity:0; transform:scale(0.8); transition:all .4s;
+  }
+  .hero-watch:hover .play-dot{border-color:var(--aqua);}
+  .hero-watch:hover .play-dot::before{opacity:1; transform:scale(1.18);}
+  .hero-watch svg{width:12px;height:12px;}
+
+  .hero-foot{
+    position:relative; z-index:2;
+    display:flex; align-items:flex-end; justify-content:space-between;
+    margin-top:80px; padding:26px 0 30px; border-top:1px solid var(--line);
+    flex-wrap:wrap; gap:20px;
+  }
+  .hero-foot-item{color:rgba(247,250,250,0.55); font-size:13px; max-width:230px; line-height:1.5;}
+  .hero-foot-item b{display:block; color:var(--white); font-family:var(--font-mono); font-size:12px; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px; font-weight:500;}
+  .scroll-cue{display:flex;flex-direction:column;align-items:center;gap:10px;color:rgba(247,250,250,0.5);}
+  .scroll-cue .line{width:1px;height:34px;background:linear-gradient(var(--aqua), transparent);animation:cue 2s infinite;}
+  @keyframes cue{0%{opacity:0;transform:scaleY(0);transform-origin:top;}40%{opacity:1;transform:scaleY(1);transform-origin:top;}60%{opacity:1;transform:scaleY(1);transform-origin:bottom;}100%{opacity:0;transform:scaleY(0);transform-origin:bottom;}}
+
+  /* Marquee ribbon under hero */
+  .marquee-strip{
+    position:relative; z-index:2; overflow:hidden; border-top:1px solid var(--line);
+    background:rgba(7,26,30,0.55); backdrop-filter:blur(6px); padding:14px 0;
+  }
+  .marquee-track{display:flex; gap:44px; white-space:nowrap; animation:marquee 26s linear infinite; width:max-content;}
+  .marquee-track span{
+    font-family:var(--font-mono); font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    color:rgba(247,250,250,0.5); display:flex; align-items:center; gap:44px;
+  }
+  .marquee-track span b{color:var(--aqua); font-weight:500;}
+  @keyframes marquee{ from{transform:translateX(0);} to{transform:translateX(-50%);} }
+
+  /* ================= WAVE DIVIDER ================= */
+  .wave-divider{display:block;width:100%;line-height:0;}
+  .wave-divider svg{width:100%;height:auto;display:block;}
+
+  /* ================= INTRO STATEMENT ================= */
+  .statement{
+    background:var(--foam);
+    padding:150px 0 130px;
+  }
+  .statement .wrap{max-width:1080px;}
+  .statement p{
+    font-family:var(--font-display);
+    font-weight:400;
+    font-size:clamp(28px, 4vw, 46px);
+    line-height:1.28;
+    color:var(--ink);
+    letter-spacing:-0.005em;
+  }
+  .statement p .accent{
+    font-style:italic;
+    color:var(--blue);
+  }
+  .statement-tag{
+    display:flex; align-items:center; gap:14px; margin-bottom:34px; color:var(--deep);
+  }
+  .statement-tag .dash{width:34px;height:1px;background:var(--deep);}
+
+  /* ================= FIND YOUR WAVE ================= */
+  .finder{background:var(--foam); padding-bottom:140px;}
+  .finder-head{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:40px;
+    margin-bottom:56px; flex-wrap:wrap;
+  }
+  .finder-head h2{
+    font-family:var(--font-display); font-weight:500; font-size:clamp(34px,4.4vw,58px);
+    color:var(--ink); line-height:1.05; max-width:520px;
+  }
+  .finder-head p{max-width:340px; color:#4a6672; font-size:15px; line-height:1.6;}
+  .tabs{display:flex; gap:8px; border-bottom:1px solid var(--ink-line); margin-bottom:0; flex-wrap:wrap;}
+  .tab-btn{
+    font-family:var(--font-body); font-weight:600; font-size:14.5px; color:#7d939c;
+    background:none; border:none; padding:16px 22px; cursor:pointer; position:relative;
+    transition:color .3s;
+  }
+  .tab-btn::after{
+    content:""; position:absolute; bottom:-1px; left:22px; right:22px; height:2px;
+    background:var(--mint); transform:scaleX(0); transition:transform .35s; transform-origin:left;
+  }
+  .tab-btn.active{color:var(--ink);}
+  .tab-btn.active::after{transform:scaleX(1);}
+  .tab-panels{position:relative; margin-top:52px;}
+  .tab-panel{
+    display:none; grid-template-columns: 1.05fr 0.95fr; gap:64px; align-items:center;
+  }
+  .tab-panel.active{display:grid;}
+  @media (max-width:860px){.tab-panel.active{grid-template-columns:1fr; gap:36px;}}
+  .tab-visual{
+    aspect-ratio:4/3; border-radius:22px; position:relative; overflow:hidden;
+  }
+  .tab-visual .wash{position:absolute; inset:0;}
+  .tab-panel-copy .eyebrow{color:var(--blue); margin-bottom:18px;}
+  .tab-panel-copy h3{
+    font-family:var(--font-display); font-weight:500; font-size:clamp(28px,3vw,40px);
+    margin-bottom:18px; color:var(--ink);
+  }
+  .tab-panel-copy p{color:#4a6672; font-size:16px; line-height:1.7; margin-bottom:28px; max-width:440px;}
+  .tab-panel-copy a.link{
+    display:inline-flex; align-items:center; gap:9px; font-weight:700; font-size:14px; color:var(--ink);
+    border-bottom:1.5px solid var(--mint); padding-bottom:3px;
+  }
+
+  /* ================= MASTERPLAN ================= */
+  .masterplan{
+    background:linear-gradient(180deg, var(--dark), var(--ink));
+    padding:140px 0; color:var(--white); position:relative; overflow:hidden;
+  }
+  .masterplan-grid{display:grid; grid-template-columns: 0.85fr 1.15fr; gap:70px; align-items:center;}
+  @media (max-width:900px){.masterplan-grid{grid-template-columns:1fr; gap:44px;}}
+  .masterplan .eyebrow{color:var(--aqua); margin-bottom:22px;}
+  .masterplan h2{
+    font-family:var(--font-display); font-weight:500; font-size:clamp(34px,4.2vw,54px); line-height:1.08; margin-bottom:24px;
+  }
+  .masterplan p{color:rgba(247,250,250,0.68); font-size:16px; line-height:1.75; max-width:440px; margin-bottom:32px;}
+  .plan-visual{
+    aspect-ratio:1/1; border-radius:28px; position:relative; overflow:hidden;
+    background:radial-gradient(circle at 50% 50%, rgba(30,126,200,0.5), rgba(7,26,30,0.2) 70%);
+  }
+  .lagoon-ring{position:absolute; inset:0; display:flex; align-items:center; justify-content:center;}
+  .plan-legend{display:flex; gap:28px; margin-top:36px; flex-wrap:wrap;}
+  .plan-legend div{display:flex; align-items:center; gap:9px; font-size:13px; color:rgba(247,250,250,0.75); font-weight:600;}
+  .plan-legend span{width:9px;height:9px;border-radius:50%;}
+
+  /* ================= WAVE TECH ================= */
+  .tech{background:var(--foam); padding:150px 0;}
+  .tech-head{max-width:640px; margin-bottom:70px;}
+  .tech-head .eyebrow{color:var(--blue); margin-bottom:20px;}
+  .tech-head h2{font-family:var(--font-display); font-weight:500; font-size:clamp(34px,4.2vw,54px); color:var(--ink); line-height:1.08; margin-bottom:20px;}
+  .tech-head p{color:#4a6672; font-size:16px; line-height:1.7;}
+  .tech-cards{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--ink-line); border:1px solid var(--ink-line); border-radius:20px; overflow:hidden;}
+  @media (max-width:860px){.tech-cards{grid-template-columns:1fr;}}
+  .tech-card{background:var(--foam); padding:44px 38px;}
+  .tech-card .num{font-family:var(--font-mono); font-size:12px; color:var(--mint); letter-spacing:0.1em; margin-bottom:22px; display:block;}
+  .tech-card h4{font-family:var(--font-display); font-weight:500; font-size:23px; color:var(--ink); margin-bottom:14px;}
+  .tech-card p{color:#4a6672; font-size:14.5px; line-height:1.65;}
+  .tech-note{
+    margin-top:36px; font-size:13px; color:#8098a2; display:flex; gap:10px; align-items:flex-start;
+  }
+
+  /* ================= SPLIT (Academy / Lifestyle) ================= */
+  .split-row{display:grid; grid-template-columns:1fr 1fr;}
+  @media (max-width:860px){.split-row{grid-template-columns:1fr;}}
+  .split-panel{padding:110px 56px; position:relative; min-height:560px; display:flex; flex-direction:column; justify-content:flex-end;}
+  @media (max-width:700px){.split-panel{padding:70px 26px;}}
+  .split-panel.light{background:var(--white); color:var(--ink);}
+  .split-panel.dark{background:var(--ink); color:var(--white);}
+  .split-panel .eyebrow{margin-bottom:20px;}
+  .split-panel.light .eyebrow{color:var(--blue);}
+  .split-panel.dark .eyebrow{color:var(--aqua);}
+  .split-panel h3{font-family:var(--font-display); font-weight:500; font-size:clamp(30px,3.4vw,42px); line-height:1.1; margin-bottom:20px; max-width:400px;}
+  .split-panel p{font-size:15.5px; line-height:1.75; max-width:380px; margin-bottom:30px;}
+  .split-panel.light p{color:#4a6672;}
+  .split-panel.dark p{color:rgba(247,250,250,0.68);}
+  .split-panel a.link{display:inline-flex; align-items:center; gap:9px; font-weight:700; font-size:14px;}
+  .split-panel.light a.link{color:var(--ink); border-bottom:1.5px solid var(--mint);}
+  .split-panel.dark a.link{color:var(--white); border-bottom:1.5px solid var(--aqua);}
+  .split-panel a.link{padding-bottom:3px; width:fit-content;}
+  .split-motif{position:absolute; top:56px; right:56px; opacity:0.9;}
+  @media (max-width:700px){.split-motif{top:26px;right:26px;transform:scale(0.75);transform-origin:top right;}}
+
+  /* ================= EVENTS BAND ================= */
+  .events-band{
+    background:linear-gradient(120deg, #B5432E 0%, #E07A3F 55%, #F2A65A 100%);
+    padding:110px 0; color:var(--white); position:relative; overflow:hidden;
+  }
+  .events-grid{display:flex; justify-content:space-between; align-items:center; gap:50px; flex-wrap:wrap;}
+  .events-copy{max-width:440px;}
+  .events-copy .eyebrow{color:rgba(255,255,255,0.85); margin-bottom:18px;}
+  .events-copy h2{font-family:var(--font-display); font-weight:500; font-size:clamp(32px,3.8vw,48px); line-height:1.06; margin-bottom:20px;}
+  .events-copy p{font-size:15.5px; line-height:1.7; color:rgba(255,255,255,0.85); margin-bottom:30px;}
+  .events-status{
+    display:flex; align-items:center; gap:12px; font-family:var(--font-mono); font-size:13px;
+    letter-spacing:0.08em; text-transform:uppercase; background:rgba(255,255,255,0.14);
+    padding:14px 22px; border-radius:100px; width:fit-content;
+  }
+  .events-status .dot{width:8px;height:8px;border-radius:50%;background:#fff;animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
+
+  /* ================= CTA BAND ================= */
+  .cta-band{
+    background:linear-gradient(180deg, var(--ink), var(--dark));
+    padding:150px 0; text-align:center; color:var(--white); position:relative; overflow:hidden;
+  }
+  .cta-band h2{
+    font-family:var(--font-display); font-weight:400; font-style:italic;
+    font-size:clamp(38px,6vw,84px); line-height:1.02; margin-bottom:20px;
+  }
+  .cta-band .sub{font-family:var(--font-body); font-weight:600; letter-spacing:0.02em; color:var(--aqua); font-size:14px; text-transform:uppercase; letter-spacing:0.14em; margin-bottom:36px;}
+  .cta-band .btn{margin-top:10px;}
+
+  /* ================= FOOTER ================= */
+  footer{background:var(--dark); color:rgba(247,250,250,0.6); padding:80px 0 30px;}
+  .footer-top{display:flex; justify-content:space-between; gap:60px; flex-wrap:wrap; padding-bottom:60px; border-bottom:1px solid var(--line);}
+  .footer-brand .logo-mark{color:var(--white); margin-bottom:18px;}
+  .footer-brand p{max-width:280px; font-size:14px; line-height:1.7;}
+  .footer-cols{display:flex; gap:70px; flex-wrap:wrap;}
+  .footer-col h5{font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.12em; text-transform:uppercase; color:rgba(247,250,250,0.4); margin-bottom:18px; font-weight:500;}
+  .footer-col a{display:block; font-size:14px; margin-bottom:12px; color:rgba(247,250,250,0.75); transition:color .25s;}
+  .footer-col a:hover{color:var(--aqua);}
+  .footer-bottom{display:flex; justify-content:space-between; align-items:center; padding-top:30px; flex-wrap:wrap; gap:16px; font-size:12.5px;}
+  .socials{display:flex; gap:16px;}
+  .socials a{width:34px;height:34px;border:1px solid var(--line); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:all .25s;}
+  .socials a:hover{border-color:var(--aqua); color:var(--aqua);}
+
+  /* Reveal on scroll */
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1);}
+  .reveal.in{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<!-- ============ SPLASH / INTRO ============ -->
+<div class="splash" id="splash">
+  <!-- Swap the src below for the real hero film -->
+  <video autoplay muted loop playsinline id="splashVideo">
+    <source src="YOUR-HERO-VIDEO.mp4" type="video/mp4">
+  </video>
+  <div class="splash-inner">
+    <svg class="splash-mark" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6 40C14 40 14 30 22 30C30 30 30 40 38 40C46 40 46 24 54 24" stroke="url(#splashwave)" stroke-width="4" stroke-linecap="round"/>
+      <defs><linearGradient id="splashwave" x1="6" y1="24" x2="54" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#2ED9A8"/><stop offset="1" stop-color="#1E7EC8"/></linearGradient></defs>
+    </svg>
+    <div class="splash-wordmark">BAHRAIN SURF PARK<span>THE KINGDOM'S FIRST SURF LAGOON</span></div>
+    <div class="splash-bar"><div class="splash-bar-fill" id="splashFill"></div></div>
+    <div class="splash-pct" id="splashPct">LOADING — 0%</div>
+    <button class="btn btn-primary splash-enter" id="splashEnter">Enter Experience
+      <svg viewBox="0 0 14 14" fill="none" style="width:14px;height:14px;"><path d="M2 7H12M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.6"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ============ NAV ============ -->
+<header id="siteHeader">
+  <div class="wrap">
+    <nav>
+      <a href="#top" class="logo-mark">
+        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 40C14 40 14 30 22 30C30 30 30 40 38 40C46 40 46 24 54 24" stroke="url(#navwave1)" stroke-width="4" stroke-linecap="round"/>
+          <path d="M6 32C12 32 12 20 20 20C28 20 28 34 36 34C44 34 44 14 52 14" stroke="url(#navwave2)" stroke-width="3.4" stroke-linecap="round" opacity="0.85"/>
+          <defs>
+            <linearGradient id="navwave1" x1="6" y1="24" x2="54" y2="40" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2ED9A8"/><stop offset="1" stop-color="#1E7EC8"/>
+            </linearGradient>
+            <linearGradient id="navwave2" x1="6" y1="14" x2="52" y2="34" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#00E0C0"/><stop offset="1" stop-color="#0F5C8C"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span class="logo-text">BAHRAIN<span>SURF PARK</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#wave">The Wave</a></li>
+        <li><a href="#finder">Experience</a></li>
+        <li><a href="#academy">Academy</a></li>
+        <li><a href="#masterplan">Masterplan</a></li>
+        <li><a href="#events">Events</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <a href="#contact" class="btn btn-primary" style="padding:12px 22px;">Book Your Session</a>
+        <button class="burger" aria-label="Open menu">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M2 6H20M2 11H20M2 16H20" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- Section dot nav -->
+<div class="section-dots" id="sectionDots">
+  <a href="#top" class="active" aria-label="Hero"></a>
+  <a href="#finder" aria-label="Find your wave"></a>
+  <a href="#masterplan" aria-label="Masterplan"></a>
+  <a href="#wave" aria-label="Wave technology"></a>
+  <a href="#academy" aria-label="Academy"></a>
+  <a href="#events" aria-label="Events"></a>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-media">
+    <!-- Swap the src below for the real hero film -->
+    <video autoplay muted loop playsinline poster="">
+      <source src="YOUR-HERO-VIDEO.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-grain"></div>
+  <div class="hero-corner hc-tl"><svg viewBox="0 0 18 18" fill="none"><path d="M1 9V1H9" stroke="rgba(247,250,250,0.5)" stroke-width="1"/></svg></div>
+  <div class="hero-corner hc-tr"><svg viewBox="0 0 18 18" fill="none"><path d="M1 9V1H9" stroke="rgba(247,250,250,0.5)" stroke-width="1"/></svg></div>
+  <div class="hero-corner hc-bl"><svg viewBox="0 0 18 18" fill="none"><path d="M1 9V1H9" stroke="rgba(247,250,250,0.5)" stroke-width="1"/></svg></div>
+  <div class="hero-corner hc-br"><svg viewBox="0 0 18 18" fill="none"><path d="M1 9V1H9" stroke="rgba(247,250,250,0.5)" stroke-width="1"/></svg></div>
+
+  <div class="wrap hero-content" id="heroContent">
+    <div class="hero-eyebrow eyebrow"><span class="dash"></span> The Kingdom's First Surf Lagoon</div>
+    <h1 class="hero-title">
+      <span class="line"><span>Ride perfect.</span></span>
+      <span class="line"><span><em>On repeat.</em></span></span>
+    </h1>
+    <p class="hero-sub">A world-class surf lagoon on the coast of Bahrain — built for first-timers finding their feet and surfers chasing the perfect wall. Every session, dialed to you.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn btn-primary">Book Your Experience
+        <svg viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+      <a href="#finder" class="btn btn-ghost">Find Your Wave
+        <svg viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+      <button class="hero-watch" id="watchToggle" type="button">
+        <span class="play-dot"><svg viewBox="0 0 14 14" fill="none"><path d="M4 2.5L11.5 7L4 11.5V2.5Z" fill="currentColor"/></svg></span>
+        Watch the film
+      </button>
+    </div>
+  </div>
+
+  <div class="wrap hero-foot">
+    <div class="hero-foot-item">
+      <b>Wavegarden Cove Technology</b>
+      Consistent, safe, and repeatable — the same engineered swell that powers the world's leading inland surf destinations.
+    </div>
+    <div class="hero-foot-item">
+      <b>For every level</b>
+      From a first white-wash roller to advanced barrels — sessions are graded so everyone is riding a wave built for them.
+    </div>
+    <div class="scroll-cue">
+      <span class="eyebrow" style="writing-mode:vertical-rl;">SCROLL</span>
+      <span class="line"></span>
+    </div>
+  </div>
+
+  <div class="marquee-strip">
+    <div class="marquee-track">
+      <span>RIDE PERFECT <b>—</b> EVERY DAY <b>—</b> THE KINGDOM'S FIRST SURF LAGOON <b>—</b> BOOK YOUR SESSION <b>—</b></span>
+      <span>RIDE PERFECT <b>—</b> EVERY DAY <b>—</b> THE KINGDOM'S FIRST SURF LAGOON <b>—</b> BOOK YOUR SESSION <b>—</b></span>
+    </div>
+  </div>
+</section>
+
+<div class="wave-divider" style="background:var(--dark);">
+  <svg viewBox="0 0 1440 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 40C240 90 480 0 720 40C960 80 1200 10 1440 45V90H0V40Z" fill="#F7FAFA"/>
+  </svg>
+</div>
+
+<!-- ============ STATEMENT ============ -->
+<section class="statement">
+  <div class="wrap reveal">
+    <div class="statement-tag eyebrow"><span class="dash"></span>ONE LAGOON, MANY WAYS IN</div>
+    <p>Bahrain Surf Park isn't a wave pool bolted onto a resort. It's a destination built around <span class="accent">one perfect break</span> — where a nine-year-old's first stand-up and a pro's competition heat happen fifty metres apart, on water engineered to behave the same way every single time.</p>
+  </div>
+</section>
+
+<!-- ============ FIND YOUR WAVE ============ -->
+<section class="finder" id="finder">
+  <div class="wrap">
+    <div class="finder-head reveal">
+      <h2>Find your wave.</h2>
+      <p>Five ways to spend a day at the lagoon — pick the one that matches how you want to spend it.</p>
+    </div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="surf">Surf</button>
+      <button class="tab-btn" data-tab="academy">Academy</button>
+      <button class="tab-btn" data-tab="family">Family</button>
+      <button class="tab-btn" data-tab="lifestyle">Lifestyle</button>
+      <button class="tab-btn" data-tab="events">Events</button>
+    </div>
+
+    <div class="tab-panels">
+      <div class="tab-panel active" data-panel="surf">
+        <div class="tab-panel-copy reveal">
+          <div class="eyebrow">01 — SURF</div>
+          <h3>The wave you've been chasing.</h3>
+          <p>Book a session on the main break and ride a wall shaped to your level, heat after heat. No swell forecasts, no crowded line-ups — just your turn, on repeat, until you've nailed the line you came for.</p>
+          <a href="#contact" class="link">Book a session
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.6"/></svg>
+          </a>
+        </div>
+        <div class="tab-visual reveal">
+          <div class="wash" style="background:linear-gradient(135deg,#0F5C8C,#1E7EC8 55%,#2ED9A8);"></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="academy">
+        <div class="tab-panel-copy reveal">
+          <div class="eyebrow">02 — ACADEMY</div>
+          <h3>From first wave to lifelong passion.</h3>
+          <p>Structured coaching for every stage — from your very first pop-up to fine-tuning a bottom turn. Small groups, consistent water, and coaches who watch you improve wave by wave, not session by session.</p>
+          <a href="#academy" class="link">Explore the academy
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.6"/></svg>
+          </a>
+        </div>
+        <div class="tab-visual reveal">
+          <div class="wash" style="background:linear-gradient(135deg,#0A2E3D,#1E7EC8 60%,#00E0C0);"></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="family">
+        <div class="tab-panel-copy reveal">
+          <div class="eyebrow">03 — FAMILY</div>
+          <h3>Everyone in the water, everyone smiling.</h3>
+          <p>Softer rollers, shaded decks, and sightlines from every table mean the whole family can be part of the day — whether they're paddling out or just watching from the lagoon-side lawn.</p>
+          <a href="#contact" class="link">Plan a family day
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.6"/></svg>
+          </a>
+        </div>
+        <div class="tab-visual reveal">
+          <div class="wash" style="background:linear-gradient(135deg,#2ED9A8,#00E0C0 55%,#F7FAFA);"></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="lifestyle">
+        <div class="tab-panel-copy reveal">
+          <div class="eyebrow">04 — LIFESTYLE</div>
+          <h3>A destination beyond the break.</h3>
+          <p>Lagoon-front dining, shaded lounges, and retail curated around the surf life — built for the hours before and after your session, not just the forty minutes in the water.</p>
+          <a href="#lifestyle" class="link">See the lifestyle side
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.6"/></svg>
+          </a>
+        </div>
+        <div class="tab-visual reveal">
+          <div class="wash" style="background:linear-gradient(135deg,#1E7EC8,#0A2E3D 60%,#2ED9A8);"></div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="events">
+        <div class="tab-panel-copy reveal">
+          <div class="eyebrow">05 — EVENTS</div>
+          <h3>Where waves meet the world.</h3>
+          <p>Competitions, community sessions, and cultural nights on the lagoon-front lawn — Bahrain Surf Park as a gathering point for the region's surf community, not just a venue.</p>
+          <a href="#events" class="link">View upcoming events
+            <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.6"/></svg>
+          </a>
+        </div>
+        <div class="tab-visual reveal">
+          <div class="wash" style="background:linear-gradient(135deg,#0F5C8C,#2ED9A8 50%,#0A2E3D);"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MASTERPLAN ============ -->
+<section class="masterplan" id="masterplan">
+  <div class="wrap masterplan-grid">
+    <div class="reveal">
+      <div class="eyebrow">MASTERPLAN</div>
+      <h2>Designed for more than waves.</h2>
+      <p>A single lagoon anchors a wider destination — sport, leisure, dining, retail, and residences arranged around the water, so the wave is the centrepiece of a place, not the whole of it.</p>
+      <a href="#contact" class="btn btn-dark">Explore the Masterplan
+        <svg viewBox="0 0 14 14" fill="none" style="width:14px;height:14px;"><path d="M2 7H12M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+    </div>
+    <div class="reveal">
+      <div class="plan-visual">
+        <div class="lagoon-ring">
+          <svg width="72%" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="94" stroke="#2ED9A8" stroke-width="1" opacity="0.35"/>
+            <circle cx="100" cy="100" r="72" stroke="#00E0C0" stroke-width="1" opacity="0.5"/>
+            <ellipse cx="100" cy="100" rx="46" ry="30" fill="#1E7EC8" opacity="0.5"/>
+            <ellipse cx="100" cy="100" rx="46" ry="30" stroke="#00E0C0" stroke-width="1.4"/>
+          </svg>
+        </div>
+      </div>
+      <div class="plan-legend">
+        <div><span style="background:#1E7EC8;"></span>The Lagoon</div>
+        <div><span style="background:#2ED9A8;"></span>Lifestyle Precinct</div>
+        <div><span style="background:#00E0C0;"></span>Residences</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WAVE TECH ============ -->
+<section class="tech" id="wave">
+  <div class="wrap">
+    <div class="tech-head reveal">
+      <div class="eyebrow">WAVE TECHNOLOGY</div>
+      <h2>Engineered to be perfect.</h2>
+      <p>Every session runs on proven wave-generation technology, tuned specifically for the lagoon here in Bahrain — built to deliver the same clean, rideable wave, set after set, in every session of the day.</p>
+    </div>
+    <div class="tech-cards reveal">
+      <div class="tech-card">
+        <span class="num">CONSISTENCY</span>
+        <h4>Same wave, every time.</h4>
+        <p>No swell windows, no flat days. The shape you ride at 8am is the shape you ride at 6pm — so progress is about you, not the conditions.</p>
+      </div>
+      <div class="tech-card">
+        <span class="num">RANGE</span>
+        <h4>Built for every rider.</h4>
+        <p>From gentle, rolling white-water for a first lesson to steeper, faster walls for advanced surfers — the same lagoon, tuned differently by session.</p>
+      </div>
+      <div class="tech-card">
+        <span class="num">SAFETY</span>
+        <h4>Controlled water, real waves.</h4>
+        <p>A closed, monitored lagoon means lifeguard coverage, graded sessions, and a predictable environment — without the wave losing its bite.</p>
+      </div>
+    </div>
+    <div class="tech-note reveal">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" style="flex-shrink:0;margin-top:2px;"><circle cx="7.5" cy="7.5" r="7" stroke="#8098A2"/><path d="M7.5 5V8M7.5 10.5H7.508" stroke="#8098A2" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Technical specifications — lagoon size, waves per hour, and wave count — will be published once engineering is finalised.
+    </div>
+  </div>
+</section>
+
+<!-- ============ ACADEMY / LIFESTYLE SPLIT ============ -->
+<div class="split-row">
+  <div class="split-panel light" id="academy">
+    <svg class="split-motif" width="70" height="70" viewBox="0 0 70 70" fill="none">
+      <path d="M6 46C16 46 16 32 26 32C36 32 36 46 46 46C56 46 56 24 66 24" stroke="#1E7EC8" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+    </svg>
+    <div class="reveal">
+      <div class="eyebrow">ACADEMY</div>
+      <h3>From first wave to lifelong passion.</h3>
+      <p>Professional coaching, structured levels, and the most consistent water in the region to help every surfer — age six to sixty — become confident, capable, and hooked.</p>
+      <a href="#contact" class="link">Explore Academy
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="split-panel dark" id="lifestyle">
+    <svg class="split-motif" width="70" height="70" viewBox="0 0 70 70" fill="none">
+      <path d="M6 46C16 46 16 32 26 32C36 32 36 46 46 46C56 46 56 24 66 24" stroke="#2ED9A8" stroke-width="3" stroke-linecap="round" opacity="0.55"/>
+    </svg>
+    <div class="reveal">
+      <div class="eyebrow">LIFESTYLE</div>
+      <h3>A destination beyond surfing.</h3>
+      <p>Lagoon-front restaurants, relaxed lounges, and retail built for the surf life — spaces designed for the hours around your session, not just the session itself.</p>
+      <a href="#contact" class="link">Discover Lifestyle
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2 7H12M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ EVENTS BAND ============ -->
+<section class="events-band" id="events">
+  <div class="wrap events-grid">
+    <div class="events-copy reveal">
+      <div class="eyebrow">EVENTS</div>
+      <h2>Where waves meet the world.</h2>
+      <p>International competitions, grassroots community sessions, and a growing surf culture on Bahrain's coastline — the lagoon as a gathering point, not just a venue.</p>
+      <a href="#contact" class="btn btn-dark" style="background:var(--ink);">View Events
+        <svg viewBox="0 0 14 14" fill="none" style="width:14px;height:14px;"><path d="M2 7H12M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+    </div>
+    <div class="reveal">
+      <div class="events-status"><span class="dot"></span> Opening Experience — Details Coming Soon</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA BAND ============ -->
+<section class="cta-band" id="contact">
+  <div class="wrap reveal">
+    <div class="sub">BE PART OF SOMETHING EXTRAORDINARY</div>
+    <h2>The wave is waiting.</h2>
+    <a href="#" class="btn btn-primary">Book Your Experience
+      <svg viewBox="0 0 14 14" fill="none" style="width:14px;height:14px;"><path d="M2 7H12M12 7L7 2M12 7L7 12" stroke="currentColor" stroke-width="1.6"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#top" class="logo-mark">
+          <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg" width="34" height="34">
+            <path d="M6 40C14 40 14 30 22 30C30 30 30 40 38 40C46 40 46 24 54 24" stroke="url(#fwave1)" stroke-width="4" stroke-linecap="round"/>
+            <defs><linearGradient id="fwave1" x1="6" y1="24" x2="54" y2="40" gradientUnits="userSpaceOnUse"><stop stop-color="#2ED9A8"/><stop offset="1" stop-color="#1E7EC8"/></linearGradient></defs>
+          </svg>
+          <span class="logo-text">BAHRAIN<span>SURF PARK</span></span>
+        </a>
+        <p>The Kingdom's first world-class surf lagoon — endless waves, on the coast of Bahrain.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h5>Explore</h5>
+          <a href="#finder">The Wave</a>
+          <a href="#academy">Academy</a>
+          <a href="#masterplan">Masterplan</a>
+          <a href="#events">Events</a>
+        </div>
+        <div class="footer-col">
+          <h5>Park</h5>
+          <a href="#">FAQs</a>
+          <a href="#">Careers</a>
+          <a href="#">Partners</a>
+          <a href="#">News</a>
+        </div>
+        <div class="footer-col">
+          <h5>Contact</h5>
+          <a href="#">hello@bahrainsurfpark.com</a>
+          <a href="#">Kingdom of Bahrain</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Bahrain Surf Park. All rights reserved.</span>
+      <div class="socials">
+        <a href="#" aria-label="Instagram"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.6"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor"/></svg></a>
+        <a href="#" aria-label="Facebook"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M15 3H13a5 5 0 00-5 5v3H6v4h2v6h4v-6h3l1-4h-4V8a1 1 0 011-1h3V3z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></a>
+        <a href="#" aria-label="YouTube"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="4" stroke="currentColor" stroke-width="1.6"/><path d="M10 9l6 3-6 3V9z" fill="currentColor"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ---- Splash / intro sequence ----
+  const splash = document.getElementById('splash');
+  const splashFill = document.getElementById('splashFill');
+  const splashPct = document.getElementById('splashPct');
+  const splashEnter = document.getElementById('splashEnter');
+  const heroContent = document.getElementById('heroContent');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function playHero(){
+    splash.classList.add('hide');
+    document.body.style.overflow = '';
+    heroContent.classList.add('loaded');
+  }
+
+  if (reduceMotion){
+    // Skip the ceremony entirely for reduced-motion users
+    playHero();
+  } else {
+    document.body.style.overflow = 'hidden';
+    let pct = 0;
+    requestAnimationFrame(() => { splashFill.style.width = '100%'; });
+    const counter = setInterval(() => {
+      pct = Math.min(100, pct + Math.ceil(Math.random()*9));
+      splashPct.textContent = 'LOADING — ' + pct + '%';
+      if (pct >= 100){
+        clearInterval(counter);
+        splashPct.textContent = 'READY';
+        splashEnter.classList.add('show');
+      }
+    }, 130);
+
+    splashEnter.addEventListener('click', playHero);
+    // Safety: auto-enter after a few seconds even if the user doesn't click
+    setTimeout(() => { if (!splash.classList.contains('hide')) playHero(); }, 6000);
+  }
+
+  // ---- Watch the film toggle (unmutes hero video) ----
+  const watchToggle = document.getElementById('watchToggle');
+  const heroVideo = document.querySelector('.hero-media video');
+  if (watchToggle && heroVideo){
+    watchToggle.addEventListener('click', () => {
+      heroVideo.muted = !heroVideo.muted;
+      watchToggle.querySelector('span').style.background = heroVideo.muted ? 'transparent' : 'var(--aqua)';
+    });
+  }
+
+  // Header scroll state
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // Tabs
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector('.tab-panel[data-panel="' + btn.dataset.tab + '"]').classList.add('active');
+    });
+  });
+
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // Section dot nav active state
+  const dotLinks = document.querySelectorAll('.section-dots a');
+  const sections = Array.from(dotLinks).map(a => document.querySelector(a.getAttribute('href')));
+  const dotIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = sections.indexOf(entry.target);
+        dotLinks.forEach(d => d.classList.remove('active'));
+        if (idx > -1) dotLinks[idx].classList.add('active');
+      }
+    });
+  }, { threshold: 0.5 });
+  sections.forEach(s => { if (s) dotIO.observe(s); });
+</script>
+</body>
+</html>
