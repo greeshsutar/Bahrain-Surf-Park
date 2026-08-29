@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { animate, spring } from "motion";
 
 interface FindYourWaveProps {
   onOpenBooking: (tier?: string) => void;
@@ -368,19 +367,11 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
   }, []);
 
   const handleMouseEnterCard = (e: React.MouseEvent<HTMLDivElement>) => {
-    (animate as any)(
-      e.currentTarget,
-      { y: -8, scale: 1.015 },
-      { duration: 0.4, easing: (spring as any)({ stiffness: 300, damping: 20 }) }
-    );
+    gsap.to(e.currentTarget, { y: -8, scale: 1.015, duration: 0.4, ease: "back.out(1.4)", overwrite: "auto" });
   };
 
   const handleMouseLeaveCard = (e: React.MouseEvent<HTMLDivElement>) => {
-    (animate as any)(
-      e.currentTarget,
-      { y: 0, scale: 1 },
-      { duration: 0.35, easing: "ease-out" }
-    );
+    gsap.to(e.currentTarget, { y: 0, scale: 1, duration: 0.35, ease: "power2.out", overwrite: "auto" });
   };
 
   return (

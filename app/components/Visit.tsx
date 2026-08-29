@@ -1,6 +1,6 @@
 "use client";
 
-import { animate, spring } from "motion";
+import gsap from "gsap";
 
 interface VisitProps {
   onOpenBooking: (tier?: string) => void;
@@ -8,19 +8,11 @@ interface VisitProps {
 
 export default function Visit({ onOpenBooking }: VisitProps) {
   const handleMouseEnterBtn = (e: React.MouseEvent<HTMLElement>) => {
-    (animate as any)(
-      e.currentTarget,
-      { scale: 1.04, y: -2 },
-      { duration: 0.3, easing: (spring as any)({ stiffness: 400, damping: 15 }) }
-    );
+    gsap.to(e.currentTarget, { scale: 1.04, y: -2, duration: 0.3, ease: "back.out(1.4)", overwrite: "auto" });
   };
 
   const handleMouseLeaveBtn = (e: React.MouseEvent<HTMLElement>) => {
-    (animate as any)(
-      e.currentTarget,
-      { scale: 1, y: 0 },
-      { duration: 0.25, easing: "ease-out" }
-    );
+    gsap.to(e.currentTarget, { scale: 1, y: 0, duration: 0.25, ease: "power2.out", overwrite: "auto" });
   };
 
   return (
@@ -86,7 +78,7 @@ export default function Visit({ onOpenBooking }: VisitProps) {
                 onClick={() => onOpenBooking()}
                 onMouseEnter={handleMouseEnterBtn}
                 onMouseLeave={handleMouseLeaveBtn}
-                className="bg-[#0B7FB5] hover:bg-[#0077B6] text-white px-8 py-3.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all inline-flex items-center gap-2 shadow-md cursor-pointer"
+                className="bg-[#0B7FB5] hover:bg-[#0077B6] text-[#FFFFFF] px-8 py-3.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all inline-flex items-center gap-2 shadow-md cursor-pointer"
               >
                 <span>BOOK YOUR SESSION</span>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { animate, spring } from "motion";
 
 export default function Technology() {
   const stat1Ref = useRef<HTMLSpanElement>(null);
@@ -76,24 +75,16 @@ export default function Technology() {
   };
 
   const handleMouseEnterBtn = (e: React.MouseEvent<HTMLElement>) => {
-    (animate as any)(
-      e.currentTarget,
-      { scale: 1.04, y: -2 },
-      { duration: 0.3, easing: (spring as any)({ stiffness: 400, damping: 15 }) }
-    );
+    gsap.to(e.currentTarget, { scale: 1.04, y: -2, duration: 0.3, ease: "back.out(1.4)", overwrite: "auto" });
   };
 
   const handleMouseLeaveBtn = (e: React.MouseEvent<HTMLElement>) => {
-    (animate as any)(
-      e.currentTarget,
-      { scale: 1, y: 0 },
-      { duration: 0.25, easing: "ease-out" }
-    );
+    gsap.to(e.currentTarget, { scale: 1, y: 0, duration: 0.25, ease: "power2.out", overwrite: "auto" });
   };
 
   return (
-    <section id="technology" className="relative bg-[#FBFDFD] overflow-hidden pt-12 sm:pt-16 pb-4 sm:pb-6 z-10">
-      {/* Background Subtle Contour Lines & Atmospheric Teal Haze */}
+    <section id="technology" className="relative bg-[#FBFDFD] overflow-hidden pt-16 sm:pt-24 pb-32 sm:pb-44 min-h-[850px] lg:min-h-[920px] z-10">
+      {/* Background Subtle Contour Lines & Ambient Glow */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
         {/* Topographic contour curves */}
         <svg className="absolute top-0 left-0 w-full h-full opacity-[0.045]" viewBox="0 0 1440 900" fill="none" stroke="#063B45" strokeWidth="1.2">
@@ -104,7 +95,25 @@ export default function Technology() {
         </svg>
         {/* Ambient Atmospheric Glow */}
         <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-[#00C8A0]/[0.04] rounded-full blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-[#0B7FB5]/[0.06] via-transparent to-transparent"></div>
+      </div>
+
+      {/* Real Ocean Video Layer (Emerging Below CTA in Lower Breathing Room) */}
+      <div
+        className="absolute bottom-0 left-0 right-0 w-full h-[220px] sm:h-[280px] lg:h-[320px] pointer-events-none z-0 overflow-hidden"
+        style={{
+          maskImage: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.08) 18%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.75) 70%, black 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.08) 18%, rgba(0,0,0,0.35) 40%, rgba(0,0,0,0.75) 70%, black 100%)"
+        }}
+      >
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full h-full object-cover object-top"
+        >
+          <source src="/videos/ocean.mp4" type="video/mp4" />
+        </video>
       </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">

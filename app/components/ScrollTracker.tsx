@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { animate, spring } from "motion";
 
 const WAYPOINTS = [
   { id: "#hero", label: "01. Home / Ocean Crest" },
@@ -96,19 +95,11 @@ export default function ScrollTracker() {
   };
 
   const handleMouseEnterDot = (e: React.MouseEvent<HTMLDivElement>) => {
-    (animate as any)(
-      e.currentTarget,
-      { scale: 1.35 },
-      { duration: 0.3, easing: (spring as any)({ stiffness: 500, damping: 18 }) }
-    );
+    gsap.to(e.currentTarget, { scale: 1.35, duration: 0.3, ease: "back.out(1.4)", overwrite: "auto" });
   };
 
   const handleMouseLeaveDot = (e: React.MouseEvent<HTMLDivElement>) => {
-    (animate as any)(
-      e.currentTarget,
-      { scale: 1 },
-      { duration: 0.25, easing: "ease-out" }
-    );
+    gsap.to(e.currentTarget, { scale: 1, duration: 0.25, ease: "power2.out", overwrite: "auto" });
   };
 
   return (

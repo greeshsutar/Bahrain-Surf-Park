@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import { animate, spring } from "motion";
 
 interface HeroProps {
   onOpenBooking: (tier?: string) => void;
@@ -70,19 +69,11 @@ export default function Hero({ onOpenBooking }: HeroProps) {
   };
 
   const handleMouseEnterBtn = (e: React.MouseEvent<HTMLElement>) => {
-    (animate as any)(
-      e.currentTarget,
-      { scale: 1.04, y: -2 },
-      { duration: 0.3, easing: (spring as any)({ stiffness: 400, damping: 15 }) }
-    );
+    gsap.to(e.currentTarget, { scale: 1.04, y: -2, duration: 0.3, ease: "back.out(1.4)", overwrite: "auto" });
   };
 
   const handleMouseLeaveBtn = (e: React.MouseEvent<HTMLElement>) => {
-    (animate as any)(
-      e.currentTarget,
-      { scale: 1, y: 0 },
-      { duration: 0.25, easing: "ease-out" }
-    );
+    gsap.to(e.currentTarget, { scale: 1, y: 0, duration: 0.25, ease: "power2.out", overwrite: "auto" });
   };
 
   return (
