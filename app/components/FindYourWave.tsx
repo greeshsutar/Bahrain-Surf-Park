@@ -19,6 +19,7 @@ const CARDS_DATA = [
     height: "0.5–0.8m",
     ride: "120m",
     board: "Soft-top",
+    price: "35",
   },
   {
     level: "02",
@@ -30,6 +31,7 @@ const CARDS_DATA = [
     height: "0.8–1.2m",
     ride: "140m",
     board: "Funboard",
+    price: "45",
   },
   {
     level: "03",
@@ -41,6 +43,7 @@ const CARDS_DATA = [
     height: "1.2–1.5m",
     ride: "160m",
     board: "Fish / Longboard",
+    price: "55",
   },
   {
     level: "04",
@@ -52,6 +55,7 @@ const CARDS_DATA = [
     height: "1.5–1.8m",
     ride: "180m",
     board: "Shortboard",
+    price: "65",
   },
   {
     level: "05",
@@ -63,6 +67,7 @@ const CARDS_DATA = [
     height: "1.8–2.2m",
     ride: "200m",
     board: "Step-Up",
+    price: "85",
   },
 ];
 
@@ -131,33 +136,11 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
           if (isHover) {
             if (card === hoveredCardEl) {
               gsap.to(card, {
-                scale: 1.05,
-                y: -8,
+                scale: 1.03,
+                y: -6,
                 opacity: 1,
                 zIndex: 20,
-                duration: 0.45,
-                ease: "power2.out",
-                overwrite: "auto",
-              });
-            } else {
-              gsap.to(card, {
-                scale: 0.97,
-                y: 0,
-                opacity: 0.74,
-                zIndex: 1,
-                duration: 0.45,
-                ease: "power2.out",
-                overwrite: "auto",
-              });
-            }
-          } else {
-            if (idx === focusIdx) {
-              gsap.to(card, {
-                scale: 1.05,
-                y: -8,
-                opacity: 1,
-                zIndex: 20,
-                duration: 0.8,
+                duration: 0.4,
                 ease: "power2.out",
                 overwrite: "auto",
               });
@@ -167,7 +150,29 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                 y: 0,
                 opacity: 0.76,
                 zIndex: 1,
-                duration: 0.8,
+                duration: 0.4,
+                ease: "power2.out",
+                overwrite: "auto",
+              });
+            }
+          } else {
+            if (idx === focusIdx) {
+              gsap.to(card, {
+                scale: 1.03,
+                y: -6,
+                opacity: 1,
+                zIndex: 20,
+                duration: 0.6,
+                ease: "power2.out",
+                overwrite: "auto",
+              });
+            } else {
+              gsap.to(card, {
+                scale: 0.97,
+                y: 0,
+                opacity: 0.78,
+                zIndex: 1,
+                duration: 0.6,
                 ease: "power2.out",
                 overwrite: "auto",
               });
@@ -367,7 +372,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
   }, []);
 
   const handleMouseEnterCard = (e: React.MouseEvent<HTMLDivElement>) => {
-    gsap.to(e.currentTarget, { y: -8, scale: 1.015, duration: 0.4, ease: "back.out(1.4)", overwrite: "auto" });
+    gsap.to(e.currentTarget, { y: -6, scale: 1.015, duration: 0.4, ease: "power2.out", overwrite: "auto" });
   };
 
   const handleMouseLeaveCard = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -375,9 +380,9 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
   };
 
   return (
-    <section ref={sectionRef} id="find-your-wave" className="relative pt-4 sm:pt-6 pb-16 sm:pb-24 overflow-hidden z-10 bg-white">
+    <section ref={sectionRef} id="find-your-wave" className="relative pt-12 sm:pt-16 pb-20 sm:pb-28 overflow-hidden z-10 bg-[#F8FAF9]">
       {/* Section Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 mb-8 sm:mb-10">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 mb-8 sm:mb-10">
         <div className="text-left max-w-3xl">
           <span className="text-[#0B7FB5] text-xs font-extrabold tracking-[0.2em] uppercase mb-2.5 block">
             FIND YOUR WAVE
@@ -406,73 +411,96 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
               key={card.level}
               onMouseEnter={handleMouseEnterCard}
               onMouseLeave={handleMouseLeaveCard}
-              className="tier-card w-[350px] sm:w-[380px] md:w-[395px] shrink-0 snap-start-card flex flex-col justify-start"
+              className="tier-card w-[350px] sm:w-[380px] md:w-[395px] shrink-0 snap-start-card flex flex-col justify-between"
               data-level={card.level}
             >
               {/* Top Hero Image with Editorial Overlay */}
               <div className="card-image-wrapper">
                 <img src={card.img} alt={`${card.subtitle} Session`} className="w-full h-full object-cover" />
-                <div className="absolute bottom-3 left-3.5 z-10 text-white flex flex-col text-left pointer-events-none">
-                  <span className="font-mono text-[9px] font-bold tracking-[0.2em] text-[#00C8A0] uppercase">
-                    WAVE {card.level}
+                
+                {/* Legible Top-Left Difficulty Badge */}
+                <div className="absolute top-3 left-3.5 z-20">
+                  <span className="inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-md text-[#063B45] text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm border border-white/60">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00C8A0]"></span>
+                    <span>WAVE {card.level}</span>
                   </span>
-                  <span className="font-sans text-xs font-extrabold uppercase tracking-wider text-white">
+                </div>
+
+                {/* Bottom Overlay Label */}
+                <div className="absolute bottom-3 left-3.5 right-3.5 z-20 text-white flex flex-col text-left pointer-events-none">
+                  <span className="font-mono text-[10px] font-extrabold tracking-[0.2em] text-[#00C8A0] uppercase drop-shadow-sm">
+                    {card.tier}
+                  </span>
+                  <span className="font-serif text-base font-bold uppercase tracking-wide text-white drop-shadow-md">
                     {card.subtitle}
                   </span>
                 </div>
               </div>
 
               {/* Card Content Body */}
-              <div className="text-left flex flex-col">
-                <span className="text-xs uppercase font-extrabold tracking-[0.18em] text-[#0B7FB5] mb-0.5 block">
-                  {card.tier}
-                </span>
-                <h3 className="font-serif text-[28px] sm:text-[30px] font-semibold text-[#0A1926] tracking-tight leading-[1.05] mb-2 uppercase">
-                  {card.title}
-                </h3>
-                <p className="text-slate-600 text-sm leading-[1.55] mb-3.5 font-sans">{card.desc}</p>
+              <div className="text-left flex flex-col justify-between flex-grow">
+                <div>
+                  <span className="text-xs uppercase font-extrabold tracking-[0.18em] text-[#0B7FB5] mb-0.5 block">
+                    {card.tier}
+                  </span>
+                  <h3 className="font-serif text-[26px] font-bold text-[#0A1926] tracking-tight leading-tight mb-2 uppercase">
+                    {card.title}
+                  </h3>
+                  <p className="text-slate-600 text-sm leading-[1.55] mb-3.5 font-sans">{card.desc}</p>
+                </div>
 
-                {/* Compact Technical Specification Row */}
-                <div className="grid grid-cols-3 gap-2 py-2.5 border-y border-slate-100 mb-3 text-left">
-                  <div>
-                    <span className="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
-                      HEIGHT
-                    </span>
-                    <span className="block text-xs font-bold text-[#0A1926] mt-0.5">{card.height}</span>
+                <div>
+                  {/* Compact Technical Specification Row */}
+                  <div className="grid grid-cols-3 gap-2 py-2.5 border-y border-slate-100 mb-3 text-left">
+                    <div>
+                      <span className="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
+                        HEIGHT
+                      </span>
+                      <span className="block text-xs font-bold text-[#0A1926] mt-0.5">{card.height}</span>
+                    </div>
+                    <div className="border-l border-slate-100 pl-2.5">
+                      <span className="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
+                        RIDE
+                      </span>
+                      <span className="block text-xs font-bold text-[#0A1926] mt-0.5">{card.ride}</span>
+                    </div>
+                    <div className="border-l border-slate-100 pl-2.5">
+                      <span className="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
+                        BOARD
+                      </span>
+                      <span className="block text-xs font-bold text-[#0A1926] mt-0.5 truncate">{card.board}</span>
+                    </div>
                   </div>
-                  <div className="border-l border-slate-100 pl-2.5">
-                    <span className="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
-                      RIDE
-                    </span>
-                    <span className="block text-xs font-bold text-[#0A1926] mt-0.5">{card.ride}</span>
-                  </div>
-                  <div className="border-l border-slate-100 pl-2.5">
-                    <span className="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
-                      BOARD
-                    </span>
-                    <span className="block text-xs font-bold text-[#0A1926] mt-0.5 truncate">{card.board}</span>
+
+                  {/* Price & Labeled Pill CTA Row */}
+                  <div className="flex items-center justify-between pt-0.5">
+                    <div className="flex flex-col text-left">
+                      <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">SESSION FROM</span>
+                      <div className="flex items-baseline gap-1 mt-0.5">
+                        <span className="text-base font-extrabold text-[#0A1926] font-sans tracking-tight">{card.price}</span>
+                        <span className="text-xs font-bold text-[#0B7FB5] uppercase tracking-wider">BHD</span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => onOpenBooking(card.title)}
+                      data-tier={card.title}
+                      className="group/btn inline-flex items-center gap-2 bg-[#0B7FB5] hover:bg-[#063B45] text-white px-4 py-2.5 rounded-full text-xs font-extrabold uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg shrink-0 cursor-pointer"
+                      aria-label={`Book ${card.title} Session`}
+                    >
+                      <span>BOOK NOW</span>
+                      <svg
+                        className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-1"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.5"
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                      </svg>
+                    </button>
                   </div>
                 </div>
 
-                {/* Price & Circular CTA Row */}
-                <div className="flex items-center justify-between pt-0.5">
-                  <div className="flex flex-col text-left">
-                    <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">FROM</span>
-                    <span className="text-xs font-bold text-[#0A1926] uppercase tracking-wider mt-0.5">
-                      [CONTENT REQUIRED: PRICING CONFIG] BHD
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => onOpenBooking(card.title)}
-                    data-tier={card.title}
-                    className="w-9 h-9 bg-[#0B7FB5] hover:bg-[#0077B6] text-white rounded-full flex items-center justify-center transition-all shadow-md shrink-0 cursor-pointer"
-                    aria-label={`Book ${card.title} Session`}
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                </div>
               </div>
             </div>
           ))}

@@ -274,50 +274,51 @@ a.bg-black\/30 {
   scroll-snap-align: start;
 }
 
-/* Progression Tier Cards: Premium White Card Theme */
+/* Progression Tier Cards: Premium Island Luxury Theme */
 .tier-card {
   background: #FFFFFF;
-  border: 1px solid rgba(6, 59, 69, 0.10);
-  border-radius: 18px;
-  padding: 16px;
+  border: 1px solid rgba(6, 59, 69, 0.12);
+  border-radius: 24px;
+  padding: 20px;
   color: var(--color-deep-slate);
-  box-shadow: 0 12px 35px rgba(6, 59, 69, 0.06);
-  transition: border-color 0.35s ease, box-shadow 0.35s ease, opacity 0.4s ease;
+  box-shadow: 0 14px 40px rgba(6, 59, 69, 0.08);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease, opacity 0.4s ease, transform 0.4s ease;
   position: relative;
-  height: 575px;
+  height: 560px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   box-sizing: border-box;
   will-change: transform, opacity;
   transform-origin: center center;
 }
 
-/* Desktop Hover Zoom Transitions */
+/* Desktop Hover Zoom & Shadow Transitions */
 .tier-card:hover {
-  border-color: rgba(6, 59, 69, 0.20);
-  box-shadow: 0 18px 45px rgba(6, 59, 69, 0.12);
+  border-color: rgba(11, 127, 181, 0.30);
+  box-shadow: 0 20px 50px rgba(6, 59, 69, 0.14);
 }
 
 .tier-card .card-image-wrapper {
-  height: 265px;
+  height: 220px;
   width: 100%;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: 16px;
   margin-bottom: 1rem;
   position: relative;
 }
 
-/* Subtle gradient overlay at the bottom of the image */
+/* Two-directional gradient overlay for optimal legibility */
 .tier-card .card-image-wrapper::after {
   content: "";
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    to top,
-    rgba(6, 25, 35, 0.58),
-    rgba(6, 25, 35, 0.10) 48%,
-    transparent 78%
+    to bottom,
+    rgba(6, 25, 35, 0.40) 0%,
+    transparent 35%,
+    rgba(6, 25, 35, 0.15) 60%,
+    rgba(6, 25, 35, 0.80) 100%
   );
   z-index: 2;
   pointer-events: none;
@@ -337,24 +338,24 @@ a.bg-black\/30 {
 
 .tier-card-starter,
 .tier-card-pinnacle {
-  border: 1px solid rgba(6, 59, 69, 0.10) !important;
-  box-shadow: 0 10px 30px rgba(6, 59, 69, 0.06) !important;
+  border: 1px solid rgba(6, 59, 69, 0.12) !important;
+  box-shadow: 0 12px 35px rgba(6, 59, 69, 0.08) !important;
 }
 
 /* Card typography mappings */
 .tier-card h3 {
   font-family: var(--font-heading);
   color: var(--color-deep-slate) !important;
-  font-size: 30px !important;
-  font-weight: 600 !important;
-  line-height: 1.05 !important;
-  letter-spacing: -0.025em !important;
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.02em !important;
 }
 
 .tier-card p {
-  font-size: 14px !important;
-  line-height: 1.65 !important;
-  color: rgba(10, 25, 38, 0.7) !important;
+  font-size: 13.5px !important;
+  line-height: 1.55 !important;
+  color: rgba(10, 25, 38, 0.75) !important;
 }
 
 /* CTA Button Water Fill Hover Effect */
