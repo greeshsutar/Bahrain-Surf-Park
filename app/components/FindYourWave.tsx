@@ -333,8 +333,8 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
         });
 
         gsap.killTweensOf(container);
-        if (parentWrapper) {
-          parentWrapper.style.overflowX = "";
+        if (pinWrapper) {
+          pinWrapper.style.overflowX = "";
         }
       };
     });
