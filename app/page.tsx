@@ -10,7 +10,7 @@ import ScrollTracker from "./components/ScrollTracker";
 import Hero from "./components/Hero";
 import QuickNav from "./components/QuickNav";
 import Technology from "./components/Technology";
-import WaveDivider from "./components/WaveDivider";
+
 import FindYourWave from "./components/FindYourWave";
 import Academy from "./components/Academy";
 import Cabanas from "./components/Cabanas";
@@ -65,7 +65,6 @@ export default function Home() {
       <Hero onOpenBooking={handleOpenBooking} />
       <QuickNav />
       <Technology />
-      <WaveDivider />
       <FindYourWave onOpenBooking={handleOpenBooking} />
       <Academy />
       <Cabanas />

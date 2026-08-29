@@ -7,11 +7,11 @@ export default function WaveDivider() {
         absolute
         left-0
         right-0
-      bottom-0
+        -bottom-[2px]
         w-full
         h-[100px]
-sm:h-[120px]
-lg:h-[145px]
+        sm:h-[120px]
+        lg:h-[145px]
         z-20
         pointer-events-none
         overflow-hidden
@@ -56,21 +56,23 @@ lg:h-[145px]
         */}
         <path
           d="
-    M 0 160
-    C 150 130, 300 130, 450 158
-    C 600 188, 730 198, 875 164
-    C 1020 130, 1160 128, 1300 150
-    C 1360 160, 1405 164, 1440 155
-    L 1440 200
-    L 0 200
-    Z
-  "
+            M 0 160
+            C 150 130, 300 130, 450 158
+            C 600 188, 730 198, 875 164
+            C 1020 130, 1160 128, 1300 150
+            C 1360 160, 1405 164, 1440 155
+            L 1440 205
+            L 0 205
+            Z
+          "
           fill="#FFFFFF"
+          stroke="none"
           filter="url(#wave-shadow)"
         />
       </svg>
     </div>
   );
 }
+
 
 

@@ -84,7 +84,7 @@ export default function Technology() {
   };
 
   return (
-    <section id="technology" className="relative bg-[#FBFDFD] pt-12 sm:pt-16 pb-40 sm:pb-52 min-h-[900px] lg:min-h-[1020px] z-10 overflow-visible">
+    <section id="technology" className="relative bg-[#FBFDFD] pt-12 sm:pt-16 pb-20 sm:pb-28 min-h-[820px] lg:min-h-[880px] z-10 overflow-visible">
       {/* Background Subtle Contour Lines & Ambient Glow */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
         {/* Topographic contour curves */}
@@ -98,12 +98,12 @@ export default function Technology() {
         <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-[#00C8A0]/[0.04] rounded-full blur-3xl"></div>
       </div>
 
-      {/* Real Ocean Video Layer (Positioned behind lower portion with smooth top gradient blend) */}
+      {/* Real Ocean Video Layer (Lower 25–35% of section, naturally emerging below CTA) */}
       <div
-        className="absolute bottom-0 left-0 right-0 w-full h-[500px] sm:h-[600px] lg:h-[680px] pointer-events-none z-0 overflow-hidden"
+        className="absolute bottom-0 left-0 right-0 w-full h-[220px] sm:h-[280px] lg:h-[330px] pointer-events-none z-0 overflow-hidden"
         style={{
-          maskImage: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 10%, black 28%, black 100%)",
-          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.4) 10%, black 28%, black 100%)"
+          maskImage: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.15) 15%, rgba(0,0,0,0.65) 40%, black 80%)",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.15) 15%, rgba(0,0,0,0.65) 40%, black 80%)"
         }}
       >
         <video
@@ -111,7 +111,7 @@ export default function Technology() {
           muted
           loop
           playsInline
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-cover object-top"
         >
           <source src="/videos/ocean.mp4" type="video/mp4" />
         </video>
@@ -223,7 +223,7 @@ export default function Technology() {
           {/* Right Column: Technology Portrait Video Container */}
           <div className="lg:col-span-5 tech-right-col flex flex-col items-center justify-center">
             
-            <div className="w-full max-w-[480px] lg:max-w-none rounded-[22px] overflow-hidden shadow-2xl relative border border-white/70 aspect-[4/5] sm:aspect-[3/4] max-h-[620px] bg-slate-900 group">
+            <div className="w-full max-w-[460px] rounded-[22px] overflow-hidden shadow-2xl relative border border-white/70 h-[360px] sm:h-[430px] lg:h-[480px] max-h-[480px] bg-slate-900 group">
               <video autoPlay muted loop playsInline className="w-full h-full object-cover">
                 <source src="/videos/create_a_video.mp4" type="video/mp4" />
               </video>
