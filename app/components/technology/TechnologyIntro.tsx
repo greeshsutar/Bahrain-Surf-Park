@@ -39,6 +39,7 @@ export default function TechnologyIntro() {
               playBtnLabel="HOW IT WORKS"
               playBtnPosition="bottom-left"
               fallbackImage="/images/wavecove.png"
+              videoSrc="/videos/wave.mp4"
             />
           </div>
 

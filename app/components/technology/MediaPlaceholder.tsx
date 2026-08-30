@@ -8,6 +8,7 @@ interface MediaPlaceholderProps {
   playBtnLabel?: string;
   playBtnPosition?: "center" | "bottom-left";
   fallbackImage?: string;
+  videoSrc?: string;
 }
 
 export default function MediaPlaceholder({
@@ -18,13 +19,25 @@ export default function MediaPlaceholder({
   playBtnLabel = "HOW IT WORKS",
   playBtnPosition = "center",
   fallbackImage,
+  videoSrc,
 }: MediaPlaceholderProps) {
   return (
     <div
       className={`relative w-full overflow-hidden rounded-[18px] sm:rounded-2xl bg-[#062B36] border border-black/10 shadow-xl group ${aspectRatio} ${className}`}
     >
-      {/* Background Image / Placeholder Texture */}
-      {fallbackImage ? (
+      {/* Background Video / Image / Placeholder Texture */}
+      {videoSrc ? (
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster={fallbackImage}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        >
+          <source src={videoSrc} type="video/mp4" />
+        </video>
+      ) : fallbackImage ? (
         <img
           src={fallbackImage}
           alt={label || "Media Content"}
