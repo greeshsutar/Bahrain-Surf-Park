@@ -170,6 +170,12 @@ a.bg-black\/30 {
   border-radius: 8px !important;
 }
 
+button.rounded-full,
+a.rounded-full,
+.rounded-full {
+  border-radius: 9999px !important;
+}
+
 /* Vertical Side-Rail Scroll Tracker Component (Hidden in Video Section) */
 .tracker-container {
   position: fixed;

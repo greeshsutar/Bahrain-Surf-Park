@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 interface FindYourWaveProps {
   onOpenBooking: (tier?: string) => void;
@@ -10,504 +8,514 @@ interface FindYourWaveProps {
 
 const CARDS_DATA = [
   {
-    level: "01",
-    tier: "Tier 01",
+    id: "01",
+    waveBadge: "WAVE 01",
+    level: "BEGINNER",
+    tierLabel: "TIER 01",
     title: "BEGINNER",
-    subtitle: "BEGINNER",
     desc: "Gentle, slow-moving waves perfect for catching your very first waves in a safe, supportive environment.",
     img: "/images/tier1.jpg",
-    height: "0.5–0.8m",
+    height: "0.5 – 0.8m",
     ride: "120m",
     board: "Soft-top",
-    price: "35",
+    price: "35 BHD",
   },
   {
-    level: "02",
-    tier: "Tier 02",
+    id: "02",
+    waveBadge: "WAVE 02",
+    level: "NOVICE",
+    tierLabel: "TIER 02",
     title: "NOVICE",
-    subtitle: "NOVICE",
     desc: "Designed for riders who can pop up and are ready to learn board control on soft open-face waves.",
     img: "/images/tier2.jpg",
-    height: "0.8–1.2m",
+    height: "0.8 – 1.2m",
     ride: "140m",
     board: "Funboard",
-    price: "45",
+    price: "45 BHD",
   },
   {
-    level: "03",
-    tier: "Tier 03",
+    id: "03",
+    waveBadge: "WAVE 03",
+    level: "PROGRESSIVE",
+    tierLabel: "TIER 03",
     title: "PROGRESSIVE",
-    subtitle: "PROGRESSIVE",
     desc: "Waist-high, slow-peeling waves ideal for refining take-offs, trimming, and basic turns.",
     img: "/images/tier3.jpg",
-    height: "1.2–1.5m",
+    height: "1.2 – 1.5m",
     ride: "160m",
     board: "Fish / Longboard",
-    price: "55",
+    price: "55 BHD",
   },
   {
-    level: "04",
-    tier: "Tier 04",
+    id: "04",
+    waveBadge: "WAVE 04",
+    level: "INTERMEDIATE",
+    tierLabel: "TIER 04",
     title: "INTERMEDIATE",
-    subtitle: "INTERMEDIATE",
     desc: "Chest-high, faster-peeling waves perfect for building speed and practicing cutbacks.",
     img: "/images/tier4.jpg",
-    height: "1.5–1.8m",
+    height: "1.5 – 1.8m",
     ride: "180m",
     board: "Shortboard",
-    price: "65",
+    price: "65 BHD",
   },
   {
-    level: "05",
-    tier: "Tier 05",
+    id: "05",
+    waveBadge: "WAVE 05",
+    level: "EXPERT",
+    tierLabel: "TIER 05",
     title: "EXPERT",
-    subtitle: "EXPERT",
     desc: "Powerful, head-high barreling waves engineered for advanced maneuvers and heavy barrels.",
     img: "/images/tier5.jpg",
-    height: "1.8–2.2m",
+    height: "1.8 – 2.2m",
     ride: "200m",
     board: "Step-Up",
-    price: "85",
+    price: "85 BHD",
   },
 ];
 
 export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const pinWrapperRef = useRef<HTMLDivElement>(null);
-  const sectionRef = useRef<HTMLElement>(null);
+  // Default active card index set to 2 (PROGRESSIVE)
+  const [activeIndex, setActiveIndex] = useState<number>(2);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const isInternalScrollRef = useRef<boolean>(false);
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+  // Scroll carousel to center a specific index
+  const scrollToIndex = useCallback((index: number, smooth: boolean = true) => {
+    const track = trackRef.current;
+    if (!track) return;
 
-    const container = containerRef.current;
-    const pinWrapper = pinWrapperRef.current || container?.parentElement;
-    const section = sectionRef.current;
-    if (!container || !pinWrapper || !section) return;
+    const cardNodes = track.querySelectorAll<HTMLElement>(".wave-card-item");
+    const targetCard = cardNodes[index];
+    if (!targetCard) return;
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const supportsHover = window.matchMedia("(hover: hover)").matches;
+    const trackWidth = track.clientWidth;
+    const cardOffset = targetCard.offsetLeft;
+    const cardWidth = targetCard.clientWidth;
 
-    const mm = gsap.matchMedia();
+    const targetScroll = cardOffset - trackWidth / 2 + cardWidth / 2;
 
-    // Desktop Viewports (1024px and up): Pinned scroll + Auto progression + Hover focus
-    mm.add("(min-width: 1024px)", () => {
-      if (prefersReducedMotion) {
-        container.classList.remove("overflow-x-hidden", "w-max");
-        container.classList.add("overflow-x-auto", "snap-x-mandatory", "w-full");
-        return;
-      }
-
-      container.classList.remove("overflow-x-auto", "snap-x-mandatory", "w-full");
-      container.classList.add("overflow-x-hidden", "w-max");
-
-      const cards = gsap.utils.toArray<HTMLElement>(".tier-card");
-      if (pinWrapper) {
-        pinWrapper.style.overflowX = "hidden";
-      }
-
-      const getScrollAmount = () => {
-        return container.scrollWidth - (pinWrapper ? pinWrapper.offsetWidth : window.innerWidth);
-      };
-
-      const scrollTween = gsap.to(container, {
-        x: () => -getScrollAmount(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: pinWrapper,
-          pin: true,
-          scrub: 0.8,
-          start: "top top",
-          end: () => `+=${getScrollAmount()}`,
-          invalidateOnRefresh: true,
-        },
-      });
-
-      let activeCardIndex = 0;
-      let autoTimer: NodeJS.Timeout | null = null;
-      let isHoveringCard = false;
-      let isUserScrolling = false;
-      let isAutoplaying = false;
-      let scrollPauseTimeout: NodeJS.Timeout | null = null;
-      const scrollPos = { y: 0 };
-
-      const cardNames = ["Beginner", "Novice", "Progressive", "Intermediate", "Expert"];
-
-      const applyCardStates = (focusIdx: number, isHover = false, hoveredCardEl: HTMLElement | null = null) => {
-        cards.forEach((card, idx) => {
-          if (isHover) {
-            if (card === hoveredCardEl) {
-              gsap.to(card, {
-                scale: 1.03,
-                y: -6,
-                opacity: 1,
-                zIndex: 20,
-                duration: 0.4,
-                ease: "power2.out",
-                overwrite: "auto",
-              });
-            } else {
-              gsap.to(card, {
-                scale: 0.97,
-                y: 0,
-                opacity: 0.76,
-                zIndex: 1,
-                duration: 0.4,
-                ease: "power2.out",
-                overwrite: "auto",
-              });
-            }
-          } else {
-            if (idx === focusIdx) {
-              gsap.to(card, {
-                scale: 1.03,
-                y: -6,
-                opacity: 1,
-                zIndex: 20,
-                duration: 0.6,
-                ease: "power2.out",
-                overwrite: "auto",
-              });
-            } else {
-              gsap.to(card, {
-                scale: 0.97,
-                y: 0,
-                opacity: 0.78,
-                zIndex: 1,
-                duration: 0.6,
-                ease: "power2.out",
-                overwrite: "auto",
-              });
-            }
-          }
-        });
-
-        const dot3 = document.querySelector('.waypoint-dot[data-target="#find-your-wave"]');
-        if (dot3) {
-          const tooltip = dot3.querySelector(".waypoint-tooltip");
-          if (tooltip) {
-            tooltip.textContent = `03. Wave: ${cardNames[focusIdx]}`;
-          }
-        }
-      };
-
-      const stepAutoProgression = () => {
-        if (isHoveringCard || isUserScrolling) return;
-
-        activeCardIndex = (activeCardIndex + 1) % cards.length;
-
-        const startScroll = scrollTween.scrollTrigger?.start || 0;
-        const totalScroll = getScrollAmount();
-        const targetScroll = startScroll + totalScroll * (activeCardIndex / (cards.length - 1));
-
-        isAutoplaying = true;
-        scrollPos.y = window.scrollY;
-        gsap.killTweensOf(scrollPos);
-        gsap.to(scrollPos, {
-          y: targetScroll,
-          duration: 1.5,
-          ease: "power2.inOut",
-          onUpdate: () => {
-            window.scrollTo(0, scrollPos.y);
-          },
-          onComplete: () => {
-            isAutoplaying = false;
-          },
-          overwrite: "auto",
-        });
-
-        applyCardStates(activeCardIndex, false);
-      };
-
-      const stopAutoProgression = () => {
-        if (autoTimer) {
-          clearInterval(autoTimer);
-          autoTimer = null;
-        }
-      };
-
-      const startAutoProgression = () => {
-        stopAutoProgression();
-        applyCardStates(activeCardIndex, false);
-        autoTimer = setInterval(stepAutoProgression, 4000);
-      };
-
-      const sectionTrigger = ScrollTrigger.create({
-        trigger: pinWrapper,
-        start: "top 75%",
-        end: "bottom 25%",
-        onEnter: () => startAutoProgression(),
-        onLeave: () => stopAutoProgression(),
-        onEnterBack: () => startAutoProgression(),
-        onLeaveBack: () => stopAutoProgression(),
-      });
-
-      ScrollTrigger.create({
-        trigger: pinWrapper,
-        start: "top top",
-        end: () => `+=${getScrollAmount()}`,
-        scrub: true,
-        onUpdate: (self) => {
-          if (isAutoplaying) return;
-
-          const progress = self.progress;
-          const currentIdx = Math.min(cards.length - 1, Math.floor(progress * cards.length));
-
-          if (!isHoveringCard) {
-            if (currentIdx !== activeCardIndex) {
-              activeCardIndex = currentIdx;
-              applyCardStates(activeCardIndex, false);
-            }
-          }
-        },
-      });
-
-      const handleUserInteraction = () => {
-        if (isAutoplaying) {
-          gsap.killTweensOf(scrollPos);
-          isAutoplaying = false;
-        }
-        isUserScrolling = true;
-        stopAutoProgression();
-
-        if (scrollPauseTimeout) clearTimeout(scrollPauseTimeout);
-        scrollPauseTimeout = setTimeout(() => {
-          isUserScrolling = false;
-          if (sectionTrigger.isActive && !isHoveringCard) {
-            startAutoProgression();
-          }
-        }, 1500);
-      };
-
-      window.addEventListener("wheel", handleUserInteraction, { passive: true });
-      window.addEventListener("touchmove", handleUserInteraction, { passive: true });
-      window.addEventListener("pointerdown", handleUserInteraction, { passive: true });
-      window.addEventListener("keydown", handleUserInteraction, { passive: true });
-
-      if (supportsHover) {
-        cards.forEach((card, idx) => {
-          const onMouseEnter = () => {
-            isHoveringCard = true;
-            stopAutoProgression();
-            if (isAutoplaying) {
-              gsap.killTweensOf(scrollPos);
-              isAutoplaying = false;
-            }
-            activeCardIndex = idx;
-            applyCardStates(idx, true, card);
-          };
-
-          const onMouseLeave = () => {
-            applyCardStates(activeCardIndex, false);
-            if (scrollPauseTimeout) clearTimeout(scrollPauseTimeout);
-            scrollPauseTimeout = setTimeout(() => {
-              isHoveringCard = false;
-              if (sectionTrigger.isActive && !isUserScrolling && !isHoveringCard) {
-                startAutoProgression();
-              }
-            }, 1000);
-          };
-
-          card.addEventListener("mouseenter", onMouseEnter);
-          card.addEventListener("mouseleave", onMouseLeave);
-
-          (card as any)._onMouseEnter = onMouseEnter;
-          (card as any)._onMouseLeave = onMouseLeave;
-        });
-      }
-
-      return () => {
-        stopAutoProgression();
-        if (scrollPauseTimeout) clearTimeout(scrollPauseTimeout);
-        gsap.killTweensOf(scrollPos);
-        if (sectionTrigger) sectionTrigger.kill();
-
-        window.removeEventListener("wheel", handleUserInteraction);
-        window.removeEventListener("touchmove", handleUserInteraction);
-        window.removeEventListener("pointerdown", handleUserInteraction);
-        window.removeEventListener("keydown", handleUserInteraction);
-
-        cards.forEach((card) => {
-          if ((card as any)._onMouseEnter) card.removeEventListener("mouseenter", (card as any)._onMouseEnter);
-          if ((card as any)._onMouseLeave) card.removeEventListener("mouseleave", (card as any)._onMouseLeave);
-          gsap.killTweensOf(card);
-        });
-
-        gsap.killTweensOf(container);
-        if (pinWrapper) {
-          pinWrapper.style.overflowX = "";
-        }
-      };
+    isInternalScrollRef.current = true;
+    track.scrollTo({
+      left: Math.max(0, targetScroll),
+      behavior: smooth ? "smooth" : "auto",
     });
 
-    // Mobile Viewports (under 1024px)
-    mm.add("(max-width: 1023px)", () => {
-      container.classList.remove("overflow-x-hidden", "w-max");
-      container.classList.add("overflow-x-auto", "snap-x-mandatory", "w-full");
-
-      const cards = gsap.utils.toArray<HTMLElement>(".tier-card");
-      cards.forEach((card) => {
-        gsap.set(card, { clearProps: "all" });
-      });
-    });
-
-    // Tier Card Stagger Entrance
-    gsap.fromTo(
-      ".tier-card",
-      { opacity: 0, y: 40 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: section,
-          start: "top 75%",
-        },
-      }
-    );
-
-    return () => {
-      mm.revert();
-    };
+    setTimeout(() => {
+      isInternalScrollRef.current = false;
+    }, 600);
   }, []);
 
-  const handleMouseEnterCard = (e: React.MouseEvent<HTMLDivElement>) => {
-    gsap.to(e.currentTarget, { y: -6, scale: 1.015, duration: 0.4, ease: "power2.out", overwrite: "auto" });
+  // Initial centering on mount (Index 2: PROGRESSIVE)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      scrollToIndex(2, false);
+    }, 80);
+    return () => clearTimeout(timer);
+  }, [scrollToIndex]);
+
+  // Handle scroll events to sync active dot when user swipes/scrolls manually
+  const handleScroll = () => {
+    if (isInternalScrollRef.current) return;
+    const track = trackRef.current;
+    if (!track) return;
+
+    const trackCenter = track.scrollLeft + track.clientWidth / 2;
+    const cardNodes = track.querySelectorAll<HTMLElement>(".wave-card-item");
+
+    let closestIndex = activeIndex;
+    let minDistance = Infinity;
+
+    cardNodes.forEach((node, idx) => {
+      const cardCenter = node.offsetLeft + node.clientWidth / 2;
+      const dist = Math.abs(cardCenter - trackCenter);
+      if (dist < minDistance) {
+        minDistance = dist;
+        closestIndex = idx;
+      }
+    });
+
+    if (closestIndex !== activeIndex) {
+      setActiveIndex(closestIndex);
+    }
   };
 
-  const handleMouseLeaveCard = (e: React.MouseEvent<HTMLDivElement>) => {
-    gsap.to(e.currentTarget, { y: 0, scale: 1, duration: 0.35, ease: "power2.out", overwrite: "auto" });
+  const handlePrev = () => {
+    const nextIdx = Math.max(0, activeIndex - 1);
+    setActiveIndex(nextIdx);
+    scrollToIndex(nextIdx, true);
+  };
+
+  const handleNext = () => {
+    const nextIdx = Math.min(CARDS_DATA.length - 1, activeIndex + 1);
+    setActiveIndex(nextIdx);
+    scrollToIndex(nextIdx, true);
+  };
+
+  const handleSelectCard = (index: number) => {
+    setActiveIndex(index);
+    scrollToIndex(index, true);
   };
 
   return (
-    <section ref={sectionRef} id="find-your-wave" className="relative pt-12 sm:pt-16 pb-20 sm:pb-28 overflow-hidden z-10 bg-[#F8FAF9]">
-      {/* Section Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 mb-8 sm:mb-10">
-        <div className="text-left max-w-3xl">
-          <span className="text-[#0B7FB5] text-xs font-extrabold tracking-[0.2em] uppercase mb-2.5 block">
-            FIND YOUR WAVE
-          </span>
+    <section
+      id="find-your-wave"
+      className="relative pt-16 lg:pt-24 pb-16 lg:pb-20 overflow-hidden bg-[#061C27] text-white selection:bg-[#00C8A0] selection:text-[#061C27]"
+    >
+      {/* ==========================================
+          5-LAYER ATMOSPHERIC BACKGROUND
+          ========================================== */}
 
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#0A1926] tracking-tight mb-3.5">
-            One Place.<br />Many Ways.
-          </h2>
+      {/* Layer 1: Base dark navy (#061C27) - Provided by section container class */}
 
-          <p className="text-[#0A1926]/70 text-sm sm:text-base leading-relaxed font-sans">
-            Engineered by Wavegarden Cove technology, choose from 5 tailored wave progression profiles designed for total beginners to elite barrel riders.
-          </p>
+      {/* Layer 2: Subtle teal radial glow behind center card position */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none z-0 bg-[radial-gradient(ellipse_75%_55%_at_50%_50%,rgba(11,127,181,0.25)_0%,rgba(0,200,160,0.08)_40%,transparent_75%)]"
+      />
+
+      {/* Layer 3: Organic/topographic wave contour lines pattern */}
+      <div
+        aria-hidden="true"
+        className="absolute top-0 left-0 right-0 h-[75%] pointer-events-none z-0 opacity-20 overflow-hidden"
+      >
+        <svg
+          className="w-full h-full object-cover"
+          viewBox="0 0 1440 800"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M-100 120 C 300 280, 700 40, 1100 180 C 1300 240, 1500 160, 1600 200"
+            stroke="#00C8A0"
+            strokeWidth="1.2"
+            strokeDasharray="4 4"
+          />
+          <path
+            d="M-100 220 C 250 380, 650 120, 1050 290 C 1280 340, 1480 260, 1600 310"
+            stroke="#0B7FB5"
+            strokeWidth="1"
+          />
+          <path
+            d="M-100 350 C 350 480, 800 220, 1200 410 C 1350 460, 1520 380, 1600 420"
+            stroke="#00C8A0"
+            strokeWidth="0.8"
+            strokeOpacity="0.7"
+          />
+          <path
+            d="M-100 480 C 200 590, 600 380, 1000 520 C 1220 580, 1450 490, 1600 550"
+            stroke="#0B7FB5"
+            strokeWidth="1.5"
+            strokeOpacity="0.4"
+          />
+          <path
+            d="M-100 600 C 400 700, 850 490, 1250 630 C 1400 680, 1550 590, 1600 640"
+            stroke="#00C8A0"
+            strokeWidth="1"
+            strokeDasharray="6 6"
+          />
+        </svg>
+      </div>
+
+      {/* Layer 4: Warm beach sand/beige gradient overlay at lower section */}
+      <div
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 right-0 h-[380px] pointer-events-none z-0 bg-gradient-to-t from-[#DCCCB5] via-[#DCCCB5]/40 to-transparent"
+      />
+
+      {/* Layer 5: Palm leaf shadow silhouettes in bottom corners */}
+      <div
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 pointer-events-none z-0 w-72 h-72 sm:w-96 sm:h-96 opacity-15 mix-blend-multiply filter blur-[1px] transform -scale-x-100"
+      >
+        <svg viewBox="0 0 200 200" fill="#3D3021" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 200 Q 80 120 190 80 Q 150 110 110 140 Q 180 130 200 160 Q 150 165 90 175 Q 160 190 170 200 Z" />
+          <path d="M0 200 Q 50 100 140 20 Q 110 60 80 110 Q 130 90 160 110 Q 110 130 60 160 Z" />
+        </svg>
+      </div>
+      <div
+        aria-hidden="true"
+        className="absolute bottom-0 right-0 pointer-events-none z-0 w-72 h-72 sm:w-96 sm:h-96 opacity-15 mix-blend-multiply filter blur-[1px]"
+      >
+        <svg viewBox="0 0 200 200" fill="#3D3021" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 200 Q 80 120 190 80 Q 150 110 110 140 Q 180 130 200 160 Q 150 165 90 175 Q 160 190 170 200 Z" />
+          <path d="M0 200 Q 50 100 140 20 Q 110 60 80 110 Q 130 90 160 110 Q 110 130 60 160 Z" />
+        </svg>
+      </div>
+
+      {/* ==========================================
+          HEADER & FEATURE COLUMNS SECTION
+          ========================================== */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 mb-12 lg:mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+          {/* Left Column: Heading & Intro */}
+          <div className="lg:col-span-6 text-left">
+            <div className="flex items-center gap-3 mb-3">
+              <span className="text-[#00C8A0] text-xs font-extrabold tracking-[0.2em] uppercase">
+                FIND YOUR WAVE
+              </span>
+              <span className="w-12 h-[1.5px] bg-[#00C8A0]/70 inline-block"></span>
+            </div>
+
+            <h2 className="font-serif text-4xl sm:text-5xl lg:text-[54px] font-semibold text-white tracking-tight leading-[1.08] mb-4">
+              One Place.<br />
+              Many Ways<span className="text-[#00C8A0]">.</span>
+            </h2>
+
+            <p className="text-slate-300/85 text-sm sm:text-base leading-relaxed max-w-md font-sans">
+              From your first ride to your next personal best, our waves are designed for every level and every kind of progression.
+            </p>
+          </div>
+
+          {/* Right Column: 3 Feature Columns */}
+          <div className="lg:col-span-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4 pt-4 lg:pt-0">
+              {/* Feature 1 */}
+              <div className="flex flex-col text-left">
+                <div className="w-9 h-9 rounded-full bg-[#00C8A0]/10 border border-[#00C8A0]/30 flex items-center justify-center text-[#00C8A0] mb-3">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.5 4.5L21.75 6" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 15c4-4 8 2 12-2s4-1 6-1" />
+                  </svg>
+                </div>
+                <h3 className="text-white text-sm font-bold tracking-wide mb-1">100% Customizable</h3>
+                <p className="text-slate-400 text-xs leading-normal font-sans">Wave height, speed and shape.</p>
+              </div>
+
+              {/* Feature 2 */}
+              <div className="flex flex-col text-left sm:border-l sm:border-white/15 sm:pl-4">
+                <div className="w-9 h-9 rounded-full bg-[#00C8A0]/10 border border-[#00C8A0]/30 flex items-center justify-center text-[#00C8A0] mb-3">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                  </svg>
+                </div>
+                <h3 className="text-white text-sm font-bold tracking-wide mb-1">Energy Efficient</h3>
+                <p className="text-slate-400 text-xs leading-normal font-sans">Smart technology for sustainable waves.</p>
+              </div>
+
+              {/* Feature 3 */}
+              <div className="flex flex-col text-left sm:border-l sm:border-white/15 sm:pl-4">
+                <div className="w-9 h-9 rounded-full bg-[#00C8A0]/10 border border-[#00C8A0]/30 flex items-center justify-center text-[#00C8A0] mb-3">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.746 3.746 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                  </svg>
+                </div>
+                <h3 className="text-white text-sm font-bold tracking-wide mb-1">Safe & Controlled</h3>
+                <p className="text-slate-400 text-xs leading-normal font-sans">Consistent, repeatable and safe for all.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Outer Pin Wrapper */}
-      <div
-        ref={pinWrapperRef}
-        className="w-full overflow-x-auto no-scrollbar relative z-10 lg:min-h-[100svh] lg:flex lg:flex-col lg:justify-center"
-      >
-        {/* Inner Track Container */}
-        <div
-          id="wave-cards-container"
-          ref={containerRef}
-          className="flex flex-row flex-nowrap gap-6 sm:gap-8 no-scrollbar px-6 sm:px-12 md:px-16 pb-8 w-max"
+      {/* ==========================================
+          CARD CAROUSEL VIEWPORT & TRACK
+          ========================================== */}
+      <div className="relative w-full z-10 my-4 min-h-[700px] flex items-center">
+        {/* Circular Side Navigation Arrows */}
+        <button
+          onClick={handlePrev}
+          disabled={activeIndex === 0}
+          aria-label="Previous Wave Tier"
+          className={`absolute left-3 sm:left-6 lg:left-10 top-[52%] -translate-y-1/2 z-30 w-12 h-12 rounded-full border border-white/20 bg-[#061C27]/90 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-[#00C8A0] hover:border-[#00C8A0] hover:text-[#061C27] hover:scale-110 cursor-pointer ${
+            activeIndex === 0 ? "opacity-30 cursor-not-allowed" : "opacity-100"
+          }`}
         >
-          {CARDS_DATA.map((card) => (
-            <div
-              key={card.level}
-              onMouseEnter={handleMouseEnterCard}
-              onMouseLeave={handleMouseLeaveCard}
-              className="tier-card w-[350px] sm:w-[380px] md:w-[395px] shrink-0 snap-start-card flex flex-col justify-between"
-              data-level={card.level}
-            >
-              {/* Top Hero Image with Editorial Overlay */}
-              <div className="card-image-wrapper">
-                <img src={card.img} alt={`${card.subtitle} Session`} className="w-full h-full object-cover" />
-                
-                {/* Legible Top-Left Difficulty Badge */}
-                <div className="absolute top-3 left-3.5 z-20">
-                  <span className="inline-flex items-center gap-1.5 bg-white/90 backdrop-blur-md text-[#063B45] text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm border border-white/60">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#00C8A0]"></span>
-                    <span>WAVE {card.level}</span>
-                  </span>
-                </div>
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          </svg>
+        </button>
 
-                {/* Bottom Overlay Label */}
-                <div className="absolute bottom-3 left-3.5 right-3.5 z-20 text-white flex flex-col text-left pointer-events-none">
-                  <span className="font-mono text-[10px] font-extrabold tracking-[0.2em] text-[#00C8A0] uppercase drop-shadow-sm">
-                    {card.tier}
-                  </span>
-                  <span className="font-serif text-base font-bold uppercase tracking-wide text-white drop-shadow-md">
-                    {card.subtitle}
-                  </span>
-                </div>
-              </div>
+        <button
+          onClick={handleNext}
+          disabled={activeIndex === CARDS_DATA.length - 1}
+          aria-label="Next Wave Tier"
+          className={`absolute right-3 sm:left-auto sm:right-6 lg:right-10 top-[52%] -translate-y-1/2 z-30 w-12 h-12 rounded-full border border-white/20 bg-[#061C27]/90 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-[#00C8A0] hover:border-[#00C8A0] hover:text-[#061C27] hover:scale-110 cursor-pointer ${
+            activeIndex === CARDS_DATA.length - 1 ? "opacity-30 cursor-not-allowed" : "opacity-100"
+          }`}
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg>
+        </button>
 
-              {/* Card Content Body */}
-              <div className="text-left flex flex-col justify-between flex-grow">
-                <div>
-                  <span className="text-xs uppercase font-extrabold tracking-[0.18em] text-[#0B7FB5] mb-0.5 block">
-                    {card.tier}
-                  </span>
-                  <h3 className="font-serif text-[26px] font-bold text-[#0A1926] tracking-tight leading-tight mb-2 uppercase">
-                    {card.title}
-                  </h3>
-                  <p className="text-slate-600 text-sm leading-[1.55] mb-3.5 font-sans">{card.desc}</p>
-                </div>
+        {/* Carousel Track Container */}
+        <div
+          ref={trackRef}
+          onScroll={handleScroll}
+          className="carousel-viewport w-full overflow-x-auto no-scrollbar py-6 flex items-start gap-[28px] snap-x snap-mandatory"
+          style={{
+            paddingInline: "max(24px, calc((100vw - 520px) / 2))",
+          }}
+        >
+          {CARDS_DATA.map((card, idx) => {
+            const isActive = idx === activeIndex;
 
-                <div>
-                  {/* Compact Technical Specification Row */}
-                  <div className="grid grid-cols-3 gap-2 py-2.5 border-y border-slate-100 mb-3 text-left">
-                    <div>
-                      <span className="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
-                        HEIGHT
-                      </span>
-                      <span className="block text-xs font-bold text-[#0A1926] mt-0.5">{card.height}</span>
-                    </div>
-                    <div className="border-l border-slate-100 pl-2.5">
-                      <span className="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
-                        RIDE
-                      </span>
-                      <span className="block text-xs font-bold text-[#0A1926] mt-0.5">{card.ride}</span>
-                    </div>
-                    <div className="border-l border-slate-100 pl-2.5">
-                      <span className="block text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
-                        BOARD
-                      </span>
-                      <span className="block text-xs font-bold text-[#0A1926] mt-0.5 truncate">{card.board}</span>
-                    </div>
+            return (
+              <div
+                key={card.id}
+                onClick={() => handleSelectCard(idx)}
+                className={`wave-card-item shrink-0 cursor-pointer transition-all duration-500 ease-out flex flex-col justify-between snap-center ${
+                  isActive
+                    ? "w-[88vw] sm:w-[440px] lg:w-[520px] h-[640px] lg:h-[690px] lg:-translate-y-[18px] z-20 bg-[#F6F4EE] text-[#0A1926] rounded-[30px] shadow-[0_30px_70px_rgba(0,0,0,0.5)] border-2 border-white/60 p-6 sm:p-7"
+                    : "w-[80vw] sm:w-[360px] lg:w-[415px] h-[540px] lg:h-[580px] lg:translate-y-[64px] z-10 bg-[#F6F4EE]/95 text-[#0A1926]/90 rounded-[28px] shadow-2xl border border-white/30 p-5 sm:p-6 hover:bg-[#F6F4EE]"
+                }`}
+              >
+                {/* Top Image Box */}
+                <div
+                  className={`relative w-full overflow-hidden rounded-[20px] shrink-0 mb-4 transition-all duration-500 ${
+                    isActive ? "h-[240px] sm:h-[270px] lg:h-[290px]" : "h-[190px] sm:h-[210px] lg:h-[225px]"
+                  }`}
+                >
+                  <img
+                    src={card.img}
+                    alt={`${card.title} wave session`}
+                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  />
+                  {/* Subtle dark bottom gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
+
+                  {/* Overlays on Image */}
+                  <div className="absolute top-3.5 left-3.5 z-10">
+                    <span className="inline-flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/30 text-[#00C8A0] text-[10px] font-extrabold tracking-widest px-3 py-1 rounded-full uppercase">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00C8A0] animate-pulse"></span>
+                      <span>{card.waveBadge}</span>
+                    </span>
                   </div>
 
-                  {/* Price & Labeled Pill CTA Row */}
-                  <div className="flex items-center justify-between pt-0.5">
-                    <div className="flex flex-col text-left">
-                      <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">SESSION FROM</span>
-                      <div className="flex items-baseline gap-1 mt-0.5">
-                        <span className="text-base font-extrabold text-[#0A1926] font-sans tracking-tight">{card.price}</span>
-                        <span className="text-xs font-bold text-[#0B7FB5] uppercase tracking-wider">BHD</span>
+                  <div className="absolute bottom-3.5 left-4 z-10 text-white pointer-events-none">
+                    <span className="font-serif text-lg sm:text-xl font-bold uppercase tracking-wide text-white drop-shadow-md">
+                      {card.level}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Card Main Body */}
+                <div className="flex flex-col justify-between flex-grow text-left">
+                  <div>
+                    <span className="text-[#0B7FB5] text-[11px] font-extrabold tracking-[0.2em] uppercase block mb-1">
+                      {card.tierLabel}
+                    </span>
+                    <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A1926] tracking-tight uppercase mb-2">
+                      {card.title}
+                    </h3>
+                    <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-sans line-clamp-3">
+                      {card.desc}
+                    </p>
+                  </div>
+
+                  <div>
+                    {/* Technical Specification Grid */}
+                    <div className="grid grid-cols-3 gap-2 py-3 border-y border-slate-200/80 my-3">
+                      <div className="flex flex-col">
+                        <div className="flex items-center gap-1 mb-0.5">
+                          <svg className="w-3.5 h-3.5 text-[#0B7FB5]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 15c4-4 8 2 12-2s4-1 6-1" />
+                          </svg>
+                          <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
+                            HEIGHT
+                          </span>
+                        </div>
+                        <span className="text-xs sm:text-sm font-bold text-[#0A1926]">{card.height}</span>
+                      </div>
+
+                      <div className="flex flex-col border-l border-slate-200/80 pl-2.5">
+                        <div className="flex items-center gap-1 mb-0.5">
+                          <svg className="w-3.5 h-3.5 text-[#0B7FB5]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                          </svg>
+                          <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
+                            RIDE
+                          </span>
+                        </div>
+                        <span className="text-xs sm:text-sm font-bold text-[#0A1926]">{card.ride}</span>
+                      </div>
+
+                      <div className="flex flex-col border-l border-slate-200/80 pl-2.5">
+                        <div className="flex items-center gap-1 mb-0.5">
+                          <svg className="w-3.5 h-3.5 text-[#0B7FB5]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 2v20M8 6h8" />
+                          </svg>
+                          <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
+                            BOARD
+                          </span>
+                        </div>
+                        <span className="text-xs sm:text-sm font-bold text-[#0A1926] truncate">{card.board}</span>
                       </div>
                     </div>
-                    <button
-                      onClick={() => onOpenBooking(card.title)}
-                      data-tier={card.title}
-                      className="group/btn inline-flex items-center gap-2 bg-[#0B7FB5] hover:bg-[#063B45] text-white px-4 py-2.5 rounded-full text-xs font-extrabold uppercase tracking-wider transition-all duration-300 shadow-md hover:shadow-lg shrink-0 cursor-pointer"
-                      aria-label={`Book ${card.title} Session`}
-                    >
-                      <span>BOOK NOW</span>
-                      <svg
-                        className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-1"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.5"
-                        viewBox="0 0 24 24"
+
+                    {/* Pricing & Circular CTA Row */}
+                    <div className="flex items-center justify-between pt-1">
+                      <div className="flex flex-col">
+                        <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
+                          FROM
+                        </span>
+                        <span className="text-base sm:text-lg font-extrabold text-[#0A1926] font-sans tracking-tight">
+                          {card.price}
+                        </span>
+                      </div>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onOpenBooking(card.title);
+                        }}
+                        aria-label={`Book ${card.title} session`}
+                        className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer shadow-md ${
+                          isActive
+                            ? "bg-[#074754] text-white hover:bg-[#00C8A0] hover:text-[#061C27] hover:scale-105"
+                            : "bg-white border border-slate-300 text-[#074754] hover:bg-[#074754] hover:text-white hover:border-[#074754]"
+                        }`}
                       >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                      </svg>
-                    </button>
+                        <svg className="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 </div>
-
               </div>
-            </div>
-          ))}
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ==========================================
+          PAGINATION INDICATORS
+          ========================================== */}
+      <div className="relative z-10 flex items-center justify-center gap-2 mt-8 mb-10">
+        {CARDS_DATA.map((card, idx) => {
+          const isActive = idx === activeIndex;
+          return (
+            <button
+              key={card.id}
+              onClick={() => handleSelectCard(idx)}
+              aria-label={`Go to ${card.title}`}
+              className={`transition-all duration-300 cursor-pointer ${
+                isActive
+                  ? "w-8 h-2 rounded-full bg-[#00C8A0] shadow-sm"
+                  : "w-5 h-2 rounded-full bg-white/30 hover:bg-white/60"
+              }`}
+            />
+          );
+        })}
+      </div>
+
+      {/* ==========================================
+          SECTION FOOTER BRANDING
+          ========================================== */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-extrabold tracking-[0.22em] uppercase text-white/70">
+        <div className="flex items-center gap-2">
+          <svg className="w-4 h-4 text-[#00C8A0]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.5 4.5L21.75 6" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 15c4-4 8 2 12-2s4-1 6-1" />
+          </svg>
+          <span className="text-white/90">WAVEGARDEN COVE®</span>
+        </div>
+
+        <div className="text-slate-400 text-[11px] tracking-[0.25em]">
+          TECHNOLOGY. PRECISION. PERFECTION.
         </div>
       </div>
     </section>
