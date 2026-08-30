@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import gsap from "gsap";
 
 interface FindYourWaveProps {
   onOpenBooking: (tier?: string) => void;
@@ -13,7 +14,7 @@ const CARDS_DATA = [
     level: "BEGINNER",
     tierLabel: "TIER 01",
     title: "BEGINNER",
-    desc: "Gentle, slow-moving waves perfect for catching your very first waves in a safe, supportive environment. Our instructors are in the water with you the entire session, focused on confidence and safety.",
+    desc: "Gentle, slow-moving waves perfect for catching your very first waves in a safe, supportive environment. Our instructors are in the water with you the entire session.",
     img: "/images/tier1.jpg",
     height: "0.5 – 0.8m",
     ride: "120m",
@@ -65,7 +66,7 @@ const CARDS_DATA = [
     level: "EXPERT",
     tierLabel: "TIER 05",
     title: "EXPERT",
-    desc: "Powerful, head-high barreling waves engineered for advanced maneuvers and heavy barrels. Our most technical, powerful setting — reserved for surfers who know their way around a barrel.",
+    desc: "Powerful, head-high barreling waves engineered for advanced maneuvers and heavy barrels. Reserved for surfers who know their way around a barrel.",
     img: "/images/tier5.jpg",
     height: "1.8 – 2.2m",
     ride: "200m",
@@ -81,27 +82,16 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const isInternalScrollRef = useRef<boolean>(false);
   const activeIndexRef = useRef<number>(2);
-  const isIntersectingRef = useRef<boolean>(false);
-  const isUserInteractingRef = useRef<boolean>(false);
-  const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const isDraggingRef = useRef<boolean>(false);
+  const startXRef = useRef<number>(0);
+  const scrollLeftRef = useRef<number>(0);
 
-  // Sync activeIndex ref for timer closure safety
+  // Sync activeIndex ref
   useEffect(() => {
     activeIndexRef.current = activeIndex;
   }, [activeIndex]);
 
-  // Pause auto-advance on manual interaction and resume after 5s idle
-  const notifyUserInteraction = useCallback(() => {
-    isUserInteractingRef.current = true;
-    if (resumeTimeoutRef.current) {
-      clearTimeout(resumeTimeoutRef.current);
-    }
-    resumeTimeoutRef.current = setTimeout(() => {
-      isUserInteractingRef.current = false;
-    }, 5000);
-  }, []);
-
-  // Scroll carousel to center a specific index
+  // Smooth scroll carousel to center a specific card index using GSAP
   const scrollToIndex = useCallback((index: number, smooth: boolean = true) => {
     const track = trackRef.current;
     if (!track) return;
@@ -116,78 +106,69 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
 
     const targetScroll = cardOffset - trackWidth / 2 + cardWidth / 2;
 
-    isInternalScrollRef.current = true;
-    track.scrollTo({
-      left: Math.max(0, targetScroll),
-      behavior: smooth ? "smooth" : "auto",
-    });
-
-    setTimeout(() => {
-      isInternalScrollRef.current = false;
-    }, 600);
+    if (smooth) {
+      isInternalScrollRef.current = true;
+      gsap.to(track, {
+        scrollLeft: Math.max(0, targetScroll),
+        duration: 0.75,
+        ease: "power2.out",
+        overwrite: "auto",
+        onComplete: () => {
+          isInternalScrollRef.current = false;
+        },
+      });
+    } else {
+      track.scrollLeft = Math.max(0, targetScroll);
+    }
   }, []);
 
-  // Step auto progression function
-  const stepAutoAdvance = useCallback(() => {
-    if (isUserInteractingRef.current || !isIntersectingRef.current) return;
-    const nextIdx = (activeIndexRef.current + 1) % CARDS_DATA.length;
-    setActiveIndex(nextIdx);
-    scrollToIndex(nextIdx, true);
-  }, [scrollToIndex]);
-
-  // Initial centering on mount (Index 2: PROGRESSIVE) & Auto-advance timer setup
+  // Initial centering on mount (Index 2: PROGRESSIVE) & Non-passive wheel handling
   useEffect(() => {
     const timer = setTimeout(() => {
       scrollToIndex(2, false);
-    }, 80);
+    }, 100);
 
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (prefersReducedMotion) {
-      return () => clearTimeout(timer);
-    }
+    const track = trackRef.current;
+    if (!track) return () => clearTimeout(timer);
 
-    const section = sectionRef.current;
-    let observer: IntersectionObserver | null = null;
+    const onWheelNative = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        track.scrollLeft += e.deltaY * 0.95;
 
-    if (section) {
-      observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            isIntersectingRef.current = entry.isIntersecting;
-          });
-        },
-        { threshold: 0.2 }
-      );
-      observer.observe(section);
-    }
+        const trackCenter = track.scrollLeft + track.clientWidth / 2;
+        const cardNodes = track.querySelectorAll<HTMLElement>(".wave-card-item");
+        let closestIndex = activeIndexRef.current;
+        let minDistance = Infinity;
 
-    const interval = setInterval(stepAutoAdvance, 4500);
+        cardNodes.forEach((node, idx) => {
+          const cardCenter = node.offsetLeft + node.clientWidth / 2;
+          const dist = Math.abs(cardCenter - trackCenter);
+          if (dist < minDistance) {
+            minDistance = dist;
+            closestIndex = idx;
+          }
+        });
+
+        if (closestIndex !== activeIndexRef.current) {
+          setActiveIndex(closestIndex);
+        }
+      }
+    };
+
+    track.addEventListener("wheel", onWheelNative, { passive: false });
 
     return () => {
       clearTimeout(timer);
-      if (observer) observer.disconnect();
-      clearInterval(interval);
-      if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+      track.removeEventListener("wheel", onWheelNative);
     };
-  }, [scrollToIndex, stepAutoAdvance]);
+  }, [scrollToIndex]);
 
-  // Handle wheel events for horizontal scrolling
-  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    notifyUserInteraction();
-    const track = trackRef.current;
-    if (!track) return;
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      track.scrollLeft += e.deltaY;
-    }
-  };
-
-  // Handle scroll events to sync active dot when user swipes/scrolls manually
+  // Handle scroll Settlement detection
   const handleScroll = () => {
-    if (isInternalScrollRef.current) return;
+    if (isInternalScrollRef.current || isDraggingRef.current) return;
     const track = trackRef.current;
     if (!track) return;
-
-    notifyUserInteraction();
 
     const trackCenter = track.scrollLeft + track.clientWidth / 2;
     const cardNodes = track.querySelectorAll<HTMLElement>(".wave-card-item");
@@ -209,22 +190,76 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
     }
   };
 
+  // Mouse / Pointer Dragging Handlers
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest("button")) return;
+    isDraggingRef.current = true;
+    startXRef.current = e.clientX;
+    scrollLeftRef.current = trackRef.current?.scrollLeft || 0;
+    if (trackRef.current) {
+      trackRef.current.style.cursor = "grabbing";
+      trackRef.current.style.userSelect = "none";
+      trackRef.current.style.scrollSnapType = "none";
+    }
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isDraggingRef.current || !trackRef.current) return;
+    const x = e.clientX;
+    const walk = (startXRef.current - x) * 1.4;
+    trackRef.current.scrollLeft = scrollLeftRef.current + walk;
+  };
+
+  const handlePointerUp = () => {
+    if (!isDraggingRef.current || !trackRef.current) return;
+    isDraggingRef.current = false;
+    if (trackRef.current) {
+      trackRef.current.style.cursor = "grab";
+      trackRef.current.style.removeProperty("user-select");
+      trackRef.current.style.scrollSnapType = "x mandatory";
+
+      const trackCenter = trackRef.current.scrollLeft + trackRef.current.clientWidth / 2;
+      const cardNodes = trackRef.current.querySelectorAll<HTMLElement>(".wave-card-item");
+
+      let closestIndex = activeIndex;
+      let minDistance = Infinity;
+
+      cardNodes.forEach((node, idx) => {
+        const cardCenter = node.offsetLeft + node.clientWidth / 2;
+        const dist = Math.abs(cardCenter - trackCenter);
+        if (dist < minDistance) {
+          minDistance = dist;
+          closestIndex = idx;
+        }
+      });
+
+      setActiveIndex(closestIndex);
+      scrollToIndex(closestIndex, true);
+    }
+  };
+
+  // Mouse Wheel Gesture Handling
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    const track = trackRef.current;
+    if (!track) return;
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      track.scrollLeft += e.deltaY * 0.8;
+    }
+  };
+
   const handlePrev = () => {
-    notifyUserInteraction();
     const nextIdx = Math.max(0, activeIndex - 1);
     setActiveIndex(nextIdx);
     scrollToIndex(nextIdx, true);
   };
 
   const handleNext = () => {
-    notifyUserInteraction();
     const nextIdx = Math.min(CARDS_DATA.length - 1, activeIndex + 1);
     setActiveIndex(nextIdx);
     scrollToIndex(nextIdx, true);
   };
 
   const handleSelectCard = (index: number) => {
-    notifyUserInteraction();
     setActiveIndex(index);
     scrollToIndex(index, true);
   };
@@ -235,19 +270,13 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
       id="find-your-wave"
       className="relative pt-10 lg:pt-14 pb-10 lg:pb-14 overflow-hidden bg-[#061C27] text-white selection:bg-[#00C8A0] selection:text-[#061C27]"
     >
-      {/* ==========================================
-          5-LAYER ATMOSPHERIC BACKGROUND
-          ========================================== */}
-
-      {/* Layer 1: Base dark navy (#061C27) - Provided by section container class */}
-
       {/* Layer 2: Subtle teal radial glow behind center card position */}
       <div
         aria-hidden="true"
         className="absolute inset-0 pointer-events-none z-0 bg-[radial-gradient(ellipse_75%_55%_at_50%_50%,rgba(11,127,181,0.25)_0%,rgba(0,200,160,0.08)_40%,transparent_75%)]"
       />
 
-      {/* Layer 3: Organic/topographic wave contour lines pattern */}
+      {/* Layer 3: Organic wave contour lines pattern */}
       <div
         aria-hidden="true"
         className="absolute top-0 left-0 right-0 h-[75%] pointer-events-none z-0 opacity-20 overflow-hidden"
@@ -276,53 +305,13 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
             strokeWidth="0.8"
             strokeOpacity="0.7"
           />
-          <path
-            d="M-100 480 C 200 590, 600 380, 1000 520 C 1220 580, 1450 490, 1600 550"
-            stroke="#0B7FB5"
-            strokeWidth="1.5"
-            strokeOpacity="0.4"
-          />
-          <path
-            d="M-100 600 C 400 700, 850 490, 1250 630 C 1400 680, 1550 590, 1600 640"
-            stroke="#00C8A0"
-            strokeWidth="1"
-            strokeDasharray="6 6"
-          />
         </svg>
       </div>
 
-      {/* Layer 4: Warm beach sand/beige gradient overlay at lower section */}
-      <div
-        aria-hidden="true"
-        className="absolute bottom-0 left-0 right-0 h-[380px] pointer-events-none z-0 bg-gradient-to-t from-[#DCCCB5] via-[#DCCCB5]/40 to-transparent"
-      />
-
-      {/* Layer 5: Palm leaf shadow silhouettes in bottom corners */}
-      <div
-        aria-hidden="true"
-        className="absolute bottom-0 left-0 pointer-events-none z-0 w-72 h-72 sm:w-96 sm:h-96 opacity-15 mix-blend-multiply filter blur-[1px] transform -scale-x-100"
-      >
-        <svg viewBox="0 0 200 200" fill="#3D3021" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 200 Q 80 120 190 80 Q 150 110 110 140 Q 180 130 200 160 Q 150 165 90 175 Q 160 190 170 200 Z" />
-          <path d="M0 200 Q 50 100 140 20 Q 110 60 80 110 Q 130 90 160 110 Q 110 130 60 160 Z" />
-        </svg>
-      </div>
-      <div
-        aria-hidden="true"
-        className="absolute bottom-0 right-0 pointer-events-none z-0 w-72 h-72 sm:w-96 sm:h-96 opacity-15 mix-blend-multiply filter blur-[1px]"
-      >
-        <svg viewBox="0 0 200 200" fill="#3D3021" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 200 Q 80 120 190 80 Q 150 110 110 140 Q 180 130 200 160 Q 150 165 90 175 Q 160 190 170 200 Z" />
-          <path d="M0 200 Q 50 100 140 20 Q 110 60 80 110 Q 130 90 160 110 Q 110 130 60 160 Z" />
-        </svg>
-      </div>
-
-      {/* ==========================================
-          HEADER & FEATURE COLUMNS SECTION
-          ========================================== */}
+      {/* Header & Feature Columns */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 mb-8 lg:mb-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
-          {/* Left Column: Heading & Intro */}
+          {/* Left Column */}
           <div className="lg:col-span-6 text-left">
             <div className="flex items-center gap-3 mb-3">
               <span className="text-[#00C8A0] text-xs font-extrabold tracking-[0.2em] uppercase">
@@ -341,10 +330,9 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
             </p>
           </div>
 
-          {/* Right Column: 3 Feature Columns */}
+          {/* Right Column: 3 Feature Items */}
           <div className="lg:col-span-6">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4 pt-4 lg:pt-0">
-              {/* Feature 1 */}
               <div className="flex flex-col text-left">
                 <div className="w-9 h-9 rounded-full bg-[#00C8A0]/10 border border-[#00C8A0]/30 flex items-center justify-center text-[#00C8A0] mb-3">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
@@ -356,7 +344,6 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                 <p className="text-slate-400 text-xs leading-normal font-sans">Wave height, speed and shape.</p>
               </div>
 
-              {/* Feature 2 */}
               <div className="flex flex-col text-left sm:border-l sm:border-white/15 sm:pl-4">
                 <div className="w-9 h-9 rounded-full bg-[#00C8A0]/10 border border-[#00C8A0]/30 flex items-center justify-center text-[#00C8A0] mb-3">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
@@ -367,7 +354,6 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                 <p className="text-slate-400 text-xs leading-normal font-sans">Smart technology for sustainable waves.</p>
               </div>
 
-              {/* Feature 3 */}
               <div className="flex flex-col text-left sm:border-l sm:border-white/15 sm:pl-4">
                 <div className="w-9 h-9 rounded-full bg-[#00C8A0]/10 border border-[#00C8A0]/30 flex items-center justify-center text-[#00C8A0] mb-3">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
@@ -382,17 +368,17 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
         </div>
       </div>
 
-      {/* ==========================================
-          CARD CAROUSEL VIEWPORT & TRACK
-          ========================================== */}
-      <div className="relative w-full z-10 my-2 min-h-[560px] flex items-center">
-        {/* Circular Side Navigation Arrows */}
+      {/* CAROUSEL VIEWPORT & SINGLE-TRACK CONTAINER */}
+      <div className="relative w-full z-10 my-2 min-h-[500px] flex items-center">
+        
+        {/* Navigation Arrows positioned relative to carousel viewport */}
         <button
           onClick={handlePrev}
           disabled={activeIndex === 0}
           aria-label="Previous Wave Tier"
-          className={`absolute left-3 sm:left-6 lg:left-10 top-[50%] -translate-y-1/2 z-30 w-11 h-11 rounded-full border border-white/20 bg-[#061C27]/90 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-[#00C8A0] hover:border-[#00C8A0] hover:text-[#061C27] hover:scale-110 cursor-pointer ${activeIndex === 0 ? "opacity-30 cursor-not-allowed" : "opacity-100"
-            }`}
+          className={`absolute left-4 sm:left-8 lg:left-12 top-[50%] -translate-y-1/2 z-30 w-11 h-11 rounded-full border border-white/20 bg-[#061C27]/90 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-[#00C8A0] hover:border-[#00C8A0] hover:text-[#061C27] hover:scale-110 cursor-pointer ${
+            activeIndex === 0 ? "opacity-30 cursor-not-allowed" : "opacity-100"
+          }`}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -403,47 +389,54 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
           onClick={handleNext}
           disabled={activeIndex === CARDS_DATA.length - 1}
           aria-label="Next Wave Tier"
-          className={`absolute right-3 sm:left-auto sm:right-6 lg:right-10 top-[50%] -translate-y-1/2 z-30 w-11 h-11 rounded-full border border-white/20 bg-[#061C27]/90 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-[#00C8A0] hover:border-[#00C8A0] hover:text-[#061C27] hover:scale-110 cursor-pointer ${activeIndex === CARDS_DATA.length - 1 ? "opacity-30 cursor-not-allowed" : "opacity-100"
-            }`}
+          className={`absolute right-4 sm:right-8 lg:right-12 top-[50%] -translate-y-1/2 z-30 w-11 h-11 rounded-full border border-white/20 bg-[#061C27]/90 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-[#00C8A0] hover:border-[#00C8A0] hover:text-[#061C27] hover:scale-110 cursor-pointer ${
+            activeIndex === CARDS_DATA.length - 1 ? "opacity-30 cursor-not-allowed" : "opacity-100"
+          }`}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
           </svg>
         </button>
 
-        {/* Carousel Track Container */}
+        {/* Carousel Track with mouse drag & horizontal snap */}
         <div
           ref={trackRef}
           onScroll={handleScroll}
           onWheel={handleWheel}
-          className="carousel-viewport w-full overflow-x-auto no-scrollbar py-3 sm:py-4 flex items-start gap-2 sm:gap-2.5 snap-x snap-mandatory"
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          className="carousel-viewport w-full overflow-x-auto no-scrollbar py-6 flex items-center gap-4 sm:gap-6 snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none"
           style={{
-            paddingInline: "max(16px, calc((100vw - 390px) / 2))",
+            paddingInline: "max(24px, calc((100vw - clamp(320px, 28vw, 420px)) / 2))",
           }}
         >
           {CARDS_DATA.map((card, idx) => {
             const isActive = idx === activeIndex;
+            const diff = Math.abs(idx - activeIndex);
 
             return (
               <div
                 key={card.id}
                 onClick={() => handleSelectCard(idx)}
-                className={`wave-card-item shrink-0 cursor-pointer transition-all duration-500 ease-out flex flex-col justify-between snap-center overflow-hidden ${isActive
-                  ? "w-[85vw] sm:w-[340px] lg:w-[390px] h-[500px] sm:h-[520px] lg:h-[540px] lg:-translate-y-[4px] z-20 bg-[#F6F4EE] text-[#0A1926] rounded-[26px] shadow-[0_25px_60px_rgba(0,0,0,0.45)] border-2 border-white/60 p-4 sm:p-5 lg:p-5"
-                  : "w-[78vw] sm:w-[305px] lg:w-[350px] h-[420px] sm:h-[440px] lg:h-[460px] lg:translate-y-[14px] z-10 bg-[#F6F4EE]/95 text-[#0A1926]/90 rounded-[24px] shadow-xl border border-white/30 p-3.5 sm:p-4 lg:p-4 hover:bg-[#F6F4EE]"
-                  }`}
+                className={`wave-card-item shrink-0 cursor-pointer transition-all duration-500 ease-out flex flex-col justify-between snap-center overflow-hidden rounded-[26px] p-5 sm:p-6 w-[88vw] sm:w-[340px] lg:w-[clamp(320px,28vw,420px)] h-[460px] sm:h-[480px] lg:h-[490px] ${
+                  isActive
+                    ? "scale-100 -translate-y-2.5 opacity-100 z-20 bg-[#F6F4EE] text-[#0A1926] shadow-[0_25px_60px_rgba(0,0,0,0.5)] border-2 border-white/70"
+                    : diff === 1
+                    ? "scale-[0.95] translate-y-2 opacity-[0.96] z-10 bg-[#F6F4EE]/95 text-[#0A1926]/90 shadow-xl border border-white/30 hover:bg-[#F6F4EE]"
+                    : "scale-[0.90] translate-y-4 opacity-[0.75] z-0 bg-[#F6F4EE]/80 text-[#0A1926]/80 shadow-lg border border-white/20"
+                }`}
+                style={{
+                  willChange: "transform, opacity",
+                }}
               >
-                {/* Top Image Box */}
-                <div
-                  className={`relative w-full overflow-hidden rounded-[18px] shrink-0 mb-2.5 transition-all duration-500 ${isActive ? "h-[160px] sm:h-[175px] lg:h-[190px]" : "h-[125px] sm:h-[140px] lg:h-[150px]"
-                    }`}
-                >
+                {/* Top Compact Image Box */}
+                <div className="relative w-full h-[160px] sm:h-[175px] lg:h-[185px] overflow-hidden rounded-[20px] shrink-0 mb-3">
                   <img
                     src={card.img}
                     alt={`${card.title} wave session`}
                     className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                   />
-                  {/* Subtle dark bottom gradient overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
 
                   {/* Overlays on Image */}
@@ -462,7 +455,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                 </div>
 
                 {/* Card Main Body */}
-                <div className="flex flex-col justify-between flex-grow text-left overflow-hidden">
+                <div className="flex flex-col justify-between flex-grow text-left">
                   <div>
                     <span className="text-[#0B7FB5] text-[10px] font-extrabold tracking-[0.2em] uppercase block mb-0.5">
                       {card.tierLabel}
@@ -470,14 +463,14 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                     <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#0A1926] tracking-tight uppercase mb-1">
                       {card.title}
                     </h3>
-                    <p className="text-slate-600 text-xs leading-snug font-sans line-clamp-2 mb-1">
+                    <p className="text-slate-600 text-xs leading-relaxed font-sans line-clamp-2 mb-2">
                       {card.desc}
                     </p>
                   </div>
 
                   <div>
                     {/* Technical Specification Grid */}
-                    <div className="grid grid-cols-3 gap-1.5 py-2 border-y border-slate-200/80 my-2">
+                    <div className="grid grid-cols-3 gap-1 py-2 border-y border-slate-200/80 my-2">
                       <div className="flex flex-col">
                         <div className="flex items-center gap-1 mb-0.5">
                           <svg className="w-3 h-3 text-[#0B7FB5]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -515,8 +508,8 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                       </div>
                     </div>
 
-                    {/* Pricing & Circular CTA Row */}
-                    <div className="flex items-center justify-between pt-0.5">
+                    {/* Pricing & Circular CTA Button */}
+                    <div className="flex items-center justify-between pt-1">
                       <div className="flex flex-col">
                         <span className="text-[8.5px] font-extrabold uppercase tracking-widest text-slate-400">
                           SESSION RATE
@@ -532,10 +525,11 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                           onOpenBooking(card.title);
                         }}
                         aria-label={`Book ${card.title} session`}
-                        className={`rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer shadow-md ${isActive
-                          ? "w-9 h-9 sm:w-10 sm:h-10 bg-[#074754] text-white hover:bg-[#00C8A0] hover:text-[#061C27] hover:scale-105"
-                          : "w-8 h-8 sm:w-9 sm:h-9 bg-white border border-slate-300 text-[#074754] hover:bg-[#074754] hover:text-white hover:border-[#074754]"
-                          }`}
+                        className={`rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer shadow-md ${
+                          isActive
+                            ? "w-9 h-9 sm:w-10 sm:h-10 bg-[#074754] text-white hover:bg-[#00C8A0] hover:text-[#061C27] hover:scale-105"
+                            : "w-8 h-8 sm:w-9 sm:h-9 bg-white border border-slate-300 text-[#074754] hover:bg-[#074754] hover:text-white"
+                        }`}
                       >
                         <svg className="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
@@ -550,10 +544,8 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
         </div>
       </div>
 
-      {/* ==========================================
-          PAGINATION INDICATORS
-          ========================================== */}
-      <div className="relative z-10 flex items-center justify-center gap-2 mt-6 mb-6">
+      {/* PAGINATION INDICATOR DOTS */}
+      <div className="relative z-10 flex items-center justify-center gap-2.5 mt-6 mb-6">
         {CARDS_DATA.map((card, idx) => {
           const isActive = idx === activeIndex;
           return (
@@ -561,18 +553,17 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
               key={card.id}
               onClick={() => handleSelectCard(idx)}
               aria-label={`Go to ${card.title}`}
-              className={`transition-all duration-300 cursor-pointer ${isActive
-                ? "w-8 h-2 rounded-full bg-[#00C8A0] shadow-sm"
-                : "w-5 h-2 rounded-full bg-white/30 hover:bg-white/60"
-                }`}
+              className={`transition-all duration-300 cursor-pointer ${
+                isActive
+                  ? "w-8 h-2 rounded-full bg-[#00C8A0] shadow-sm"
+                  : "w-5 h-2 rounded-full bg-white/30 hover:bg-white/60"
+              }`}
             />
           );
         })}
       </div>
 
-      {/* ==========================================
-          SECTION FOOTER BRANDING
-          ========================================== */}
+      {/* SECTION FOOTER BRANDING */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-extrabold tracking-[0.22em] uppercase text-white/70">
         <div className="flex items-center gap-2">
           <svg className="w-4 h-4 text-[#00C8A0]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">

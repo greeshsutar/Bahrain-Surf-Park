@@ -4,51 +4,101 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const CALLOUTS_LEFT = [
+interface ArchitecturalPoint {
+  num: string;
+  title: string;
+  desc: string;
+  target: { x: number; y: number }; // percentage coords on image
+  labelPos: { x: number; y: number }; // percentage coords on board
+  linePath: string; // SVG relative path string
+}
+
+const ARCHITECTURAL_POINTS: ArchitecturalPoint[] = [
   {
     num: "01",
-    title: "WAVE GENERATION",
-    desc: "The Cove® power unit creates a surge of water.",
-    target: { x: "50%", y: "40%" },
+    title: "CENTRAL CLUBHOUSE",
+    desc: "The heart of Bahrain Surf Park, bringing together arrival, hospitality, dining and panoramic views of the lagoon.",
+    target: { x: 50.5, y: 20 },
+    labelPos: { x: 50.5, y: 6 },
+    linePath: "M 50.5 12 L 50.5 20",
   },
   {
     num: "02",
-    title: "WATER MOVEMENT",
-    desc: "Hydrodynamic flow transports energy across the lagoon.",
-    target: { x: "32%", y: "48%" },
+    title: "RESORT HOTEL",
+    desc: "Premium accommodation overlooking the lagoon with direct access to the park experience.",
+    target: { x: 28, y: 28 },
+    labelPos: { x: 12, y: 16 },
+    linePath: "M 22 18 L 28 28",
   },
   {
     num: "03",
-    title: "HYDRODYNAMICS",
-    desc: "Advanced design ensures smooth, efficient and powerful wave shaping.",
-    target: { x: "22%", y: "65%" },
+    title: "SURF PARK FACILITIES",
+    desc: "Surf retail, rentals, café, wellness and supporting guest facilities.",
+    target: { x: 74, y: 28 },
+    labelPos: { x: 88, y: 16 },
+    linePath: "M 80 18 L 74 28",
   },
-];
-
-const CALLOUTS_RIGHT = [
   {
     num: "04",
-    title: "WAVE SHAPE",
-    desc: "Adjustable bathymetry sculpts each wave with precision.",
-    target: { x: "78%", y: "58%" },
+    title: "MAIN LAGOON",
+    desc: "The central Wavegarden Cove® lagoon where the surfing experience takes place.",
+    target: { x: 35, y: 48 },
+    labelPos: { x: 10, y: 48 },
+    linePath: "M 20 48 L 35 48",
   },
   {
     num: "05",
-    title: "WAVE SPEED",
-    desc: "Real-time control of wave speed for the perfect ride.",
-    target: { x: "66%", y: "46%" },
+    title: "WAVE GENERATOR",
+    desc: "The Wavegarden Cove® wave-generation system responsible for creating the surfable waves.",
+    target: { x: 50.5, y: 38 },
+    labelPos: { x: 76, y: 38 },
+    linePath: "M 66 38 L 50.5 38",
   },
   {
     num: "06",
-    title: "CONTROL SYSTEM",
-    desc: "Sensors and software monitor and optimize every wave.",
-    target: { x: "50%", y: "22%" },
+    title: "MAIN ENTRANCE",
+    desc: "The primary arrival sequence connecting guests to the resort and lagoon.",
+    target: { x: 50.5, y: 60 },
+    labelPos: { x: 50.5, y: 72 },
+    linePath: "M 50.5 70 L 50.5 60",
+  },
+  {
+    num: "07",
+    title: "BEACH CLUB VILLAS",
+    desc: "Private luxury villas surrounded by tropical landscaping with direct beach access.",
+    target: { x: 18, y: 80 },
+    labelPos: { x: 10, y: 86 },
+    linePath: "M 16 84 L 18 80",
+  },
+  {
+    num: "08",
+    title: "BEACHFRONT & PALM WALK",
+    desc: "A landscaped beachfront promenade with palms, relaxation areas and pedestrian connections.",
+    target: { x: 36, y: 68 },
+    labelPos: { x: 36, y: 82 },
+    linePath: "M 36 80 L 36 68",
+  },
+  {
+    num: "09",
+    title: "DINING & BEACH CLUB",
+    desc: "Beachfront dining, social spaces and leisure experiences.",
+    target: { x: 80, y: 78 },
+    labelPos: { x: 85, y: 82 },
+    linePath: "M 82 80 L 80 78",
+  },
+  {
+    num: "10",
+    title: "LANDSCAPED SURROUNDINGS",
+    desc: "Lush tropical landscaping creating a natural buffer around the resort.",
+    target: { x: 88, y: 88 },
+    labelPos: { x: 90, y: 92 },
+    linePath: "M 90 90 L 88 88",
   },
 ];
 
 export default function WaveCreation() {
   const sectionRef = useRef<HTMLElement>(null);
-  const centerImageRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -56,89 +106,93 @@ export default function WaveCreation() {
     const section = sectionRef.current;
     if (!section) return;
 
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
     const ctx = gsap.context(() => {
-      // 1. Center Image subtle fade in
-      gsap.fromTo(
-        centerImageRef.current,
-        { opacity: 0, y: 20, scale: 0.98 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          duration: 1,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 75%",
-          },
-        }
-      );
+      // Set initial hidden state
+      gsap.set(imageRef.current, { opacity: 0, scale: 0.98 });
+      gsap.set(".connector-line", { strokeDasharray: 400, strokeDashoffset: 400 });
+      gsap.set(".target-node", { scale: 0, opacity: 0 });
+      gsap.set(".callout-label", { opacity: 0, y: 8 });
+      gsap.set(".mobile-card", { opacity: 0, y: 12 });
 
-      // 2. Left Cards stagger reveal
-      gsap.fromTo(
-        ".tech-card-left",
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.12,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 70%",
-          },
-        }
-      );
+      if (prefersReduced) {
+        gsap.set(imageRef.current, { opacity: 1, scale: 1 });
+        gsap.set(".connector-line", { strokeDashoffset: 0 });
+        gsap.set(".target-node", { scale: 1, opacity: 1 });
+        gsap.set(".callout-label", { opacity: 1, y: 0 });
+        gsap.set(".mobile-card", { opacity: 1, y: 0 });
+        return;
+      }
 
-      // 3. Right Cards stagger reveal
-      gsap.fromTo(
-        ".tech-card-right",
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.12,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 70%",
-          },
-        }
-      );
+      // Master 9-Second Architectural Reveal Timeline (Triggered once on Viewport Entrance)
+      const mainTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top 70%",
+          toggleActions: "play none none none",
+        },
+      });
 
-      // 4. Connector lines animation draw
-      gsap.fromTo(
-        ".connector-path",
-        { strokeDashoffset: 500 },
-        {
-          strokeDashoffset: 0,
-          duration: 1.3,
-          ease: "power2.inOut",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 65%",
-          },
-        }
-      );
+      // STEP 01 — IMAGE (0.0s - 1.0s)
+      mainTl.to(imageRef.current, {
+        opacity: 1,
+        scale: 1,
+        duration: 1.0,
+        ease: "power2.out",
+      });
 
-      // 5. Endpoint dots illuminate
-      gsap.fromTo(
-        ".endpoint-dot",
-        { scale: 0, opacity: 0 },
-        {
-          scale: 1,
-          opacity: 1,
-          duration: 0.5,
-          stagger: 0.1,
-          ease: "back.out(2)",
-          scrollTrigger: {
-            trigger: section,
-            start: "top 60%",
+      // STEPS 01-10 PROGRESSIVE ONE-BY-ONE REVEALS (1.0s - 9.0s)
+      ARCHITECTURAL_POINTS.forEach((pt, index) => {
+        const stepTime = 1.0 + index * 0.75; // Smooth 0.75s intervals with natural overlap
+
+        // 1. Connector line begins drawing
+        mainTl.to(
+          `#line-${pt.num}`,
+          {
+            strokeDashoffset: 0,
+            duration: 0.45,
+            ease: "power2.inOut",
           },
-        }
-      );
+          stepTime
+        );
+
+        // 2. Target node softly appears as line reaches location
+        mainTl.to(
+          `#node-${pt.num}`,
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 0.3,
+            ease: "back.out(1.8)",
+          },
+          stepTime + 0.35
+        );
+
+        // 3. Label number & title fade/slide in
+        mainTl.to(
+          `#label-${pt.num}`,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            ease: "power2.out",
+          },
+          stepTime + 0.45
+        );
+
+        // Mobile Card reveal sync
+        mainTl.to(
+          `#mobile-card-${pt.num}`,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            ease: "power2.out",
+          },
+          stepTime + 0.45
+        );
+      });
     }, section);
 
     return () => ctx.revert();
@@ -148,238 +202,151 @@ export default function WaveCreation() {
     <section
       ref={sectionRef}
       id="tech-section-02"
-      className="bg-[#031B25] text-[#F4F2EA] py-20 sm:py-28 relative z-10 border-b border-white/10 overflow-hidden"
+      className="bg-[#061C27] text-[#F5F7F4] py-16 sm:py-24 relative z-10 border-b border-white/10 overflow-hidden"
     >
-      {/* Background Subtle Contour Lines & Ambient Glow */}
+      {/* Background Subtle Contour Lines & Radial Glow */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
         <svg
-          className="absolute top-0 left-0 w-full h-full opacity-[0.035]"
+          className="absolute top-0 left-0 w-full h-full opacity-[0.04]"
           viewBox="0 0 1440 900"
           fill="none"
-          stroke="#00C8C0"
+          stroke="#00C8C8"
           strokeWidth="1"
         >
-          <path d="M-100,150 C300,50 600,280 1100,180 C1300,140 1500,260 1600,220" strokeDasharray="4 4" />
-          <path d="M-100,300 C250,380 650,150 1050,320 C1280,360 1480,240 1600,300" />
-          <path d="M-100,450 C350,520 800,320 1200,480 C1350,520 1520,400 1600,460" strokeDasharray="6 6" />
+          <path d="M-100,120 C300,40 600,260 1100,160 C1300,120 1500,240 1600,200" strokeDasharray="4 4" />
+          <path d="M-100,280 C250,360 650,130 1050,300 C1280,340 1480,220 1600,280" />
+          <path d="M-100,440 C350,500 800,300 1200,460 C1350,500 1520,380 1600,440" strokeDasharray="6 6" />
         </svg>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#00C8C0]/[0.03] rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#00C8C8]/[0.03] rounded-full blur-3xl pointer-events-none" />
       </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12 text-left relative z-10">
         
         {/* Header Block */}
-        <div className="max-w-2xl mb-12 sm:mb-16">
-          <span className="font-mono text-xs sm:text-sm font-extrabold text-[#00C8C0] tracking-[0.2em] uppercase block mb-3">
+        <div className="max-w-2xl mb-10 sm:mb-12">
+          <span className="font-mono text-xs sm:text-sm font-extrabold text-[#00C8C8] tracking-[0.22em] block mb-2">
             02
           </span>
-          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#F4F2EA] tracking-tight leading-[1.08] mb-4">
-            HOW THE WAVE<br />IS CREATED<span className="text-[#00C8C0]">.</span>
+          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#F5F7F4] tracking-tight leading-[1.08] mb-3">
+            PARTS & NAMING GUIDE<span className="text-[#00C8C8]">.</span>
           </h2>
-          <p className="text-[#F4F2EA]/80 text-sm sm:text-base font-sans leading-relaxed mb-6 max-w-xl">
-            A perfect wave is the result of precision engineering and real-time data working together across our Wavegarden Cove® lagoon.
+          <p className="text-[#9BB1B8] text-sm sm:text-base font-sans leading-relaxed max-w-xl">
+            An overview of the key areas and architectural elements of Bahrain Surf Park.
           </p>
-          <a
-            href="#tech-section-03"
-            className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-[#00C8C0] hover:text-white transition-colors group"
-          >
-            <span>SEE THE PROCESS</span>
-            <span className="text-sm font-normal group-hover:translate-x-1 transition-transform">→</span>
-          </a>
         </div>
 
-        {/* Technical Engineering Composition */}
-        <div className="relative grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-          
-          {/* Desktop SVG Overlay Connectors connecting Cards to physical locations inside Center Image */}
-          <svg
-            className="hidden lg:block absolute inset-0 w-full h-full pointer-events-none z-30"
-            viewBox="0 0 1200 650"
-            fill="none"
-            preserveAspectRatio="none"
-          >
-            {/* Left Connectors: Cards 01, 02, 03 */}
-            {/* Card 01 -> Wave Generator Spine (approx x: 600 [50%], y: 260 [40%]) */}
-            <path
-              d="M 285 110 L 440 110 L 600 260"
-              stroke="#00C8C0"
-              strokeWidth="1.2"
-              strokeOpacity="0.45"
-              strokeDasharray="500"
-              className="connector-path"
+        {/* DESKTOP ARCHITECTURAL PRESENTATION BOARD (All 10 points visible simultaneously) */}
+        <div
+          ref={imageRef}
+          className="hidden md:block relative w-full rounded-[24px] border border-[#00C8C8]/30 bg-[#073845]/90 p-4 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.45)] overflow-hidden"
+        >
+          <div className="relative w-full overflow-hidden rounded-2xl bg-[#061C27]">
+            
+            {/* 100% CLEAN Aerial Photograph (Zero baked-in text or graphics) */}
+            <img
+              src="/images/bahrain_surf_park_clean.jpg"
+              alt="Bahrain Surf Park clean masterplan aerial photograph"
+              className="w-full h-auto object-cover block rounded-2xl"
             />
 
-            {/* Card 02 -> Left Water Channel (approx x: 445 [37%], y: 312 [48%]) */}
-            <path
-              d="M 285 325 L 390 325 L 445 312"
-              stroke="#00C8C0"
-              strokeWidth="1.2"
-              strokeOpacity="0.45"
-              strokeDasharray="500"
-              className="connector-path"
-            />
+            {/* Desktop SVG Connector Lines Layer */}
+            <svg
+              className="absolute inset-0 w-full h-full pointer-events-none z-20"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+            >
+              {ARCHITECTURAL_POINTS.map((pt) => (
+                <path
+                  key={pt.num}
+                  id={`line-${pt.num}`}
+                  d={pt.linePath}
+                  stroke="#00C8C8"
+                  strokeWidth="0.45"
+                  strokeOpacity="0.85"
+                  strokeDasharray="400"
+                  className="connector-line"
+                />
+              ))}
+            </svg>
 
-            {/* Card 03 -> Left Lower Hydrodynamics Area (approx x: 380 [31%], y: 422 [65%]) */}
-            <path
-              d="M 285 540 L 350 540 L 380 422"
-              stroke="#00C8C0"
-              strokeWidth="1.2"
-              strokeOpacity="0.45"
-              strokeDasharray="500"
-              className="connector-path"
-            />
-
-            {/* Right Connectors: Cards 04, 05, 06 */}
-            {/* Card 04 -> Right Wave Shape Peeling Zone (approx x: 820 [68%], y: 377 [58%]) */}
-            <path
-              d="M 915 110 L 870 110 L 820 377"
-              stroke="#00C8C0"
-              strokeWidth="1.2"
-              strokeOpacity="0.45"
-              strokeDasharray="500"
-              className="connector-path"
-            />
-
-            {/* Card 05 -> Right Active Wave Channel (approx x: 755 [63%], y: 299 [46%]) */}
-            <path
-              d="M 915 325 L 810 325 L 755 299"
-              stroke="#00C8C0"
-              strokeWidth="1.2"
-              strokeOpacity="0.45"
-              strokeDasharray="500"
-              className="connector-path"
-            />
-
-            {/* Card 06 -> Central Control System Infrastructure (approx x: 600 [50%], y: 143 [22%]) */}
-            <path
-              d="M 915 540 L 760 540 L 600 143"
-              stroke="#00C8C0"
-              strokeWidth="1.2"
-              strokeOpacity="0.45"
-              strokeDasharray="500"
-              className="connector-path"
-            />
-          </svg>
-
-          {/* Left Cards Column (approx 24% width) */}
-          <div className="lg:col-span-3 space-y-4 lg:space-y-6 z-20 order-2 lg:order-1">
-            {CALLOUTS_LEFT.map((c) => (
+            {/* 10 Target Nodes over specific physical locations */}
+            {ARCHITECTURAL_POINTS.map((pt) => (
               <div
-                key={c.num}
-                className="tech-card-left bg-[#062A35]/80 backdrop-blur-md border border-[#00C8C0]/25 hover:border-[#00C8C0]/60 rounded-2xl p-4 sm:p-5 text-left relative group transition-all duration-300 shadow-lg hover:shadow-cyan-950/40"
+                key={pt.num}
+                id={`node-${pt.num}`}
+                style={{ left: `${pt.target.x}%`, top: `${pt.target.y}%` }}
+                className="target-node absolute -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none flex items-center justify-center"
               >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-mono font-bold text-[#00C8C0] tracking-widest">
-                    {c.num}
+                <span className="w-2.5 h-2.5 rounded-full bg-[#00C8C8] shadow-[0_0_10px_#00C8C8]" />
+              </div>
+            ))}
+
+            {/* 10 Architectural Callout Badges around photo */}
+            {ARCHITECTURAL_POINTS.map((pt) => (
+              <div
+                key={pt.num}
+                id={`label-${pt.num}`}
+                style={{ left: `${pt.labelPos.x}%`, top: `${pt.labelPos.y}%` }}
+                className="callout-label absolute -translate-x-1/2 -translate-y-1/2 z-40 bg-[#061C27]/90 backdrop-blur-md border border-[#00C8C8]/40 rounded-xl px-3 py-1.5 shadow-lg max-w-[200px] text-left"
+              >
+                <div className="flex items-center gap-1.5 mb-0.5">
+                  <span className="text-[10px] font-mono font-bold text-[#00C8C8]">
+                    {pt.num}
                   </span>
-                  <span className="w-2 h-2 rounded-full bg-[#00C8C0]/40 group-hover:bg-[#00C8C0] group-hover:shadow-[0_0_8px_#00C8C0] transition-all" />
+                  <span className="text-[10px] font-sans font-bold text-[#F5F7F4] uppercase tracking-wider truncate">
+                    {pt.title}
+                  </span>
                 </div>
-                <h3 className="font-sans text-xs font-bold text-[#F4F2EA] tracking-wider uppercase mb-1.5">
-                  {c.title}
-                </h3>
-                <p className="text-xs text-[#F4F2EA]/75 font-sans leading-relaxed">
-                  {c.desc}
+                <p className="text-[9.5px] text-[#A8BDC3] font-sans leading-tight line-clamp-2">
+                  {pt.desc}
                 </p>
+              </div>
+            ))}
+
+          </div>
+        </div>
+
+        {/* MOBILE RESPONSIVE COMPOSITION (Clean Photo top + 10 Cards below) */}
+        <div className="block md:hidden space-y-6">
+          <div className="relative w-full rounded-2xl overflow-hidden border border-[#00C8C8]/30 shadow-xl bg-[#073845]">
+            <img
+              src="/images/bahrain_surf_park_clean.jpg"
+              alt="Bahrain Surf Park clean masterplan aerial photograph"
+              className="w-full h-auto object-cover block rounded-2xl"
+            />
+            {ARCHITECTURAL_POINTS.map((pt) => (
+              <div
+                key={pt.num}
+                style={{ left: `${pt.target.x}%`, top: `${pt.target.y}%` }}
+                className="absolute -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none"
+              >
+                <span className="w-2.5 h-2.5 block rounded-full bg-[#00C8C8] shadow-[0_0_8px_#00C8C8]" />
               </div>
             ))}
           </div>
 
-          {/* Center Image Column: Completely CLEAN Original Photograph (approx 48% width) */}
-          <div
-            ref={centerImageRef}
-            className="lg:col-span-6 relative z-20 order-1 lg:order-2 my-2 lg:my-0 flex items-center justify-center"
-          >
-            <div className="relative w-full overflow-hidden rounded-[20px] border border-[#00C8C0]/30 bg-[#062A35] shadow-[0_15px_40px_rgba(2,20,28,0.6)] group">
-              
-              {/* CLEAN Original Photograph (No generated labels, no baked text) */}
-              <img
-                src="/images/wavecove.png"
-                alt="Bahrain Surf Park Wavegarden Cove aerial photograph"
-                className="w-full h-auto object-cover block rounded-[20px] transition-transform duration-700 group-hover:scale-[1.01]"
-              />
-
-              {/* Endpoint Glowing Target Dots over specific physical features */}
-              {/* Endpoint 01: Wave Generation Pier */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
+            {ARCHITECTURAL_POINTS.map((pt) => (
               <div
-                style={{ top: "40%", left: "50%" }}
-                className="endpoint-dot absolute -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none flex items-center justify-center"
+                key={pt.num}
+                id={`mobile-card-${pt.num}`}
+                className="mobile-card bg-[#073845]/90 border border-[#00C8C8]/25 rounded-xl p-4 shadow-md"
               >
-                <span className="w-3 h-3 rounded-full bg-[#00C8C0] shadow-[0_0_12px_#00C8C0] animate-pulse" />
-                <span className="absolute w-6 h-6 rounded-full border border-[#00C8C0]/60 animate-ping opacity-75" />
-              </div>
-
-              {/* Endpoint 02: Water Movement Flow */}
-              <div
-                style={{ top: "48%", left: "32%" }}
-                className="endpoint-dot absolute -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none flex items-center justify-center"
-              >
-                <span className="w-2.5 h-2.5 rounded-full bg-[#00C8C0] shadow-[0_0_10px_#00C8C0]" />
-              </div>
-
-              {/* Endpoint 03: Hydrodynamics Area */}
-              <div
-                style={{ top: "65%", left: "22%" }}
-                className="endpoint-dot absolute -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none flex items-center justify-center"
-              >
-                <span className="w-2.5 h-2.5 rounded-full bg-[#00C8C0] shadow-[0_0_10px_#00C8C0]" />
-              </div>
-
-              {/* Endpoint 04: Wave Shape Zone */}
-              <div
-                style={{ top: "58%", left: "78%" }}
-                className="endpoint-dot absolute -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none flex items-center justify-center"
-              >
-                <span className="w-2.5 h-2.5 rounded-full bg-[#00C8C0] shadow-[0_0_10px_#00C8C0]" />
-              </div>
-
-              {/* Endpoint 05: Wave Speed Track */}
-              <div
-                style={{ top: "46%", left: "66%" }}
-                className="endpoint-dot absolute -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none flex items-center justify-center"
-              >
-                <span className="w-2.5 h-2.5 rounded-full bg-[#00C8C0] shadow-[0_0_10px_#00C8C0]" />
-              </div>
-
-              {/* Endpoint 06: Control System Infrastructure */}
-              <div
-                style={{ top: "22%", left: "50%" }}
-                className="endpoint-dot absolute -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none flex items-center justify-center"
-              >
-                <span className="w-3 h-3 rounded-full bg-[#00C8C0] shadow-[0_0_12px_#00C8C0] animate-pulse" />
-                <span className="absolute w-6 h-6 rounded-full border border-[#00C8C0]/60 animate-ping opacity-75" />
-              </div>
-
-              {/* Subtle 1px Inner Highlight Ring */}
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 pointer-events-none rounded-[20px] ring-1 ring-inset ring-white/10"
-              />
-            </div>
-          </div>
-
-          {/* Right Cards Column (approx 24% width) */}
-          <div className="lg:col-span-3 space-y-4 lg:space-y-6 z-20 order-3">
-            {CALLOUTS_RIGHT.map((c) => (
-              <div
-                key={c.num}
-                className="tech-card-right bg-[#062A35]/80 backdrop-blur-md border border-[#00C8C0]/25 hover:border-[#00C8C0]/60 rounded-2xl p-4 sm:p-5 text-left relative group transition-all duration-300 shadow-lg hover:shadow-cyan-950/40"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-mono font-bold text-[#00C8C0] tracking-widest">
-                    {c.num}
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-mono font-bold text-[#00C8C8]">
+                    {pt.num}
                   </span>
-                  <span className="w-2 h-2 rounded-full bg-[#00C8C0]/40 group-hover:bg-[#00C8C0] group-hover:shadow-[0_0_8px_#00C8C0] transition-all" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00C8C8]" />
                 </div>
-                <h3 className="font-sans text-xs font-bold text-[#F4F2EA] tracking-wider uppercase mb-1.5">
-                  {c.title}
+                <h3 className="font-sans text-xs font-bold text-[#F5F7F4] uppercase tracking-wider mb-1">
+                  {pt.title}
                 </h3>
-                <p className="text-xs text-[#F4F2EA]/75 font-sans leading-relaxed">
-                  {c.desc}
+                <p className="text-xs text-[#A8BDC3] font-sans leading-relaxed">
+                  {pt.desc}
                 </p>
               </div>
             ))}
           </div>
-
         </div>
 
       </div>
