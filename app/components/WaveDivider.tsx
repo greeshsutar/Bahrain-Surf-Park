@@ -36,23 +36,22 @@ export default function WaveDivider() {
               dx="0"
               dy="-5"
               stdDeviation="7"
-              floodColor="#063B45"
+              floodColor="#000000"
               floodOpacity="0.14"
             />
             <feDropShadow
               dx="0"
               dy="-2"
               stdDeviation="3"
-              floodColor="#063B45"
+              floodColor="#000000"
               floodOpacity="0.07"
             />
           </filter>
         </defs>
 
         {/* 
-          Organic White Wave Overlay:
-          Positioned low at the bottom of the section (covering only bottom ~15-20% of video),
-          leaving ~80% of the ocean video and breaking wave fully visible above.
+          Organic Wave Overlay:
+          Transitioning smoothly into dark navy FindYourWave section (#061C27)
         */}
         <path
           d="
@@ -65,7 +64,7 @@ export default function WaveDivider() {
             L 0 205
             Z
           "
-          fill="#FFFFFF"
+          fill="#061C27"
           stroke="none"
           filter="url(#wave-shadow)"
         />

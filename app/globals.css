@@ -342,14 +342,14 @@ a.rounded-full,
   transform: scale(1.05);
 }
 
-/* Desktop Pinned Carousel Safety Height Clamps */
+/* Desktop Carousel Safety Height Clamps */
 @media (min-width: 1024px) {
   .tier-card {
-    height: clamp(440px, 76svh, 560px);
+    height: clamp(380px, 60svh, 520px);
   }
 
   .tier-card .card-image-wrapper {
-    height: clamp(160px, 30svh, 220px);
+    height: clamp(140px, 24svh, 200px);
   }
 }
 

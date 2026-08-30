@@ -77,8 +77,29 @@ const CARDS_DATA = [
 export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
   // Default active card index set to 2 (PROGRESSIVE)
   const [activeIndex, setActiveIndex] = useState<number>(2);
+  const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const isInternalScrollRef = useRef<boolean>(false);
+  const activeIndexRef = useRef<number>(2);
+  const isIntersectingRef = useRef<boolean>(false);
+  const isUserInteractingRef = useRef<boolean>(false);
+  const resumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Sync activeIndex ref for timer closure safety
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
+
+  // Pause auto-advance on manual interaction and resume after 5s idle
+  const notifyUserInteraction = useCallback(() => {
+    isUserInteractingRef.current = true;
+    if (resumeTimeoutRef.current) {
+      clearTimeout(resumeTimeoutRef.current);
+    }
+    resumeTimeoutRef.current = setTimeout(() => {
+      isUserInteractingRef.current = false;
+    }, 5000);
+  }, []);
 
   // Scroll carousel to center a specific index
   const scrollToIndex = useCallback((index: number, smooth: boolean = true) => {
@@ -106,19 +127,67 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
     }, 600);
   }, []);
 
-  // Initial centering on mount (Index 2: PROGRESSIVE)
+  // Step auto progression function
+  const stepAutoAdvance = useCallback(() => {
+    if (isUserInteractingRef.current || !isIntersectingRef.current) return;
+    const nextIdx = (activeIndexRef.current + 1) % CARDS_DATA.length;
+    setActiveIndex(nextIdx);
+    scrollToIndex(nextIdx, true);
+  }, [scrollToIndex]);
+
+  // Initial centering on mount (Index 2: PROGRESSIVE) & Auto-advance timer setup
   useEffect(() => {
     const timer = setTimeout(() => {
       scrollToIndex(2, false);
     }, 80);
-    return () => clearTimeout(timer);
-  }, [scrollToIndex]);
+
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReducedMotion) {
+      return () => clearTimeout(timer);
+    }
+
+    const section = sectionRef.current;
+    let observer: IntersectionObserver | null = null;
+
+    if (section) {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            isIntersectingRef.current = entry.isIntersecting;
+          });
+        },
+        { threshold: 0.2 }
+      );
+      observer.observe(section);
+    }
+
+    const interval = setInterval(stepAutoAdvance, 4500);
+
+    return () => {
+      clearTimeout(timer);
+      if (observer) observer.disconnect();
+      clearInterval(interval);
+      if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+    };
+  }, [scrollToIndex, stepAutoAdvance]);
+
+  // Handle wheel events for horizontal scrolling
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    notifyUserInteraction();
+    const track = trackRef.current;
+    if (!track) return;
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      track.scrollLeft += e.deltaY;
+    }
+  };
 
   // Handle scroll events to sync active dot when user swipes/scrolls manually
   const handleScroll = () => {
     if (isInternalScrollRef.current) return;
     const track = trackRef.current;
     if (!track) return;
+
+    notifyUserInteraction();
 
     const trackCenter = track.scrollLeft + track.clientWidth / 2;
     const cardNodes = track.querySelectorAll<HTMLElement>(".wave-card-item");
@@ -141,26 +210,30 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
   };
 
   const handlePrev = () => {
+    notifyUserInteraction();
     const nextIdx = Math.max(0, activeIndex - 1);
     setActiveIndex(nextIdx);
     scrollToIndex(nextIdx, true);
   };
 
   const handleNext = () => {
+    notifyUserInteraction();
     const nextIdx = Math.min(CARDS_DATA.length - 1, activeIndex + 1);
     setActiveIndex(nextIdx);
     scrollToIndex(nextIdx, true);
   };
 
   const handleSelectCard = (index: number) => {
+    notifyUserInteraction();
     setActiveIndex(index);
     scrollToIndex(index, true);
   };
 
   return (
     <section
+      ref={sectionRef}
       id="find-your-wave"
-      className="relative pt-16 lg:pt-24 pb-16 lg:pb-20 overflow-hidden bg-[#061C27] text-white selection:bg-[#00C8A0] selection:text-[#061C27]"
+      className="relative pt-10 lg:pt-14 pb-10 lg:pb-14 overflow-hidden bg-[#061C27] text-white selection:bg-[#00C8A0] selection:text-[#061C27]"
     >
       {/* ==========================================
           5-LAYER ATMOSPHERIC BACKGROUND
@@ -247,7 +320,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
       {/* ==========================================
           HEADER & FEATURE COLUMNS SECTION
           ========================================== */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 mb-12 lg:mb-16">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 mb-8 lg:mb-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
           {/* Left Column: Heading & Intro */}
           <div className="lg:col-span-6 text-left">
@@ -312,13 +385,13 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
       {/* ==========================================
           CARD CAROUSEL VIEWPORT & TRACK
           ========================================== */}
-      <div className="relative w-full z-10 my-4 min-h-[700px] flex items-center">
+      <div className="relative w-full z-10 my-2 min-h-[560px] flex items-center">
         {/* Circular Side Navigation Arrows */}
         <button
           onClick={handlePrev}
           disabled={activeIndex === 0}
           aria-label="Previous Wave Tier"
-          className={`absolute left-3 sm:left-6 lg:left-10 top-[52%] -translate-y-1/2 z-30 w-12 h-12 rounded-full border border-white/20 bg-[#061C27]/90 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-[#00C8A0] hover:border-[#00C8A0] hover:text-[#061C27] hover:scale-110 cursor-pointer ${
+          className={`absolute left-3 sm:left-6 lg:left-10 top-[50%] -translate-y-1/2 z-30 w-11 h-11 rounded-full border border-white/20 bg-[#061C27]/90 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-[#00C8A0] hover:border-[#00C8A0] hover:text-[#061C27] hover:scale-110 cursor-pointer ${
             activeIndex === 0 ? "opacity-30 cursor-not-allowed" : "opacity-100"
           }`}
         >
@@ -331,7 +404,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
           onClick={handleNext}
           disabled={activeIndex === CARDS_DATA.length - 1}
           aria-label="Next Wave Tier"
-          className={`absolute right-3 sm:left-auto sm:right-6 lg:right-10 top-[52%] -translate-y-1/2 z-30 w-12 h-12 rounded-full border border-white/20 bg-[#061C27]/90 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-[#00C8A0] hover:border-[#00C8A0] hover:text-[#061C27] hover:scale-110 cursor-pointer ${
+          className={`absolute right-3 sm:left-auto sm:right-6 lg:right-10 top-[50%] -translate-y-1/2 z-30 w-11 h-11 rounded-full border border-white/20 bg-[#061C27]/90 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-[#00C8A0] hover:border-[#00C8A0] hover:text-[#061C27] hover:scale-110 cursor-pointer ${
             activeIndex === CARDS_DATA.length - 1 ? "opacity-30 cursor-not-allowed" : "opacity-100"
           }`}
         >
@@ -344,9 +417,10 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
         <div
           ref={trackRef}
           onScroll={handleScroll}
-          className="carousel-viewport w-full overflow-x-auto no-scrollbar py-6 flex items-start gap-[28px] snap-x snap-mandatory"
+          onWheel={handleWheel}
+          className="carousel-viewport w-full overflow-x-auto no-scrollbar py-3 sm:py-4 flex items-start gap-3.5 sm:gap-4 lg:gap-4 snap-x snap-mandatory"
           style={{
-            paddingInline: "max(24px, calc((100vw - 520px) / 2))",
+            paddingInline: "max(20px, calc((100vw - 390px) / 2))",
           }}
         >
           {CARDS_DATA.map((card, idx) => {
@@ -356,16 +430,16 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
               <div
                 key={card.id}
                 onClick={() => handleSelectCard(idx)}
-                className={`wave-card-item shrink-0 cursor-pointer transition-all duration-500 ease-out flex flex-col justify-between snap-center ${
+                className={`wave-card-item shrink-0 cursor-pointer transition-all duration-500 ease-out flex flex-col justify-between snap-center overflow-hidden ${
                   isActive
-                    ? "w-[88vw] sm:w-[440px] lg:w-[520px] h-[640px] lg:h-[690px] lg:-translate-y-[18px] z-20 bg-[#F6F4EE] text-[#0A1926] rounded-[30px] shadow-[0_30px_70px_rgba(0,0,0,0.5)] border-2 border-white/60 p-6 sm:p-7"
-                    : "w-[80vw] sm:w-[360px] lg:w-[415px] h-[540px] lg:h-[580px] lg:translate-y-[64px] z-10 bg-[#F6F4EE]/95 text-[#0A1926]/90 rounded-[28px] shadow-2xl border border-white/30 p-5 sm:p-6 hover:bg-[#F6F4EE]"
+                    ? "w-[85vw] sm:w-[340px] lg:w-[390px] h-[500px] sm:h-[520px] lg:h-[540px] lg:-translate-y-[12px] z-20 bg-[#F6F4EE] text-[#0A1926] rounded-[26px] shadow-[0_25px_60px_rgba(0,0,0,0.45)] border-2 border-white/60 p-4 sm:p-5 lg:p-5"
+                    : "w-[75vw] sm:w-[280px] lg:w-[320px] h-[420px] sm:h-[440px] lg:h-[460px] lg:translate-y-[38px] z-10 bg-[#F6F4EE]/95 text-[#0A1926]/90 rounded-[24px] shadow-xl border border-white/30 p-3.5 sm:p-4 lg:p-4 hover:bg-[#F6F4EE]"
                 }`}
               >
                 {/* Top Image Box */}
                 <div
-                  className={`relative w-full overflow-hidden rounded-[20px] shrink-0 mb-4 transition-all duration-500 ${
-                    isActive ? "h-[240px] sm:h-[270px] lg:h-[290px]" : "h-[190px] sm:h-[210px] lg:h-[225px]"
+                  className={`relative w-full overflow-hidden rounded-[18px] shrink-0 mb-2.5 transition-all duration-500 ${
+                    isActive ? "h-[160px] sm:h-[175px] lg:h-[190px]" : "h-[125px] sm:h-[140px] lg:h-[150px]"
                   }`}
                 >
                   <img
@@ -377,81 +451,81 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
 
                   {/* Overlays on Image */}
-                  <div className="absolute top-3.5 left-3.5 z-10">
-                    <span className="inline-flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/30 text-[#00C8A0] text-[10px] font-extrabold tracking-widest px-3 py-1 rounded-full uppercase">
+                  <div className="absolute top-2.5 left-2.5 z-10">
+                    <span className="inline-flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/30 text-[#00C8A0] text-[9px] font-extrabold tracking-widest px-2.5 py-0.5 rounded-full uppercase">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#00C8A0] animate-pulse"></span>
                       <span>{card.waveBadge}</span>
                     </span>
                   </div>
 
-                  <div className="absolute bottom-3.5 left-4 z-10 text-white pointer-events-none">
-                    <span className="font-serif text-lg sm:text-xl font-bold uppercase tracking-wide text-white drop-shadow-md">
+                  <div className="absolute bottom-2.5 left-3 z-10 text-white pointer-events-none">
+                    <span className="font-serif text-base sm:text-lg font-bold uppercase tracking-wide text-white drop-shadow-md">
                       {card.level}
                     </span>
                   </div>
                 </div>
 
                 {/* Card Main Body */}
-                <div className="flex flex-col justify-between flex-grow text-left">
+                <div className="flex flex-col justify-between flex-grow text-left overflow-hidden">
                   <div>
-                    <span className="text-[#0B7FB5] text-[11px] font-extrabold tracking-[0.2em] uppercase block mb-1">
+                    <span className="text-[#0B7FB5] text-[10px] font-extrabold tracking-[0.2em] uppercase block mb-0.5">
                       {card.tierLabel}
                     </span>
-                    <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A1926] tracking-tight uppercase mb-2">
+                    <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#0A1926] tracking-tight uppercase mb-1">
                       {card.title}
                     </h3>
-                    <p className="text-slate-600 text-xs sm:text-sm leading-relaxed font-sans line-clamp-3">
+                    <p className="text-slate-600 text-xs leading-snug font-sans line-clamp-2 mb-1">
                       {card.desc}
                     </p>
                   </div>
 
                   <div>
                     {/* Technical Specification Grid */}
-                    <div className="grid grid-cols-3 gap-2 py-3 border-y border-slate-200/80 my-3">
+                    <div className="grid grid-cols-3 gap-1.5 py-2 border-y border-slate-200/80 my-2">
                       <div className="flex flex-col">
                         <div className="flex items-center gap-1 mb-0.5">
-                          <svg className="w-3.5 h-3.5 text-[#0B7FB5]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <svg className="w-3 h-3 text-[#0B7FB5]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M3 15c4-4 8 2 12-2s4-1 6-1" />
                           </svg>
-                          <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
+                          <span className="text-[8.5px] font-extrabold uppercase tracking-widest text-slate-400">
                             HEIGHT
                           </span>
                         </div>
-                        <span className="text-xs sm:text-sm font-bold text-[#0A1926]">{card.height}</span>
+                        <span className="text-xs font-bold text-[#0A1926]">{card.height}</span>
                       </div>
 
-                      <div className="flex flex-col border-l border-slate-200/80 pl-2.5">
+                      <div className="flex flex-col border-l border-slate-200/80 pl-2">
                         <div className="flex items-center gap-1 mb-0.5">
-                          <svg className="w-3.5 h-3.5 text-[#0B7FB5]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <svg className="w-3 h-3 text-[#0B7FB5]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                           </svg>
-                          <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
+                          <span className="text-[8.5px] font-extrabold uppercase tracking-widest text-slate-400">
                             RIDE
                           </span>
                         </div>
-                        <span className="text-xs sm:text-sm font-bold text-[#0A1926]">{card.ride}</span>
+                        <span className="text-xs font-bold text-[#0A1926]">{card.ride}</span>
                       </div>
 
-                      <div className="flex flex-col border-l border-slate-200/80 pl-2.5">
+                      <div className="flex flex-col border-l border-slate-200/80 pl-2">
                         <div className="flex items-center gap-1 mb-0.5">
-                          <svg className="w-3.5 h-3.5 text-[#0B7FB5]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <svg className="w-3 h-3 text-[#0B7FB5]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 2v20M8 6h8" />
                           </svg>
-                          <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
+                          <span className="text-[8.5px] font-extrabold uppercase tracking-widest text-slate-400">
                             BOARD
                           </span>
                         </div>
-                        <span className="text-xs sm:text-sm font-bold text-[#0A1926] truncate">{card.board}</span>
+                        <span className="text-xs font-bold text-[#0A1926] truncate">{card.board}</span>
                       </div>
                     </div>
 
                     {/* Pricing & Circular CTA Row */}
-                    <div className="flex items-center justify-between pt-1">
+                    <div className="flex items-center justify-between pt-0.5">
                       <div className="flex flex-col">
-                        <span className="text-[9px] font-extrabold uppercase tracking-widest text-slate-400">
+                        <span className="text-[8.5px] font-extrabold uppercase tracking-widest text-slate-400">
                           FROM
                         </span>
-                        <span className="text-base sm:text-lg font-extrabold text-[#0A1926] font-sans tracking-tight">
+                        <span className="text-sm sm:text-base font-extrabold text-[#0A1926] font-sans tracking-tight">
                           {card.price}
                         </span>
                       </div>
@@ -462,13 +536,13 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                           onOpenBooking(card.title);
                         }}
                         aria-label={`Book ${card.title} session`}
-                        className={`w-11 h-11 rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer shadow-md ${
+                        className={`rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer shadow-md ${
                           isActive
-                            ? "bg-[#074754] text-white hover:bg-[#00C8A0] hover:text-[#061C27] hover:scale-105"
-                            : "bg-white border border-slate-300 text-[#074754] hover:bg-[#074754] hover:text-white hover:border-[#074754]"
+                            ? "w-9 h-9 sm:w-10 sm:h-10 bg-[#074754] text-white hover:bg-[#00C8A0] hover:text-[#061C27] hover:scale-105"
+                            : "w-8 h-8 sm:w-9 sm:h-9 bg-white border border-slate-300 text-[#074754] hover:bg-[#074754] hover:text-white hover:border-[#074754]"
                         }`}
                       >
-                        <svg className="w-4 h-4 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                         </svg>
                       </button>
@@ -484,7 +558,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
       {/* ==========================================
           PAGINATION INDICATORS
           ========================================== */}
-      <div className="relative z-10 flex items-center justify-center gap-2 mt-8 mb-10">
+      <div className="relative z-10 flex items-center justify-center gap-2 mt-6 mb-6">
         {CARDS_DATA.map((card, idx) => {
           const isActive = idx === activeIndex;
           return (
