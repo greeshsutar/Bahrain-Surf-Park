@@ -15,7 +15,7 @@ const WAVE_LEVELS: WaveLevelData[] = [
     ride: "120m",
     board: "Soft-top",
     img: "/images/tier1.jpg",
-    video: "/videos/ocean.mp4",
+    video: "/videos/surfing.mp4",
   },
   {
     id: "novice",
@@ -28,7 +28,7 @@ const WAVE_LEVELS: WaveLevelData[] = [
     ride: "140m",
     board: "Funboard",
     img: "/images/tier2.jpg",
-    video: "/videos/create_a_video.mp4",
+    video: "/videos/surfing.mp4",
   },
   {
     id: "progressive",
@@ -41,7 +41,7 @@ const WAVE_LEVELS: WaveLevelData[] = [
     ride: "160m",
     board: "Fish / Longboard",
     img: "/images/tier3.jpg",
-    video: "/videos/ocean.mp4",
+    video: "/videos/surfing.mp4",
   },
   {
     id: "intermediate",
@@ -54,7 +54,7 @@ const WAVE_LEVELS: WaveLevelData[] = [
     ride: "180m",
     board: "Shortboard",
     img: "/images/tier4.jpg",
-    video: "/videos/create_a_video.mp4",
+    video: "/videos/surfing.mp4",
   },
   {
     id: "expert",
@@ -67,7 +67,7 @@ const WAVE_LEVELS: WaveLevelData[] = [
     ride: "200m",
     board: "Step-Up",
     img: "/images/tier5.jpg",
-    video: "/videos/ocean.mp4",
+    video: "/videos/surfing.mp4",
   },
 ];
 

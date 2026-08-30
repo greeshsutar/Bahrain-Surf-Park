@@ -74,7 +74,7 @@ export default function SurfHero() {
           poster="/images/tier5.jpg"
           className="w-full h-full object-cover object-center opacity-60"
         >
-          <source src="/videos/ocean.mp4" type="video/mp4" />
+          <source src="/videos/surfing.mp4" type="video/mp4" />
         </video>
         
         {/* Layer 1: Dark Scrim Left Gradient */}
