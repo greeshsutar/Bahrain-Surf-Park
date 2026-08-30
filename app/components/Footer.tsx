@@ -12,6 +12,9 @@ export default function Footer() {
         </div>
 
         <div className="flex flex-wrap justify-center gap-6 font-semibold uppercase tracking-widest text-[10px]">
+          <Link href="/surf" className="hover:text-[#00C8A0] text-[#00C8A0] font-bold transition-colors">
+            Surf
+          </Link>
           <Link href="/technology" className="hover:text-[#00C8A0] transition-colors">
             Technology
           </Link>

@@ -9,6 +9,7 @@ interface NavbarProps {
 }
 
 const NAV_ITEMS = [
+  { label: "SURF", href: "/surf" },
   { label: "TECHNOLOGY", href: "/technology" },
   { label: "THE WAVE", href: "/find-your-wave" },
   { label: "ACADEMY", href: "/academy" },

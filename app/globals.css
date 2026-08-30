@@ -1,6 +1,14 @@
 @import "tailwindcss";
 
 @theme {
+  --color-bsp-ocean-deep: #061F2B;
+  --color-bsp-ocean: #082F3D;
+  --color-bsp-ocean-light: #07536A;
+  --color-bsp-turquoise: #00C8A0;
+  --color-bsp-cyan: #00E5B3;
+  --color-bsp-surface: #F7F8F6;
+  --color-bsp-offwhite: #F2F3EE;
+
   --color-ocean-blue: #0B7FB5;
   --color-deep-ocean: #063B45;
   --color-surf-green: #00C8A0;
@@ -13,6 +21,14 @@
 }
 
 :root {
+  --bsp-ocean-deep: #061F2B;
+  --bsp-ocean: #082F3D;
+  --bsp-ocean-light: #07536A;
+  --bsp-turquoise: #00C8A0;
+  --bsp-cyan: #00E5B3;
+  --bsp-surface: #F7F8F6;
+  --bsp-offwhite: #F2F3EE;
+
   --color-canvas: #FFFFFF;
   --color-ocean-blue: #0B7FB5;
   --color-ocean-hover: #0077B6;
