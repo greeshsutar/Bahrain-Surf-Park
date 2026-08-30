@@ -64,6 +64,21 @@ export default function Footer() {
           </a>
         </div>
       </div>
+
+      {/* Stakeholder & Partner Logos Row per Spec Section 6 */}
+      {/* NOTE: Replace text wordmarks with official vector/raster logo assets in /public/images/partners/ when available */}
+      <div className="border-t border-white/10 pt-6 mt-6 max-w-7xl mx-auto px-6 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-white/40">
+          DEVELOPMENT & TECHNOLOGY PARTNERS
+        </span>
+        <div className="flex items-center gap-6 sm:gap-8 text-white/70 font-serif tracking-widest text-xs uppercase font-bold">
+          <span className="hover:text-[#00C8A0] transition-colors cursor-default">EDAMAH</span>
+          <span className="text-white/20">•</span>
+          <span className="hover:text-[#00C8A0] transition-colors cursor-default">GFH FINANCIAL GROUP</span>
+          <span className="text-white/20">•</span>
+          <span className="hover:text-[#00C8A0] transition-colors cursor-default">WAVEGARDEN</span>
+        </div>
+      </div>
     </footer>
   );
 }

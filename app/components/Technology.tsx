@@ -41,7 +41,7 @@ export default function Technology() {
     const counterTween = gsap.to(countObj, {
       val1: 1000,
       val2: 20,
-      val3: 35,
+      val3: 90,
       duration: 2.2,
       ease: "power2.out",
       scrollTrigger: {
@@ -56,7 +56,7 @@ export default function Technology() {
           stat2Ref.current.textContent = `${Math.floor(countObj.val2)}+`;
         }
         if (stat3Ref.current) {
-          stat3Ref.current.textContent = `${Math.floor(countObj.val3)}%`;
+          stat3Ref.current.textContent = Math.floor(countObj.val3).toString();
         }
       },
     });
@@ -84,7 +84,7 @@ export default function Technology() {
   };
 
   return (
-    <section id="technology" className="relative bg-[#FBFDFD] pt-12 sm:pt-16 pb-20 sm:pb-28 min-h-[820px] lg:min-h-[880px] z-10 overflow-visible">
+    <section id="technology" className="relative bg-[#FBFDFD] pt-8 sm:pt-10 pb-12 sm:pb-16 min-h-[640px] lg:min-h-[680px] z-10 overflow-visible">
       {/* Background Subtle Contour Lines & Ambient Glow */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
         {/* Topographic contour curves */}
@@ -132,25 +132,25 @@ export default function Technology() {
             </div>
 
             {/* Headline (Playfair Display) */}
-            <h2 className="font-serif text-4xl sm:text-5xl lg:text-[3.5rem] font-bold text-[#063B45] leading-[1.08] tracking-tight mb-6">
+            <h2 className="font-serif text-4xl sm:text-5xl lg:text-[3.5rem] font-bold text-[#063B45] leading-[1.08] tracking-tight mb-5">
               The Physics of<br />Perfection
             </h2>
 
             {/* Narrative Paragraph 1 */}
-            <p className="text-[#063B45]/85 text-sm sm:text-[15px] leading-relaxed mb-5 font-sans max-w-xl">
-              Our lagoon is powered by industry-leading Wavegarden Cove technology, capable of generating up to 1,000 ocean-like waves per hour. Each wave profile is programmatically controlled to modify height, speed, and shape in real time.
+            <p className="text-[#063B45]/85 text-sm sm:text-[15px] leading-relaxed mb-4 font-sans max-w-xl">
+              Our lagoon is powered by a 52-module Wavegarden Cove technology system, capable of generating up to 1,000 ocean-like waves per hour. Each wave profile is programmatically controlled to modify height, speed, and shape in real time.
             </p>
 
             {/* Narrative Paragraph 2 */}
-            <p className="text-[#063B45]/80 text-sm sm:text-[15px] leading-relaxed mb-8 font-sans max-w-xl">
+            <p className="text-[#063B45]/80 text-sm sm:text-[15px] leading-relaxed mb-6 font-sans max-w-xl">
               Through custom hydrodynamic modules, we optimize energy usage while delivering precise wave geometries. This creates the most consistent and customizable surfing environment in the world.
             </p>
 
             {/* Thin Horizontal Divider */}
-            <div className="border-t border-slate-200/90 my-8"></div>
+            <div className="border-t border-slate-200/90 my-5"></div>
 
             {/* 3-Column Technical Statistics Row with Animated Count-up Numbers */}
-            <div className="grid grid-cols-3 gap-3 sm:gap-6 text-left mb-8">
+            <div className="grid grid-cols-3 gap-3 sm:gap-6 text-left mb-6">
               
               {/* Stat 1: Waves / Hour */}
               <div className="flex flex-col">
@@ -187,20 +187,22 @@ export default function Technology() {
                 </p>
               </div>
 
-              {/* Stat 3: Energy Efficiency */}
+              {/* Stat 3: Surfers Capacity */}
               <div className="border-l border-slate-200/90 pl-3 sm:pl-6 flex flex-col">
                 <div className="flex items-center gap-1.5 mb-2 text-[#00C8A0]">
                   <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 2a10 10 0 0 0-7.07 17.07l.07.07A10 10 0 0 0 12 22a10 10 0 0 0 7-2.93l.07-.07A10 10 0 0 0 12 2z"/>
-                    <path d="M12 22v-9"/>
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                    <circle cx="9" cy="7" r="4"/>
+                    <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                   </svg>
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">ENERGY EFFICIENCY</span>
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500">SURFERS CAPACITY</span>
                 </div>
                 <div className="my-1">
                   <span ref={stat3Ref} className="font-serif text-3xl sm:text-4xl font-bold text-[#063B45] tracking-tight">0</span>
                 </div>
                 <p className="text-[11px] text-slate-500 font-medium leading-normal mt-1 max-w-[130px]">
-                  More efficient than traditional wave pool systems.
+                  Maximum simultaneous surfers across all lagoon zones.
                 </p>
               </div>
 
@@ -223,7 +225,7 @@ export default function Technology() {
           {/* Right Column: Technology Portrait Video Container */}
           <div className="lg:col-span-5 tech-right-col flex flex-col items-center justify-center">
             
-            <div className="w-full max-w-[460px] rounded-[22px] overflow-hidden shadow-2xl relative border border-white/70 h-[360px] sm:h-[430px] lg:h-[480px] max-h-[480px] bg-slate-900 group">
+            <div className="w-full max-w-[460px] rounded-[22px] overflow-hidden shadow-2xl relative border border-white/70 h-[340px] sm:h-[400px] lg:h-[440px] max-h-[440px] bg-slate-900 group">
               <video autoPlay muted loop playsInline className="w-full h-full object-cover">
                 <source src="/videos/create_a_video.mp4" type="video/mp4" />
               </video>

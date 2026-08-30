@@ -104,9 +104,12 @@ export default function Hero({ onOpenBooking }: HeroProps) {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 my-auto pt-28 pb-16 flex flex-col justify-end">
         <div className="max-w-xl lg:max-w-2xl text-left">
           {/* Location Eyebrow */}
-          <span className="hero-eyebrow text-[#00C8A0] text-xs sm:text-sm font-extrabold tracking-[0.25em] uppercase mb-3 inline-block">
-            BILAJ AL JAZAYER · BAHRAIN
-          </span>
+          <div className="hero-eyebrow mb-3 flex items-center gap-2">
+            <span className="inline-flex items-center gap-2 bg-[#00C8A0]/15 backdrop-blur-md border border-[#00C8A0]/40 text-[#00C8A0] text-xs font-extrabold tracking-[0.2em] uppercase px-3.5 py-1.5 rounded-full shadow-sm">
+              <span className="w-2 h-2 rounded-full bg-[#00C8A0] animate-pulse"></span>
+              <span>Opening 2026 • Bilaj Al Jazayer, Bahrain Southwest Coast</span>
+            </span>
+          </div>
 
           {/* Left-Aligned Display Headline */}
           <h1 className="hero-headline font-serif text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] font-bold text-white tracking-tight leading-[1.08] mb-5">

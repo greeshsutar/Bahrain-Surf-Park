@@ -18,7 +18,7 @@ const CARDS_DATA = [
     height: "0.5 – 0.8m",
     ride: "120m",
     board: "Soft-top",
-    price: "35 BHD",
+    price: "Pricing TBA",
   },
   {
     id: "02",
@@ -31,7 +31,7 @@ const CARDS_DATA = [
     height: "0.8 – 1.2m",
     ride: "140m",
     board: "Funboard",
-    price: "45 BHD",
+    price: "Pricing TBA",
   },
   {
     id: "03",
@@ -44,7 +44,7 @@ const CARDS_DATA = [
     height: "1.2 – 1.5m",
     ride: "160m",
     board: "Fish / Longboard",
-    price: "55 BHD",
+    price: "Pricing TBA",
   },
   {
     id: "04",
@@ -57,7 +57,7 @@ const CARDS_DATA = [
     height: "1.5 – 1.8m",
     ride: "180m",
     board: "Shortboard",
-    price: "65 BHD",
+    price: "Pricing TBA",
   },
   {
     id: "05",
@@ -70,7 +70,7 @@ const CARDS_DATA = [
     height: "1.8 – 2.2m",
     ride: "200m",
     board: "Step-Up",
-    price: "85 BHD",
+    price: "Pricing TBA",
   },
 ];
 
@@ -391,9 +391,8 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
           onClick={handlePrev}
           disabled={activeIndex === 0}
           aria-label="Previous Wave Tier"
-          className={`absolute left-3 sm:left-6 lg:left-10 top-[50%] -translate-y-1/2 z-30 w-11 h-11 rounded-full border border-white/20 bg-[#061C27]/90 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-[#00C8A0] hover:border-[#00C8A0] hover:text-[#061C27] hover:scale-110 cursor-pointer ${
-            activeIndex === 0 ? "opacity-30 cursor-not-allowed" : "opacity-100"
-          }`}
+          className={`absolute left-3 sm:left-6 lg:left-10 top-[50%] -translate-y-1/2 z-30 w-11 h-11 rounded-full border border-white/20 bg-[#061C27]/90 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-[#00C8A0] hover:border-[#00C8A0] hover:text-[#061C27] hover:scale-110 cursor-pointer ${activeIndex === 0 ? "opacity-30 cursor-not-allowed" : "opacity-100"
+            }`}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -404,9 +403,8 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
           onClick={handleNext}
           disabled={activeIndex === CARDS_DATA.length - 1}
           aria-label="Next Wave Tier"
-          className={`absolute right-3 sm:left-auto sm:right-6 lg:right-10 top-[50%] -translate-y-1/2 z-30 w-11 h-11 rounded-full border border-white/20 bg-[#061C27]/90 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-[#00C8A0] hover:border-[#00C8A0] hover:text-[#061C27] hover:scale-110 cursor-pointer ${
-            activeIndex === CARDS_DATA.length - 1 ? "opacity-30 cursor-not-allowed" : "opacity-100"
-          }`}
+          className={`absolute right-3 sm:left-auto sm:right-6 lg:right-10 top-[50%] -translate-y-1/2 z-30 w-11 h-11 rounded-full border border-white/20 bg-[#061C27]/90 text-white flex items-center justify-center shadow-2xl backdrop-blur-md transition-all duration-300 hover:bg-[#00C8A0] hover:border-[#00C8A0] hover:text-[#061C27] hover:scale-110 cursor-pointer ${activeIndex === CARDS_DATA.length - 1 ? "opacity-30 cursor-not-allowed" : "opacity-100"
+            }`}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
@@ -418,9 +416,9 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
           ref={trackRef}
           onScroll={handleScroll}
           onWheel={handleWheel}
-          className="carousel-viewport w-full overflow-x-auto no-scrollbar py-3 sm:py-4 flex items-start gap-3.5 sm:gap-4 lg:gap-4 snap-x snap-mandatory"
+          className="carousel-viewport w-full overflow-x-auto no-scrollbar py-3 sm:py-4 flex items-start gap-2 sm:gap-2.5 snap-x snap-mandatory"
           style={{
-            paddingInline: "max(20px, calc((100vw - 390px) / 2))",
+            paddingInline: "max(16px, calc((100vw - 390px) / 2))",
           }}
         >
           {CARDS_DATA.map((card, idx) => {
@@ -430,17 +428,15 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
               <div
                 key={card.id}
                 onClick={() => handleSelectCard(idx)}
-                className={`wave-card-item shrink-0 cursor-pointer transition-all duration-500 ease-out flex flex-col justify-between snap-center overflow-hidden ${
-                  isActive
-                    ? "w-[85vw] sm:w-[340px] lg:w-[390px] h-[500px] sm:h-[520px] lg:h-[540px] lg:-translate-y-[12px] z-20 bg-[#F6F4EE] text-[#0A1926] rounded-[26px] shadow-[0_25px_60px_rgba(0,0,0,0.45)] border-2 border-white/60 p-4 sm:p-5 lg:p-5"
-                    : "w-[75vw] sm:w-[280px] lg:w-[320px] h-[420px] sm:h-[440px] lg:h-[460px] lg:translate-y-[38px] z-10 bg-[#F6F4EE]/95 text-[#0A1926]/90 rounded-[24px] shadow-xl border border-white/30 p-3.5 sm:p-4 lg:p-4 hover:bg-[#F6F4EE]"
-                }`}
+                className={`wave-card-item shrink-0 cursor-pointer transition-all duration-500 ease-out flex flex-col justify-between snap-center overflow-hidden ${isActive
+                  ? "w-[85vw] sm:w-[340px] lg:w-[390px] h-[500px] sm:h-[520px] lg:h-[540px] lg:-translate-y-[4px] z-20 bg-[#F6F4EE] text-[#0A1926] rounded-[26px] shadow-[0_25px_60px_rgba(0,0,0,0.45)] border-2 border-white/60 p-4 sm:p-5 lg:p-5"
+                  : "w-[78vw] sm:w-[305px] lg:w-[350px] h-[420px] sm:h-[440px] lg:h-[460px] lg:translate-y-[14px] z-10 bg-[#F6F4EE]/95 text-[#0A1926]/90 rounded-[24px] shadow-xl border border-white/30 p-3.5 sm:p-4 lg:p-4 hover:bg-[#F6F4EE]"
+                  }`}
               >
                 {/* Top Image Box */}
                 <div
-                  className={`relative w-full overflow-hidden rounded-[18px] shrink-0 mb-2.5 transition-all duration-500 ${
-                    isActive ? "h-[160px] sm:h-[175px] lg:h-[190px]" : "h-[125px] sm:h-[140px] lg:h-[150px]"
-                  }`}
+                  className={`relative w-full overflow-hidden rounded-[18px] shrink-0 mb-2.5 transition-all duration-500 ${isActive ? "h-[160px] sm:h-[175px] lg:h-[190px]" : "h-[125px] sm:h-[140px] lg:h-[150px]"
+                    }`}
                 >
                   <img
                     src={card.img}
@@ -523,9 +519,9 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                     <div className="flex items-center justify-between pt-0.5">
                       <div className="flex flex-col">
                         <span className="text-[8.5px] font-extrabold uppercase tracking-widest text-slate-400">
-                          FROM
+                          SESSION RATE
                         </span>
-                        <span className="text-sm sm:text-base font-extrabold text-[#0A1926] font-sans tracking-tight">
+                        <span className="text-xs sm:text-sm font-bold text-[#0A1926] font-sans tracking-tight">
                           {card.price}
                         </span>
                       </div>
@@ -536,11 +532,10 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                           onOpenBooking(card.title);
                         }}
                         aria-label={`Book ${card.title} session`}
-                        className={`rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer shadow-md ${
-                          isActive
-                            ? "w-9 h-9 sm:w-10 sm:h-10 bg-[#074754] text-white hover:bg-[#00C8A0] hover:text-[#061C27] hover:scale-105"
-                            : "w-8 h-8 sm:w-9 sm:h-9 bg-white border border-slate-300 text-[#074754] hover:bg-[#074754] hover:text-white hover:border-[#074754]"
-                        }`}
+                        className={`rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer shadow-md ${isActive
+                          ? "w-9 h-9 sm:w-10 sm:h-10 bg-[#074754] text-white hover:bg-[#00C8A0] hover:text-[#061C27] hover:scale-105"
+                          : "w-8 h-8 sm:w-9 sm:h-9 bg-white border border-slate-300 text-[#074754] hover:bg-[#074754] hover:text-white hover:border-[#074754]"
+                          }`}
                       >
                         <svg className="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
@@ -566,11 +561,10 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
               key={card.id}
               onClick={() => handleSelectCard(idx)}
               aria-label={`Go to ${card.title}`}
-              className={`transition-all duration-300 cursor-pointer ${
-                isActive
-                  ? "w-8 h-2 rounded-full bg-[#00C8A0] shadow-sm"
-                  : "w-5 h-2 rounded-full bg-white/30 hover:bg-white/60"
-              }`}
+              className={`transition-all duration-300 cursor-pointer ${isActive
+                ? "w-8 h-2 rounded-full bg-[#00C8A0] shadow-sm"
+                : "w-5 h-2 rounded-full bg-white/30 hover:bg-white/60"
+                }`}
             />
           );
         })}

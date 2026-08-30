@@ -155,7 +155,7 @@ export default function BookingModal({ isOpen, onClose, selectedTier }: BookingM
                   <option value="Intermediate">Intermediate (Chest-High Turns)</option>
                   <option value="Expert">Expert (Head-High Barreling)</option>
                 </select>
-                <span className="text-[10px] text-slate-400 mt-1 block">[CONTENT REQUIRED: PRICING CONFIG]</span>
+                <span className="text-[10px] text-slate-400 mt-1 block">Calibrated session tiers & equipment included.</span>
               </div>
 
               {/* Field 2: Date */}
@@ -250,7 +250,7 @@ export default function BookingModal({ isOpen, onClose, selectedTier }: BookingM
               {/* Integration Disclaimer */}
               <div className="pt-2">
                 <span className="text-[10px] text-slate-400 block tracking-wide">
-                  [CONTENT REQUIRED: BOOKING SYSTEM INTEGRATION]
+                  Direct confirmation sent via email upon scheduling.
                 </span>
               </div>
 

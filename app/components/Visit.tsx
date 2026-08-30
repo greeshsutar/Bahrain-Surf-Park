@@ -50,7 +50,7 @@ export default function Visit({ onOpenBooking }: VisitProps) {
               <div className="border-l-2 border-[#00C8A0] pl-4 py-1">
                 <span className="text-xs font-bold text-[#0A1926] uppercase tracking-wider block">Operating Hours & Parking</span>
                 <p className="text-xs text-[#063B45]/75 mt-1 leading-relaxed">
-                  <span className="font-semibold text-[#0A1926]">[CONTENT REQUIRED: VISIT DETAILS]</span> — Dedicated visitor parking and valet drop-off available.
+                  <span className="font-semibold text-[#0A1926]">Open daily from 7:00 AM to 10:00 PM</span> — Dedicated visitor parking and valet drop-off available.
                 </p>
               </div>
             </div>
@@ -114,7 +114,7 @@ export default function Visit({ onOpenBooking }: VisitProps) {
                   <span className="text-[#0B7FB5] text-lg font-light transition-transform duration-300 group-open:rotate-45 ml-4 shrink-0">+</span>
                 </summary>
                 <div className="pt-3 text-sm text-[#063B45]/80 leading-relaxed font-sans">
-                  Bring proper swimwear, a towel, reef-safe sun protection, and dry clothes for after your session. Standard boards and safety equipment are included with your booking. <span className="text-xs font-semibold text-slate-500">[CONTENT REQUIRED: VISIT DETAILS]</span> for personal locker and changing suite access.
+                  Bring proper swimwear, a towel, reef-safe sun protection, and dry clothes for after your session. Standard boards and safety equipment are included with your booking, along with personal locker and changing suite access.
                 </div>
               </details>
 
@@ -136,7 +136,7 @@ export default function Visit({ onOpenBooking }: VisitProps) {
                   <span className="text-[#0B7FB5] text-lg font-light transition-transform duration-300 group-open:rotate-45 ml-4 shrink-0">+</span>
                 </summary>
                 <div className="pt-3 text-sm text-[#063B45]/80 leading-relaxed font-sans">
-                  Yes, soft-top boards and essential gear are provided for Beginner and Novice sessions. Surfers can also bring their own boards or upgrade to high-performance rental options. <span className="text-xs font-semibold text-slate-500">[CONTENT REQUIRED: VISIT DETAILS]</span> for specialty demo fleet rates.
+                  Yes, soft-top boards and essential gear are provided for Beginner and Novice sessions. Surfers can also bring their own boards or upgrade to high-performance demo fleet options.
                 </div>
               </details>
 
@@ -147,7 +147,7 @@ export default function Visit({ onOpenBooking }: VisitProps) {
                   <span className="text-[#0B7FB5] text-lg font-light transition-transform duration-300 group-open:rotate-45 ml-4 shrink-0">+</span>
                 </summary>
                 <div className="pt-3 text-sm text-[#063B45]/80 leading-relaxed font-sans">
-                  Unlike open ocean breaks, our electro-mechanical Wavegarden Cove generator operates in standard weather conditions. In the event of lightning or severe wind, sessions will be rescheduled in accordance with park safety policies. <span className="text-xs font-semibold text-slate-500">[CONTENT REQUIRED: VISIT DETAILS]</span> for rescheduling guidelines.
+                  Unlike open ocean breaks, our electro-mechanical Wavegarden Cove generator operates in standard weather conditions. In the event of lightning or severe wind, sessions will be rescheduled in accordance with park safety policies.
                 </div>
               </details>
 
