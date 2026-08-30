@@ -127,27 +127,27 @@ html.lenis {
 }
 
 .nav-transparent .nav-anchor:hover {
-  color: var(--color-surf-green);
+  color: #00C8A0;
 }
 
 .nav-scrolled {
-  background-color: rgba(255, 255, 255, 0.95);
-  color: var(--color-deep-slate);
+  background-color: rgba(255, 255, 255, 0.98);
+  color: #063B45;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   padding-top: 0.875rem;
   padding-bottom: 0.875rem;
-  box-shadow: 0 4px 20px -2px rgba(10, 25, 38, 0.06);
-  border-bottom: 1px solid #F1F5F9;
+  box-shadow: 0 4px 20px -2px rgba(10, 25, 38, 0.08);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
 }
 
 .nav-scrolled .nav-anchor {
-  color: rgba(10, 25, 38, 0.85);
+  color: #063B45;
   text-shadow: none;
 }
 
 .nav-scrolled .nav-anchor:hover {
-  color: var(--color-ocean-blue);
+  color: #0B7FB5;
 }
 
 /* Navigation Link Underline Accent */
@@ -163,7 +163,7 @@ html.lenis {
   left: 0;
   width: 0%;
   height: 2px;
-  background-color: var(--color-surf-green);
+  background-color: #00C8A0;
   border-radius: 2px;
   transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -173,7 +173,7 @@ html.lenis {
 }
 
 .nav-scrolled .nav-anchor::after {
-  background-color: var(--color-ocean-blue);
+  background-color: #0B7FB5;
 }
 
 /* ALL BUTTONS: Strict Max 6-8px Border Radius */
@@ -445,22 +445,23 @@ a.rounded-full,
 
 /* Scrolled Navbar Button States */
 .nav-scrolled .nav-book-btn {
-  color: var(--color-deep-slate) !important;
-  border-color: rgba(10, 25, 38, 0.3) !important;
+  background-color: #0B7FB5 !important;
+  color: #FFFFFF !important;
+  border-color: transparent !important;
 }
 
 .nav-scrolled .nav-book-btn:hover {
-  background-color: rgba(10, 25, 38, 0.05) !important;
-  border-color: var(--color-deep-slate) !important;
+  background-color: #063B45 !important;
+  color: #FFFFFF !important;
 }
 
 .nav-scrolled .nav-toggle-btn {
-  color: var(--color-deep-slate) !important;
-  border-color: rgba(10, 25, 38, 0.2) !important;
+  color: #063B45 !important;
+  border-color: rgba(6, 59, 69, 0.3) !important;
 }
 
 .nav-scrolled .nav-toggle-btn:hover {
-  background-color: rgba(10, 25, 38, 0.05) !important;
+  background-color: rgba(6, 59, 69, 0.08) !important;
 }
 
 /* ORGANIC WAVE SHAPE DIVIDER */

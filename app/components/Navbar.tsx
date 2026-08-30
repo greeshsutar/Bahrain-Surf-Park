@@ -41,10 +41,10 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
     <header>
       <nav
         id="navbar"
-        className={`fixed top-0 left-0 right-0 z-30 transition-all duration-300 px-6 sm:px-10 flex items-center justify-between ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 sm:px-10 flex items-center justify-between ${
           isScrolled
-            ? "nav-scrolled bg-[#061C27]/95 text-white shadow-lg py-3 backdrop-blur-md border-b border-white/10"
-            : "nav-transparent bg-gradient-to-b from-[#061C27]/80 to-transparent text-white py-4 sm:py-5"
+            ? "nav-scrolled bg-white/95 text-[#063B45] shadow-md py-3.5 backdrop-blur-md border-b border-slate-200/80"
+            : "nav-transparent bg-gradient-to-b from-[#02141C]/85 via-[#02141C]/40 to-transparent text-white py-4 sm:py-5"
         }`}
       >
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
@@ -66,15 +66,23 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`py-1 transition-all duration-200 relative ${
+                  className={`py-1 transition-all duration-200 relative nav-anchor ${
                     isActive
-                      ? "text-[#00C8A0] font-extrabold"
+                      ? isScrolled
+                        ? "text-[#0B7FB5] font-extrabold"
+                        : "text-[#00C8A0] font-extrabold"
+                      : isScrolled
+                      ? "text-[#063B45] hover:text-[#0B7FB5]"
                       : "text-white/90 hover:text-[#00C8A0]"
                   }`}
                 >
                   <span>{item.label}</span>
                   {isActive && (
-                    <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#00C8A0] rounded-full"></span>
+                    <span
+                      className={`absolute bottom-0 left-0 right-0 h-[2px] rounded-full ${
+                        isScrolled ? "bg-[#0B7FB5]" : "bg-[#00C8A0]"
+                      }`}
+                    ></span>
                   )}
                 </Link>
               );
@@ -85,7 +93,11 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
           <div className="flex items-center gap-3 sm:gap-4 shrink-0">
             <button
               onClick={() => onOpenBooking()}
-              className="nav-book-btn bg-[#00C8A0] hover:bg-[#00B590] text-[#061C27] font-extrabold px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest transition-all shadow-md hover:shadow-lg cursor-pointer"
+              className={`nav-book-btn font-extrabold px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest transition-all shadow-md cursor-pointer ${
+                isScrolled
+                  ? "bg-[#0B7FB5] hover:bg-[#063B45] text-white"
+                  : "bg-[#00C8A0] hover:bg-[#00B590] text-[#061C27]"
+              }`}
             >
               BOOK NOW
             </button>
@@ -94,7 +106,11 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
             <button
               id="mobile-menu-btn"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="nav-toggle-btn w-9 h-9 border border-white/30 rounded-full text-white hover:bg-white/15 transition-all flex items-center justify-center bg-black/20 lg:hidden"
+              className={`nav-toggle-btn w-9 h-9 border rounded-full transition-all flex items-center justify-center lg:hidden ${
+                isScrolled
+                  ? "border-[#063B45]/30 text-[#063B45] hover:bg-[#063B45]/10"
+                  : "border-white/30 text-white hover:bg-white/15 bg-black/20"
+              }`}
               aria-label="Toggle Navigation Menu"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
