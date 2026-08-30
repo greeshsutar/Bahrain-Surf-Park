@@ -535,6 +535,15 @@ a.rounded-full,
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
+@keyframes flowContour {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-20%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   #booking-modal-overlay,
   #booking-modal-container,

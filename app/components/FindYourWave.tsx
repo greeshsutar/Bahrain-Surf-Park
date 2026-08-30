@@ -79,189 +79,194 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
   // Default active card index set to 2 (PROGRESSIVE)
   const [activeIndex, setActiveIndex] = useState<number>(2);
   const sectionRef = useRef<HTMLElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const isInternalScrollRef = useRef<boolean>(false);
+
   const activeIndexRef = useRef<number>(2);
   const isDraggingRef = useRef<boolean>(false);
   const startXRef = useRef<number>(0);
-  const scrollLeftRef = useRef<number>(0);
+  const startTrackXRef = useRef<number>(0);
+  const isWheelLockedRef = useRef<boolean>(false);
 
   // Sync activeIndex ref
   useEffect(() => {
     activeIndexRef.current = activeIndex;
   }, [activeIndex]);
 
-  // Smooth scroll carousel to center a specific card index using GSAP
-  const scrollToIndex = useCallback((index: number, smooth: boolean = true) => {
+  // Calculate translate3d(x, 0, 0) target position to perfectly center target card index
+  const calculateX = useCallback((index: number) => {
+    const viewport = viewportRef.current;
     const track = trackRef.current;
-    if (!track) return;
+    if (!viewport || !track) return 0;
 
-    const cardNodes = track.querySelectorAll<HTMLElement>(".wave-card-item");
-    const targetCard = cardNodes[index];
-    if (!targetCard) return;
+    const cardNode = track.querySelector<HTMLElement>(".wave-card-item");
+    if (!cardNode) return 0;
 
-    const trackWidth = track.clientWidth;
-    const cardOffset = targetCard.offsetLeft;
-    const cardWidth = targetCard.clientWidth;
+    const viewportWidth = viewport.clientWidth;
+    const cardWidth = cardNode.clientWidth;
 
-    const targetScroll = cardOffset - trackWidth / 2 + cardWidth / 2;
+    const trackStyle = window.getComputedStyle(track);
+    const gap = parseFloat(trackStyle.gap) || 24;
 
-    if (smooth) {
-      isInternalScrollRef.current = true;
-      gsap.to(track, {
-        scrollLeft: Math.max(0, targetScroll),
-        duration: 0.75,
-        ease: "power2.out",
-        overwrite: "auto",
-        onComplete: () => {
-          isInternalScrollRef.current = false;
-        },
-      });
-    } else {
-      track.scrollLeft = Math.max(0, targetScroll);
-    }
+    const centerOffset = viewportWidth / 2 - cardWidth / 2;
+    const targetX = centerOffset - index * (cardWidth + gap);
+
+    return targetX;
   }, []);
 
-  // Initial centering on mount (Index 2: PROGRESSIVE) & Non-passive wheel handling
+  // Programmatically animate track to step index using GSAP translate3d
+  const animateToStep = useCallback(
+    (index: number, smooth: boolean = true) => {
+      const track = trackRef.current;
+      if (!track) return;
+
+      const targetX = calculateX(index);
+      setActiveIndex(index);
+
+      if (smooth) {
+        gsap.to(track, {
+          x: targetX,
+          duration: 0.85,
+          ease: "power3.out",
+          overwrite: "auto",
+        });
+      } else {
+        gsap.set(track, { x: targetX });
+      }
+    },
+    [calculateX]
+  );
+
+  // Initial centering on mount (Index 2: PROGRESSIVE) & Resize handling
   useEffect(() => {
     const timer = setTimeout(() => {
-      scrollToIndex(2, false);
-    }, 100);
+      animateToStep(2, false);
+    }, 50);
 
-    const track = trackRef.current;
-    if (!track) return () => clearTimeout(timer);
+    const handleResize = () => {
+      animateToStep(activeIndexRef.current, false);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [animateToStep]);
+
+  // Trackpad / Mouse Wheel gesture conversion with 500ms debounce lock
+  useEffect(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+
+    let wheelTimer: NodeJS.Timeout | null = null;
 
     const onWheelNative = (e: WheelEvent) => {
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
         e.preventDefault();
-        track.scrollLeft += e.deltaY * 0.95;
 
-        const trackCenter = track.scrollLeft + track.clientWidth / 2;
-        const cardNodes = track.querySelectorAll<HTMLElement>(".wave-card-item");
-        let closestIndex = activeIndexRef.current;
-        let minDistance = Infinity;
+        if (!isWheelLockedRef.current) {
+          isWheelLockedRef.current = true;
+          const currentIdx = activeIndexRef.current;
 
-        cardNodes.forEach((node, idx) => {
-          const cardCenter = node.offsetLeft + node.clientWidth / 2;
-          const dist = Math.abs(cardCenter - trackCenter);
-          if (dist < minDistance) {
-            minDistance = dist;
-            closestIndex = idx;
+          if (e.deltaY > 0) {
+            if (currentIdx < CARDS_DATA.length - 1) {
+              animateToStep(currentIdx + 1, true);
+            }
+          } else if (e.deltaY < 0) {
+            if (currentIdx > 0) {
+              animateToStep(currentIdx - 1, true);
+            }
           }
-        });
 
-        if (closestIndex !== activeIndexRef.current) {
-          setActiveIndex(closestIndex);
+          if (wheelTimer) clearTimeout(wheelTimer);
+          wheelTimer = setTimeout(() => {
+            isWheelLockedRef.current = false;
+          }, 500);
         }
       }
     };
 
-    track.addEventListener("wheel", onWheelNative, { passive: false });
+    viewport.addEventListener("wheel", onWheelNative, { passive: false });
 
     return () => {
-      clearTimeout(timer);
-      track.removeEventListener("wheel", onWheelNative);
+      viewport.removeEventListener("wheel", onWheelNative);
+      if (wheelTimer) clearTimeout(wheelTimer);
     };
-  }, [scrollToIndex]);
+  }, [animateToStep]);
 
-  // Handle scroll Settlement detection
-  const handleScroll = () => {
-    if (isInternalScrollRef.current || isDraggingRef.current) return;
+  // Pointer / Mouse Dragging Handlers using translate3d
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest("button")) return;
     const track = trackRef.current;
     if (!track) return;
 
-    const trackCenter = track.scrollLeft + track.clientWidth / 2;
-    const cardNodes = track.querySelectorAll<HTMLElement>(".wave-card-item");
-
-    let closestIndex = activeIndex;
-    let minDistance = Infinity;
-
-    cardNodes.forEach((node, idx) => {
-      const cardCenter = node.offsetLeft + node.clientWidth / 2;
-      const dist = Math.abs(cardCenter - trackCenter);
-      if (dist < minDistance) {
-        minDistance = dist;
-        closestIndex = idx;
-      }
-    });
-
-    if (closestIndex !== activeIndex) {
-      setActiveIndex(closestIndex);
-    }
-  };
-
-  // Mouse / Pointer Dragging Handlers
-  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-    if ((e.target as HTMLElement).closest("button")) return;
     isDraggingRef.current = true;
     startXRef.current = e.clientX;
-    scrollLeftRef.current = trackRef.current?.scrollLeft || 0;
-    if (trackRef.current) {
-      trackRef.current.style.cursor = "grabbing";
-      trackRef.current.style.userSelect = "none";
-      trackRef.current.style.scrollSnapType = "none";
+
+    const currentX = gsap.getProperty(track, "x") as number;
+    startTrackXRef.current =
+      typeof currentX === "number" ? currentX : calculateX(activeIndexRef.current);
+
+    gsap.killTweensOf(track);
+
+    if (viewportRef.current) {
+      viewportRef.current.classList.add("cursor-grabbing");
     }
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDraggingRef.current || !trackRef.current) return;
-    const x = e.clientX;
-    const walk = (startXRef.current - x) * 1.4;
-    trackRef.current.scrollLeft = scrollLeftRef.current + walk;
+    const deltaX = e.clientX - startXRef.current;
+
+    let rawX = startTrackXRef.current + deltaX;
+    const minX = calculateX(CARDS_DATA.length - 1);
+    const maxX = calculateX(0);
+
+    // Apply resistance at edges
+    if (rawX > maxX) {
+      rawX = maxX + (rawX - maxX) * 0.3;
+    } else if (rawX < minX) {
+      rawX = minX + (rawX - minX) * 0.3;
+    }
+
+    gsap.set(trackRef.current, { x: rawX });
   };
 
-  const handlePointerUp = () => {
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDraggingRef.current || !trackRef.current) return;
     isDraggingRef.current = false;
-    if (trackRef.current) {
-      trackRef.current.style.cursor = "grab";
-      trackRef.current.style.removeProperty("user-select");
-      trackRef.current.style.scrollSnapType = "x mandatory";
 
-      const trackCenter = trackRef.current.scrollLeft + trackRef.current.clientWidth / 2;
-      const cardNodes = trackRef.current.querySelectorAll<HTMLElement>(".wave-card-item");
-
-      let closestIndex = activeIndex;
-      let minDistance = Infinity;
-
-      cardNodes.forEach((node, idx) => {
-        const cardCenter = node.offsetLeft + node.clientWidth / 2;
-        const dist = Math.abs(cardCenter - trackCenter);
-        if (dist < minDistance) {
-          minDistance = dist;
-          closestIndex = idx;
-        }
-      });
-
-      setActiveIndex(closestIndex);
-      scrollToIndex(closestIndex, true);
+    if (viewportRef.current) {
+      viewportRef.current.classList.remove("cursor-grabbing");
     }
-  };
 
-  // Mouse Wheel Gesture Handling
-  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    const track = trackRef.current;
-    if (!track) return;
-    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-      track.scrollLeft += e.deltaY * 0.8;
+    const deltaX = e.clientX - startXRef.current;
+    const threshold = 55;
+
+    let targetIndex = activeIndexRef.current;
+    if (deltaX < -threshold) {
+      targetIndex = Math.min(CARDS_DATA.length - 1, targetIndex + 1);
+    } else if (deltaX > threshold) {
+      targetIndex = Math.max(0, targetIndex - 1);
     }
+
+    animateToStep(targetIndex, true);
   };
 
   const handlePrev = () => {
     const nextIdx = Math.max(0, activeIndex - 1);
-    setActiveIndex(nextIdx);
-    scrollToIndex(nextIdx, true);
+    animateToStep(nextIdx, true);
   };
 
   const handleNext = () => {
     const nextIdx = Math.min(CARDS_DATA.length - 1, activeIndex + 1);
-    setActiveIndex(nextIdx);
-    scrollToIndex(nextIdx, true);
+    animateToStep(nextIdx, true);
   };
 
   const handleSelectCard = (index: number) => {
-    setActiveIndex(index);
-    scrollToIndex(index, true);
+    animateToStep(index, true);
   };
 
   return (
@@ -368,10 +373,16 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
         </div>
       </div>
 
-      {/* CAROUSEL VIEWPORT & SINGLE-TRACK CONTAINER */}
-      <div className="relative w-full z-10 my-2 min-h-[500px] flex items-center">
-        
-        {/* Navigation Arrows positioned relative to carousel viewport */}
+      {/* CAROUSEL VIEWPORT & CONTROLLED TRACK CONTAINER */}
+      <div
+        ref={viewportRef}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        className="carousel-viewport relative w-full overflow-hidden z-10 my-2 min-h-[510px] flex items-center cursor-grab select-none"
+      >
+        {/* Navigation Arrows */}
         <button
           onClick={handlePrev}
           disabled={activeIndex === 0}
@@ -398,18 +409,10 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
           </svg>
         </button>
 
-        {/* Carousel Track with mouse drag & horizontal snap */}
+        {/* Controlled GSAP Matrix Track */}
         <div
           ref={trackRef}
-          onScroll={handleScroll}
-          onWheel={handleWheel}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          className="carousel-viewport w-full overflow-x-auto no-scrollbar py-6 flex items-center gap-4 sm:gap-6 snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none"
-          style={{
-            paddingInline: "max(24px, calc((100vw - clamp(320px, 28vw, 420px)) / 2))",
-          }}
+          className="carousel-track flex items-center gap-4 sm:gap-5 lg:gap-6 py-6 will-change-transform"
         >
           {CARDS_DATA.map((card, idx) => {
             const isActive = idx === activeIndex;
