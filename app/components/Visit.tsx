@@ -92,28 +92,39 @@ export default function Visit({ onOpenBooking }: VisitProps) {
               </div>
             </div>
 
-            {/* Official Google Maps Location Card */}
-            <a
-              href="https://maps.app.goo.gl/qcxXGozrQb9vLgnX8"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="visit-animate group rounded-xl border border-[#0B7FB5]/20 bg-[#F0F8FF] hover:bg-[#E6F4FE] p-6 mb-8 text-center flex flex-col items-center justify-center relative overflow-hidden transition-all shadow-sm hover:shadow-md cursor-pointer"
-            >
-              <div className="w-11 h-11 rounded-full bg-[#0B7FB5] text-white flex items-center justify-center mb-3 shadow-md transition-transform duration-300 group-hover:scale-110">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                </svg>
+            {/* Embedded Google Maps Location Container */}
+            <div className="visit-animate rounded-2xl border border-[#0B7FB5]/20 bg-[#F0F8FF] overflow-hidden shadow-md mb-8">
+              <div className="p-3 bg-[#0A1926] text-white flex items-center justify-between px-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#00C8A0] animate-pulse" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-200">
+                    Location Map • Bilaj Al Jazayer
+                  </span>
+                </div>
+                <a
+                  href="https://maps.app.goo.gl/qcxXGozrQb9vLgnX8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] text-[#00C8A0] hover:underline font-bold uppercase tracking-wider flex items-center gap-1"
+                >
+                  <span>Open Full Map</span>
+                  <span>↗</span>
+                </a>
               </div>
-              <span className="text-xs font-extrabold uppercase tracking-wider text-[#0A1926] block mb-1 group-hover:text-[#0B7FB5] transition-colors">
-                Bilaj Al Jazayer, Kingdom of Bahrain
-              </span>
-              <span className="text-[11px] font-mono text-slate-500 block mb-3">26.0125° N, 50.4850° E</span>
-              <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#0B7FB5] text-white text-xs font-bold uppercase tracking-wider shadow-sm transition-all group-hover:bg-[#063B45]">
-                <span>VIEW ON GOOGLE MAPS</span>
-                <span className="text-sm">↗</span>
-              </span>
-            </a>
+              <div className="relative w-full h-[280px] sm:h-[340px]">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3586.569472110017!2d50.4605294!3d25.9821565!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e484d10ac4af0ed%3A0x1ed725240b2dec62!2sBahrain%20Surf%20Park!5e0!3m2!1sen!2sin!4v1788188275602!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  title="Bahrain Surf Park Google Maps Location"
+                  className="w-full h-full"
+                />
+              </div>
+            </div>
 
             {/* Primary CTA Button */}
             <div className="visit-animate">

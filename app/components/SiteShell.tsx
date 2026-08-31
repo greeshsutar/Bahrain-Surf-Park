@@ -11,6 +11,7 @@ import Footer from "./Footer";
 import BookingModal from "./BookingModal";
 import WelcomeModal from "./WelcomeModal";
 import { BookingProvider } from "../context/BookingContext";
+import SurfConcierge from "./concierge/SurfConcierge";
 
 export default function SiteShell({ children }: { children: React.ReactNode }) {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -73,6 +74,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
           <WelcomeModal />
         </>
       )}
+      <SurfConcierge />
     </BookingProvider>
   );
 }

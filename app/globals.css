@@ -568,11 +568,79 @@ a.rounded-full,
   }
 }
 
+@keyframes greetingAppear {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes robotFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-3.5px);
+  }
+}
+
+@keyframes robotShadow {
+  0%, 100% {
+    transform: scaleX(1);
+    opacity: 0.25;
+  }
+  50% {
+    transform: scaleX(0.72);
+    opacity: 0.12;
+  }
+}
+
+@keyframes verticalMarqueeUp {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes verticalMarqueeDown {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(0%);
+  }
+}
+
+.animate-vertical-up {
+  animation: verticalMarqueeUp 26s linear infinite;
+}
+
+.animate-vertical-down {
+  animation: verticalMarqueeDown 26s linear infinite;
+}
+
+/* Pause track motion when hovering over card track container */
+.hover-pause-track:hover .animate-vertical-up,
+.hover-pause-track:hover .animate-vertical-down {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   #booking-modal-overlay,
   #booking-modal-container,
   #welcome-modal-overlay,
-  #welcome-modal-container {
+  #welcome-modal-container,
+  .animate-greeting-appear,
+  .animate-robot-float,
+  .animate-robot-shadow,
+  .animate-vertical-up,
+  .animate-vertical-down {
     animation: none !important;
     transition: none !important;
     transform: none !important;
