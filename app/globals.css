@@ -16,8 +16,10 @@
   --color-subtle-border: #E2E8F0;
   --color-card-bg: #F7F5EF;
 
-  --font-serif: var(--font-playfair), Georgia, serif;
-  --font-sans: var(--font-plus-jakarta), Inter, sans-serif;
+  --font-display: "Canela", var(--font-canela), Georgia, serif;
+  --font-serif: "Canela", var(--font-canela), Georgia, serif;
+  --font-sans: var(--font-manrope), "Manrope", sans-serif;
+  --font-body: var(--font-manrope), "Manrope", sans-serif;
 }
 
 :root {
@@ -37,8 +39,11 @@
   --color-deep-slate: #0A1926;
   --color-subtle-border: #E2E8F0;
 
-  --font-heading: var(--font-playfair), Georgia, serif;
-  --font-body: var(--font-plus-jakarta), Inter, sans-serif;
+  --font-display: "Canela", var(--font-canela), Georgia, serif;
+  --font-serif: "Canela", var(--font-canela), Georgia, serif;
+  --font-heading: "Canela", var(--font-canela), Georgia, serif;
+  --font-sans: var(--font-manrope), "Manrope", sans-serif;
+  --font-body: var(--font-manrope), "Manrope", sans-serif;
 
   --radius-btn: 8px;
   --radius-card: 12px;

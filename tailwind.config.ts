@@ -16,8 +16,10 @@ const config: Config = {
         'card-bg': '#F7F5EF',
       },
       fontFamily: {
-        sans: ['var(--font-plus-jakarta)', 'Inter', 'sans-serif'],
-        serif: ['var(--font-playfair)', 'Georgia', 'serif'],
+        display: ['"Canela"', 'var(--font-canela)', 'Georgia', 'serif'],
+        serif: ['"Canela"', 'var(--font-canela)', 'Georgia', 'serif'],
+        sans: ['var(--font-manrope)', '"Manrope"', 'sans-serif'],
+        body: ['var(--font-manrope)', '"Manrope"', 'sans-serif'],
       },
     },
   },
