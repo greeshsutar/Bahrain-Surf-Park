@@ -1,9 +1,14 @@
 "use client";
 
-export default function WaveDivider() {
+interface WaveDividerProps {
+  fill?: string;
+  className?: string;
+}
+
+export default function WaveDivider({ fill = "#061C27", className = "" }: WaveDividerProps) {
   return (
     <div
-      className="
+      className={`
         absolute
         left-0
         right-0
@@ -15,7 +20,8 @@ export default function WaveDivider() {
         z-20
         pointer-events-none
         overflow-hidden
-      "
+        ${className}
+      `}
       aria-hidden="true"
     >
       <svg
@@ -25,34 +31,12 @@ export default function WaveDivider() {
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <filter
-            id="wave-shadow"
-            x="-10%"
-            y="-30%"
-            width="120%"
-            height="170%"
-          >
-            <feDropShadow
-              dx="0"
-              dy="-5"
-              stdDeviation="7"
-              floodColor="#000000"
-              floodOpacity="0.14"
-            />
-            <feDropShadow
-              dx="0"
-              dy="-2"
-              stdDeviation="3"
-              floodColor="#000000"
-              floodOpacity="0.07"
-            />
+          <filter id="wave-shadow" x="-10%" y="-30%" width="120%" height="170%">
+            <feDropShadow dx="0" dy="-5" stdDeviation="7" floodColor="#000000" floodOpacity="0.14" />
+            <feDropShadow dx="0" dy="-2" stdDeviation="3" floodColor="#000000" floodOpacity="0.07" />
           </filter>
         </defs>
 
-        {/* 
-          Organic Wave Overlay:
-          Transitioning smoothly into dark navy FindYourWave section (#061C27)
-        */}
         <path
           d="
             M 0 160
@@ -64,7 +48,7 @@ export default function WaveDivider() {
             L 0 205
             Z
           "
-          fill="#061C27"
+          fill={fill}
           stroke="none"
           filter="url(#wave-shadow)"
         />
@@ -72,6 +56,3 @@ export default function WaveDivider() {
     </div>
   );
 }
-
-
-

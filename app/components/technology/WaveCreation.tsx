@@ -220,7 +220,7 @@ export default function WaveCreation() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#00C8C8]/[0.03] rounded-full blur-3xl pointer-events-none" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 text-left relative z-10">
+      <div className="max-w-[1536px] mx-auto px-6 sm:px-10 lg:px-16 text-left relative z-10">
         
         {/* Header Block */}
         <div className="max-w-2xl mb-10 sm:mb-12">

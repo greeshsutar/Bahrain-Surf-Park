@@ -2,19 +2,23 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MOTION, isReducedMotion, handleMagneticMouseMove, handleMagneticMouseLeave } from "../constants/motion";
 
 interface HeroProps {
   onOpenBooking: (tier?: string) => void;
 }
 
 export default function Hero({ onOpenBooking }: HeroProps) {
+  const heroSectionRef = useRef<HTMLElement>(null);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    gsap.registerPlugin(ScrollTrigger);
+    const reduced = isReducedMotion();
 
     // 1. Video Ken Burns scale
-    if (heroVideoRef.current && !prefersReducedMotion) {
+    if (heroVideoRef.current && !reduced) {
       gsap.fromTo(
         heroVideoRef.current,
         { scale: 1.0 },
@@ -28,35 +32,61 @@ export default function Hero({ onOpenBooking }: HeroProps) {
       );
     }
 
-    // 2. Staggered reveal timeline
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    // 2. Parallax Depth: ScrollTrigger scrub on background video
+    let videoParallax: gsap.core.Tween | null = null;
+    if (heroVideoRef.current && heroSectionRef.current && !reduced) {
+      videoParallax = gsap.to(heroVideoRef.current, {
+        yPercent: 15,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroSectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }
 
-    tl.fromTo(
-      ".hero-eyebrow",
-      { opacity: 0, y: -12, scale: 0.96 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.8, delay: 0.15 }
-    )
-      .fromTo(
-        ".hero-headline",
-        { opacity: 0, y: 25 },
-        { opacity: 1, y: 0, duration: 1.0 },
-        "-=0.5"
+    // 3. Staggered reveal timeline with canonical motion system
+    const tl = gsap.timeline({
+      defaults: { ease: MOTION.ENTRANCE_EASE, duration: MOTION.ENTRANCE_DURATION },
+    });
+
+    if (!reduced) {
+      tl.fromTo(
+        ".hero-eyebrow",
+        { opacity: 0, y: -12, scale: 0.96 },
+        { opacity: 1, y: 0, scale: 1, duration: MOTION.ENTRANCE_DURATION, delay: 0.1 }
       )
-      .fromTo(
-        ".hero-subtitle",
-        { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.85 },
-        "-=0.6"
-      )
-      .fromTo(
-        ".hero-buttons",
-        { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.8 },
-        "-=0.6"
-      );
+        .fromTo(
+          ".hero-headline",
+          { opacity: 0, y: 25 },
+          { opacity: 1, y: 0, duration: MOTION.ENTRANCE_DURATION },
+          `-=${MOTION.ENTRANCE_DURATION - MOTION.STAGGER * 3}`
+        )
+        .fromTo(
+          ".hero-subtitle",
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: MOTION.ENTRANCE_DURATION },
+          `-=${MOTION.ENTRANCE_DURATION - MOTION.STAGGER * 3}`
+        )
+        .fromTo(
+          ".hero-buttons",
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: MOTION.ENTRANCE_DURATION },
+          `-=${MOTION.ENTRANCE_DURATION - MOTION.STAGGER * 3}`
+        );
+    } else {
+      gsap.set([".hero-eyebrow", ".hero-headline", ".hero-subtitle", ".hero-buttons"], {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+      });
+    }
 
     return () => {
       tl.kill();
+      if (videoParallax) videoParallax.kill();
     };
   }, []);
 
@@ -68,16 +98,9 @@ export default function Hero({ onOpenBooking }: HeroProps) {
     }
   };
 
-  const handleMouseEnterBtn = (e: React.MouseEvent<HTMLElement>) => {
-    gsap.to(e.currentTarget, { scale: 1.04, y: -2, duration: 0.3, ease: "back.out(1.4)", overwrite: "auto" });
-  };
-
-  const handleMouseLeaveBtn = (e: React.MouseEvent<HTMLElement>) => {
-    gsap.to(e.currentTarget, { scale: 1, y: 0, duration: 0.25, ease: "power2.out", overwrite: "auto" });
-  };
-
   return (
     <section
+      ref={heroSectionRef}
       id="hero"
       className="relative w-full hero-vh-screen min-h-[580px] sm:min-h-[720px] overflow-hidden flex flex-col justify-between z-0"
     >
@@ -123,13 +146,13 @@ export default function Hero({ onOpenBooking }: HeroProps) {
 
           {/* Left-Aligned Dual Action Buttons */}
           <div className="hero-buttons flex flex-wrap items-center gap-6">
-            {/* Primary Action Button */}
+            {/* Primary Action Button with Magnetic Physics */}
             <a
               href="#find-your-wave"
               onClick={(e) => handleNavClick(e, "#find-your-wave")}
-              onMouseEnter={handleMouseEnterBtn}
-              onMouseLeave={handleMouseLeaveBtn}
-              className="bg-gradient-to-r from-[#00C8A0] to-[#0B7FB5] hover:opacity-95 text-white px-7 py-3.5 rounded-lg text-xs font-bold uppercase tracking-widest shadow-xl transition-all inline-flex items-center gap-2"
+              onMouseMove={handleMagneticMouseMove}
+              onMouseLeave={handleMagneticMouseLeave}
+              className="bg-gradient-to-r from-[#00C8A0] to-[#0B7FB5] hover:opacity-95 text-white px-7 py-3.5 rounded-lg text-xs font-bold uppercase tracking-widest shadow-xl transition-all inline-flex items-center gap-2 cursor-pointer"
             >
               <span>DISCOVER THE PARK</span>
               <span className="text-sm font-normal">→</span>
@@ -139,7 +162,9 @@ export default function Hero({ onOpenBooking }: HeroProps) {
             <a
               href="#technology"
               onClick={(e) => handleNavClick(e, "#technology")}
-              className="inline-flex items-center gap-3 text-white text-xs font-bold uppercase tracking-wider hover:text-[#00C8A0] transition-colors group"
+              onMouseMove={handleMagneticMouseMove}
+              onMouseLeave={handleMagneticMouseLeave}
+              className="inline-flex items-center gap-3 text-white text-xs font-bold uppercase tracking-wider hover:text-[#00C8A0] transition-colors group cursor-pointer"
             >
               <span className="w-9 h-9 border border-white/40 rounded-full flex items-center justify-center bg-black/15 group-hover:border-white transition-all">
                 <svg className="w-3.5 h-3.5 fill-current text-white translate-x-[1px]" viewBox="0 0 24 24">

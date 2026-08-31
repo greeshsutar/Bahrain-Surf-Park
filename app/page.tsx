@@ -69,7 +69,7 @@ export default function Home() {
       <Academy />
       <Cabanas />
       <Visit onOpenBooking={handleOpenBooking} />
-      <Footer />
+      <Footer onOpenBooking={handleOpenBooking} />
 
       <BookingModal
         isOpen={isBookingOpen}

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import gsap from "gsap";
+import { MOTION, handleMagneticMouseMove, handleMagneticMouseLeave } from "../constants/motion";
 
 interface FindYourWaveProps {
   onOpenBooking: (tier?: string) => void;
@@ -126,8 +127,8 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
       if (smooth) {
         gsap.to(track, {
           x: targetX,
-          duration: 0.85,
-          ease: "power3.out",
+          duration: MOTION.ENTRANCE_DURATION,
+          ease: MOTION.ENTRANCE_EASE,
           overwrite: "auto",
         });
       } else {
@@ -527,6 +528,8 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                           e.stopPropagation();
                           onOpenBooking(card.title);
                         }}
+                        onMouseMove={handleMagneticMouseMove}
+                        onMouseLeave={handleMagneticMouseLeave}
                         aria-label={`Book ${card.title} session`}
                         className={`rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer shadow-md ${
                           isActive

@@ -42,6 +42,13 @@
 
   --radius-btn: 8px;
   --radius-card: 12px;
+
+  /* Canonical Motion System Tokens */
+  --motion-ease-entrance: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --motion-ease-hover: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --motion-duration-entrance: 0.9s;
+  --motion-duration-hover: 0.3s;
+  --motion-stagger: 0.08s;
 }
 
 /* Base Canvas & Viewport Sizing */
@@ -541,6 +548,18 @@ a.rounded-full,
   }
   100% {
     transform: translateX(-20%);
+  }
+}
+
+@keyframes waveSwell {
+  0% {
+    transform: translateX(0) scaleY(1);
+  }
+  50% {
+    transform: translateX(-1.5%) scaleY(1.03);
+  }
+  100% {
+    transform: translateX(0) scaleY(1);
   }
 }
 
