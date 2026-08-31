@@ -19,31 +19,49 @@ export default function Hero({ onOpenBooking }: HeroProps) {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+
     const reduced = isReducedMotion();
     const video = heroVideoRef.current;
     const filterLayer = cinematicFilterRef.current;
     const parallaxLayer = parallaxWrapperRef.current;
 
-    // 1. Reduced Motion Fallback
+    // REDUCED MOTION
     if (reduced) {
       setIsVideoPlaying(true);
+
       if (filterLayer) {
-        gsap.set(filterLayer, { opacity: 1, filter: "blur(0px)", scale: 1 });
+        gsap.set(filterLayer, {
+          opacity: 1,
+          filter: "blur(0px)",
+          scale: 1,
+        });
       }
-      gsap.set([".hero-eyebrow", ".hero-headline", ".hero-subtitle", ".hero-buttons"], {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-      });
+
+      gsap.set(
+        [
+          ".hero-eyebrow",
+          ".hero-headline",
+          ".hero-subtitle",
+          ".hero-buttons",
+        ],
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+        }
+      );
+
       if (video) {
         video.preload = "auto";
-        video.play().catch(() => {});
+        video.play().catch(() => { });
       }
+
       return;
     }
 
-    // 2. Separate ScrollTrigger Parallax Tween on Outer Wrapper (No transform conflict)
+    // PARALLAX
     let videoParallax: gsap.core.Tween | null = null;
+
     if (parallaxLayer && heroSectionRef.current) {
       videoParallax = gsap.to(parallaxLayer, {
         yPercent: 15,
@@ -57,36 +75,36 @@ export default function Hero({ onOpenBooking }: HeroProps) {
       });
     }
 
-    // 3. Cinematic Reveal Sequence
+    // CINEMATIC REVEAL
     let hasRevealed = false;
+
     const triggerCinematicReveal = () => {
       if (hasRevealed) return;
+
+      const currentVideo = heroVideoRef.current;
+
+      if (
+        !currentVideo ||
+        currentVideo.readyState < HTMLMediaElement.HAVE_CURRENT_DATA ||
+        currentVideo.videoWidth === 0 ||
+        currentVideo.videoHeight === 0
+      ) {
+        return;
+      }
+
       hasRevealed = true;
       setIsVideoPlaying(true);
 
-      const revealTl = gsap.timeline({
-        onComplete: () => {
-          // Clean handoff to continuous slow Ken Burns scale effect on video element
-          if (heroVideoRef.current && !isReducedMotion()) {
-            gsap.to(heroVideoRef.current, {
-              scale: 1.035,
-              duration: 12,
-              ease: "sine.inOut",
-              repeat: -1,
-              yoyo: true,
-            });
-          }
-        },
-      });
+      const tl = gsap.timeline();
 
-      // 0.0s - 1.3s: Cinematic Media Filter Resolve (blur: 8px -> 0px, opacity: 0.75 -> 1.0, scale: 1.04 -> 1.00)
+      // VIDEO: blurred → sharp
       if (filterLayer) {
-        revealTl.to(
+        tl.to(
           filterLayer,
           {
-            opacity: 1.0,
+            opacity: 1,
             filter: "blur(0px)",
-            scale: 1.0,
+            scale: 1,
             duration: 1.3,
             ease: "power2.out",
           },
@@ -94,79 +112,108 @@ export default function Hero({ onOpenBooking }: HeroProps) {
         );
       }
 
-      // 0.25s: Location Eyebrow Reveal
-      revealTl.fromTo(
+      // EYEBROW
+      tl.fromTo(
         ".hero-eyebrow",
         { opacity: 0, y: -10 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
-        0.25
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power2.out",
+        },
+        0.35
       );
 
-      // 0.45s: Display Headline Reveal
-      revealTl.fromTo(
+      // HEADLINE
+      tl.fromTo(
         ".hero-headline",
         { opacity: 0, y: 25 },
-        { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" },
-        0.45
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          ease: "power3.out",
+        },
+        0.5
       );
 
-      // 0.65s: Subtitle Reveal
-      revealTl.fromTo(
+      // SUBTITLE
+      tl.fromTo(
         ".hero-subtitle",
         { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
-        0.65
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power2.out",
+        },
+        0.8
       );
 
-      // 0.85s: Action Buttons Reveal
-      revealTl.fromTo(
+      // BUTTONS
+      tl.fromTo(
         ".hero-buttons",
         { opacity: 0, y: 16 },
-        { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
-        0.85
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          ease: "power2.out",
+        },
+        1
       );
+
+      // KEN BURNS AFTER REVEAL
+      tl.call(() => {
+        if (heroVideoRef.current) {
+          gsap.to(heroVideoRef.current, {
+            scale: 1.035,
+            duration: 12,
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true,
+          });
+        }
+      });
     };
 
-    // 4. Video load & playback initialization
+    // VIDEO
     if (video) {
-      const handleVideoPlaying = () => {
-        setTimeout(triggerCinematicReveal, 150);
+      const handlePlaying = () => {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            triggerCinematicReveal();
+          });
+        });
       };
 
-      const handleTimeUpdate = () => {
-        if (video.currentTime > 0.05) {
-          triggerCinematicReveal();
-        }
+      const handleLoadedData = () => {
+        video.play().catch(() => {
+          // Keep poster visible if autoplay is blocked.
+        });
       };
 
-      video.addEventListener("playing", handleVideoPlaying);
-      video.addEventListener("timeupdate", handleTimeUpdate);
+      video.addEventListener("loadeddata", handleLoadedData);
+      video.addEventListener("playing", handlePlaying);
 
-      // Initiate video load and playback programmatically after mount
       video.preload = "auto";
-      video.load();
-      video.play().catch((err) => {
-        console.warn("Hero video autoplay deferred:", err);
-        // Fallback to poster reveal if browser blocks autoplay
-        setTimeout(triggerCinematicReveal, 1200);
-      });
 
-      // Safety fallback timer (2.8s) if network is slow so visitor is never stuck
-      const fallbackTimer = setTimeout(() => {
-        triggerCinematicReveal();
-      }, 2800);
 
       return () => {
-        video.removeEventListener("playing", handleVideoPlaying);
-        video.removeEventListener("timeupdate", handleTimeUpdate);
-        clearTimeout(fallbackTimer);
+        video.removeEventListener("loadeddata", handleLoadedData);
+        video.removeEventListener("playing", handlePlaying);
+
+        if (videoParallax) {
+          videoParallax.kill();
+        }
       };
-    } else {
-      triggerCinematicReveal();
     }
 
     return () => {
-      if (videoParallax) videoParallax.kill();
+      if (videoParallax) {
+        videoParallax.kill();
+      }
     };
   }, []);
 
@@ -204,9 +251,8 @@ export default function Hero({ onOpenBooking }: HeroProps) {
           <img
             src="/images/bahrain_surf_park_clean.jpg"
             alt="Bahrain Surf Park Ocean"
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-0 ${
-              isVideoPlaying ? "opacity-40" : "opacity-100"
-            }`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-0 ${isVideoPlaying ? "opacity-40" : "opacity-100"
+              }`}
           />
 
           {/* LAYER 3: Existing Video Element */}
@@ -218,9 +264,8 @@ export default function Hero({ onOpenBooking }: HeroProps) {
             playsInline
             preload="none"
             poster="/images/bahrain_surf_park_clean.jpg"
-            className={`w-full h-full object-cover relative z-10 transition-opacity duration-700 ${
-              isVideoPlaying ? "opacity-100" : "opacity-0"
-            }`}
+            className={`w-full h-full object-cover relative z-10 transition-opacity duration-700 ${isVideoPlaying ? "opacity-100" : "opacity-0"
+              }`}
           >
             <source src="/videos/create_a_video.mp4?v=20260828_clear" type="video/mp4" />
           </video>
