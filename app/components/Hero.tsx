@@ -15,7 +15,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
   const cinematicFilterRef = useRef<HTMLDivElement>(null);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
 
-  const [isVideoReady, setIsVideoReady] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -26,7 +26,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
 
     // 1. Reduced Motion Fallback
     if (reduced) {
-      setIsVideoReady(true);
+      setIsVideoPlaying(true);
       if (filterLayer) {
         gsap.set(filterLayer, { opacity: 1, filter: "blur(0px)", scale: 1 });
       }
@@ -35,6 +35,10 @@ export default function Hero({ onOpenBooking }: HeroProps) {
         y: 0,
         scale: 1,
       });
+      if (video) {
+        video.preload = "auto";
+        video.play().catch(() => {});
+      }
       return;
     }
 
@@ -53,12 +57,12 @@ export default function Hero({ onOpenBooking }: HeroProps) {
       });
     }
 
-    // 3. Cinematic Film Reveal Timeline
+    // 3. Cinematic Reveal Sequence
     let hasRevealed = false;
     const triggerCinematicReveal = () => {
       if (hasRevealed) return;
       hasRevealed = true;
-      setIsVideoReady(true);
+      setIsVideoPlaying(true);
 
       const revealTl = gsap.timeline({
         onComplete: () => {
@@ -75,7 +79,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
         },
       });
 
-      // 0.3s - 1.5s: Cinematic Media Filter Resolve (blur 10px->0px, opacity 0.70->1.0, scale 1.04->1.00)
+      // 0.0s - 1.3s: Cinematic Media Filter Resolve (blur: 8px -> 0px, opacity: 0.75 -> 1.0, scale: 1.04 -> 1.00)
       if (filterLayer) {
         revealTl.to(
           filterLayer,
@@ -86,67 +90,77 @@ export default function Hero({ onOpenBooking }: HeroProps) {
             duration: 1.3,
             ease: "power2.out",
           },
-          0.3
+          0
         );
       }
 
-      // 1.0s - 1.7s: Location Eyebrow Reveal
+      // 0.25s: Location Eyebrow Reveal
       revealTl.fromTo(
         ".hero-eyebrow",
         { opacity: 0, y: -10 },
         { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
-        1.0
+        0.25
       );
 
-      // 1.2s - 1.9s: Display Headline Reveal
+      // 0.45s: Display Headline Reveal
       revealTl.fromTo(
         ".hero-headline",
         { opacity: 0, y: 25 },
         { opacity: 1, y: 0, duration: 0.9, ease: "power2.out" },
-        1.2
+        0.45
       );
 
-      // 1.4s - 2.1s: Subtitle Reveal
+      // 0.65s: Subtitle Reveal
       revealTl.fromTo(
         ".hero-subtitle",
         { opacity: 0, y: 16 },
         { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
-        1.4
+        0.65
       );
 
-      // 1.7s - 2.3s: Action Buttons Reveal
+      // 0.85s: Action Buttons Reveal
       revealTl.fromTo(
         ".hero-buttons",
         { opacity: 0, y: 16 },
         { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" },
-        1.7
+        0.85
       );
     };
 
-    // 4. Media Event Listener (No fake timer as main trigger)
+    // 4. Video load & playback initialization
     if (video) {
-      if (video.readyState >= 3) {
-        triggerCinematicReveal();
-      } else {
-        const handleReady = () => triggerCinematicReveal();
-        video.addEventListener("loadeddata", handleReady);
-        video.addEventListener("canplay", handleReady);
-        video.addEventListener("playing", handleReady);
-        video.addEventListener("error", handleReady);
+      const handleVideoPlaying = () => {
+        setTimeout(triggerCinematicReveal, 150);
+      };
 
-        // Safety fallback timer (3.5s) if browser restricts autoplay/slow network
-        const fallbackTimer = setTimeout(() => {
+      const handleTimeUpdate = () => {
+        if (video.currentTime > 0.05) {
           triggerCinematicReveal();
-        }, 3500);
+        }
+      };
 
-        return () => {
-          video.removeEventListener("loadeddata", handleReady);
-          video.removeEventListener("canplay", handleReady);
-          video.removeEventListener("playing", handleReady);
-          video.removeEventListener("error", handleReady);
-          clearTimeout(fallbackTimer);
-        };
-      }
+      video.addEventListener("playing", handleVideoPlaying);
+      video.addEventListener("timeupdate", handleTimeUpdate);
+
+      // Initiate video load and playback programmatically after mount
+      video.preload = "auto";
+      video.load();
+      video.play().catch((err) => {
+        console.warn("Hero video autoplay deferred:", err);
+        // Fallback to poster reveal if browser blocks autoplay
+        setTimeout(triggerCinematicReveal, 1200);
+      });
+
+      // Safety fallback timer (2.8s) if network is slow so visitor is never stuck
+      const fallbackTimer = setTimeout(() => {
+        triggerCinematicReveal();
+      }, 2800);
+
+      return () => {
+        video.removeEventListener("playing", handleVideoPlaying);
+        video.removeEventListener("timeupdate", handleTimeUpdate);
+        clearTimeout(fallbackTimer);
+      };
     } else {
       triggerCinematicReveal();
     }
@@ -170,45 +184,56 @@ export default function Hero({ onOpenBooking }: HeroProps) {
       id="hero"
       className="relative w-full hero-vh-screen min-h-[580px] sm:min-h-[720px] overflow-hidden flex flex-col justify-between z-0 bg-[#061C27]"
     >
-      {/* 1. LAYER 1: Outer Scroll Parallax Wrapper */}
+      {/* LAYER 1: Outer Scroll Parallax Wrapper */}
       <div
         ref={parallaxWrapperRef}
         className="absolute inset-0 w-full h-full overflow-hidden z-0 bg-[#061C27]"
       >
-        {/* 2. LAYER 2: Cinematic Blur & Opacity Filter Wrapper (Starts dark ocean + blur(10px) + scale(1.04)) */}
+        {/* CINEMATIC LAYER: Cinematic Blur & Opacity Filter Wrapper (Starts dark ocean + blur(8px) + scale(1.04)) */}
         <div
           ref={cinematicFilterRef}
           className="w-full h-full overflow-hidden relative"
           style={{
-            opacity: isVideoReady ? 1 : 0.7,
-            filter: isVideoReady ? "blur(0px)" : "blur(10px)",
-            transform: isVideoReady ? "scale(1)" : "scale(1.04)",
+            opacity: 0.75,
+            filter: "blur(8px)",
+            transform: "scale(1.04)",
             willChange: "transform, filter, opacity",
           }}
         >
-          {/* 3. LAYER 3: Existing Video Element with First-Frame Poster */}
+          {/* LAYER 2: Initial Poster Image (Visible while video prepares/loads) */}
+          <img
+            src="/images/bahrain_surf_park_clean.jpg"
+            alt="Bahrain Surf Park Ocean"
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 z-0 ${
+              isVideoPlaying ? "opacity-40" : "opacity-100"
+            }`}
+          />
+
+          {/* LAYER 3: Existing Video Element */}
           <video
             ref={heroVideoRef}
             id="hero-video"
-            autoPlay
             muted
             loop
             playsInline
+            preload="none"
             poster="/images/bahrain_surf_park_clean.jpg"
-            className="w-full h-full object-cover"
+            className={`w-full h-full object-cover relative z-10 transition-opacity duration-700 ${
+              isVideoPlaying ? "opacity-100" : "opacity-0"
+            }`}
           >
             <source src="/videos/create_a_video.mp4?v=20260828_clear" type="video/mp4" />
           </video>
 
           {/* Editorial Left Gradient Scrim for Contrast */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#06232D]/75 via-[#06232D]/40 to-transparent z-10 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#06232D]/75 via-[#06232D]/40 to-transparent z-20 pointer-events-none" />
 
           {/* Top Navbar Scrim */}
-          <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#061922]/65 to-transparent z-10 pointer-events-none" />
+          <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-[#061922]/65 to-transparent z-20 pointer-events-none" />
         </div>
       </div>
 
-      {/* 4. Crisp UI & Asymmetric Left-Aligned Text Block (Reveals sequentially) */}
+      {/* Crisp UI & Asymmetric Left-Aligned Text Block (Reveals sequentially after media resolves) */}
       <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 my-auto pt-28 pb-16 flex flex-col justify-end">
         <div className="max-w-xl lg:max-w-2xl text-left">
           {/* Location Eyebrow */}
@@ -262,7 +287,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
         </div>
       </div>
 
-      {/* 5. Organic Shoreline Water Transition */}
+      {/* Organic Shoreline Water Transition */}
       <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none translate-y-[1px]" aria-hidden="true">
         <svg
           className="block w-full h-[60px] sm:h-[90px] md:h-[120px] lg:h-[145px] leading-none"
