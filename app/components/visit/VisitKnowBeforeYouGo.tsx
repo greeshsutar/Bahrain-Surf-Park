@@ -4,20 +4,53 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MOTION, isReducedMotion } from "../../constants/motion";
+import WaveDivider from "../WaveDivider";
 
-const CHECKLIST_ITEMS = [
-  "Session booked and confirmed",
-  "Arrival time noted (45 minutes before session)",
-  "Swimwear, towel, and sun protection packed",
-  "Directions to Bilaj Al Jazayer saved",
-  "Parking or valet plan confirmed",
-  "Weather-appropriate layers for evening",
-  "Questions? Contact Guest Services",
+const GUIDELINES = [
+  {
+    id: "what-to-bring",
+    num: "01",
+    eyebrow: "EQUIPMENT & APPAREL",
+    title: "WHAT TO BRING",
+    paragraph: "Proper swimwear (boardshorts, swimsuits, or rashguards), a fresh towel, reef-safe sunscreen, and dry clothes for after your session. Soft-top surfboards and personal lockers are provided for all guests.",
+    meta: "PROVIDED: Surfboard, Locker, Suite Access",
+  },
+  {
+    id: "safety",
+    num: "02",
+    eyebrow: "COACHING & MONITORING",
+    title: "SAFETY & WATER RULES",
+    paragraph: "All sessions operate under continuous supervision from ISA-certified surf coaches and professional ocean lifeguards. Guests undergo a mandatory lagoon safety overview before entering the wave basin.",
+    meta: "SUPERVISION: ISA Coaches & Ocean Lifeguards",
+  },
+  {
+    id: "arrival",
+    num: "03",
+    eyebrow: "TIMING & CHECK-IN",
+    title: "ARRIVAL PROCEDURES",
+    paragraph: "Arrive 45 minutes prior to your scheduled water time. This allows ample time for guest check-in, wetsuit or gear fitting, locker setup, and the mandatory pre-session safety briefing.",
+    meta: "CHECK-IN: 45 Minutes Prior to Session",
+  },
+  {
+    id: "facilities",
+    num: "04",
+    eyebrow: "RESORT AMENITIES",
+    title: "FACILITIES & GUEST SPACES",
+    paragraph: "Enjoy private changing suites, hot freshwater showers, secure personal lockers, spectator viewing decks, and beachside lounge dining facing the wave lagoon.",
+    meta: "AMENITIES: Changing Suites, Showers, Lounge",
+  },
+  {
+    id: "accessibility",
+    num: "05",
+    eyebrow: "INCLUSIVE EXPERIENCE",
+    title: "ACCESSIBILITY & ADAPTIVE SERVICES",
+    paragraph: "Wheelchair-accessible pathways seamlessly connect guest parking, reception, changing suites, viewing decks, and lagoon access points. Adaptive surf programs are available with advance notice.",
+    meta: "ACCESSIBLE: Barrier-Free Pathways & Restrooms",
+  },
 ];
 
 export default function VisitKnowBeforeYouGo() {
   const sectionRef = useRef<HTMLElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -26,38 +59,21 @@ export default function VisitKnowBeforeYouGo() {
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
-        ".visit-know-anim",
-        { opacity: 0, y: 30 },
+        ".know-item-anim",
+        { opacity: 0, y: 24 },
         {
           opacity: 1,
           y: 0,
           duration: MOTION.ENTRANCE_DURATION,
-          stagger: MOTION.STAGGER,
+          stagger: 0.1,
           ease: MOTION.ENTRANCE_EASE,
           scrollTrigger: {
             trigger: section,
             start: "top 75%",
-            once: true,
+            toggleActions: "play none none reverse",
           },
         }
       );
-
-      if (imageRef.current) {
-        gsap.fromTo(
-          imageRef.current,
-          { scale: 1.02 },
-          {
-            scale: 1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 0.5,
-            },
-          }
-        );
-      }
     }, section);
 
     return () => ctx.revert();
@@ -67,67 +83,68 @@ export default function VisitKnowBeforeYouGo() {
     <section
       ref={sectionRef}
       id="know-before-you-go"
-      className="relative w-full min-h-[55vh] sm:min-h-[65vh] lg:min-h-[70vh] flex items-center bg-[#02141C] text-white overflow-hidden z-10"
+      className="relative bg-gradient-to-b from-[#F7F6F1] via-white to-[#F7F6F1] text-[#0A1926] pt-24 sm:pt-32 pb-24 relative z-10 border-b border-slate-200/80 overflow-hidden"
     >
-      {/* Background Image */}
-      <div
-        ref={imageRef}
-        className="absolute inset-0 w-full h-full z-0 overflow-hidden will-change-transform"
-        style={{ backgroundImage: "url('/images/bahrain_surf_park_clean.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-t from-[#02141C] via-[#02141C]/40 to-[#02141C]/60" />
+      {/* Subtle Background Texture & Radial Ambient Glow */}
+      <div className="absolute inset-0 opacity-[0.025] bg-[radial-gradient(#0A1926_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-[#00C8A0]/8 blur-[130px] rounded-full pointer-events-none" />
+
+      <div className="max-w-5xl mx-auto px-6 lg:px-12 text-left relative z-10">
+        {/* Section Header */}
+        <div className="know-item-anim mb-16 max-w-2xl">
+          <span className="text-[#0B7FB5] text-xs font-extrabold tracking-[0.25em] uppercase mb-3 block">
+            04 — ARRIVAL GUIDE
+          </span>
+          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#0A1926] leading-[1.05] tracking-tight mb-4">
+            KNOW BEFORE YOU GO.
+          </h2>
+          <p className="text-slate-600 text-base sm:text-lg font-sans leading-relaxed">
+            Essential preparation points to ensure your day at Bahrain Surf Park is smooth from arrival to paddle-out.
+          </p>
+        </div>
+
+        {/* Thin Divider List Layout with lift + shadow hover cards */}
+        <div className="space-y-4">
+          {GUIDELINES.map((item) => (
+            <div
+              key={item.id}
+              id={item.id}
+              className="know-item-anim bg-white/80 hover:bg-white border border-slate-200/80 hover:border-[#00C8A0]/40 p-6 sm:p-8 rounded-2xl shadow-xs hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
+            >
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-8 items-baseline">
+                {/* Left metadata / number */}
+                <div className="md:col-span-3 flex flex-col justify-start">
+                  <span className="font-mono text-xs font-bold text-[#00C8A0] mb-1">
+                    {item.num}
+                  </span>
+                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#0B7FB5]">
+                    {item.eyebrow}
+                  </span>
+                </div>
+
+                {/* Right content */}
+                <div className="md:col-span-9">
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A1926] mb-3 group-hover:text-[#0B7FB5] transition-colors">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-sans mb-4 max-w-2xl">
+                    {item.paragraph}
+                  </p>
+
+                  <div className="inline-block text-[11px] font-bold uppercase tracking-wider text-slate-600 bg-[#F7F6F1] border border-slate-200/90 px-3.5 py-1.5 rounded-lg shadow-2xs group-hover:border-[#00C8A0]/30 transition-colors">
+                    {item.meta}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Content Overlay */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* LEFT: Editorial Statement */}
-          <div className="lg:col-span-6 text-left visit-know-anim">
-            <span className="text-[#00C8A0] text-xs font-extrabold tracking-[0.25em] uppercase mb-4 block">
-              BEFORE YOU GO
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-[52px] font-bold text-white tracking-tight leading-[1.05] mb-8">
-              KNOW THE DAY.<br />ENJOY THE RIDE.
-            </h2>
-            <p className="text-slate-300 text-base sm:text-lg font-sans leading-relaxed max-w-xl">
-              A smooth arrival means more time in the water. Review the essentials below so nothing stands between you and your session.
-            </p>
-          </div>
-
-          {/* RIGHT: Checklist */}
-          <div className="lg:col-span-6 text-left visit-know-anim">
-            <div className="bg-white/5 border border-white/10 backdrop-blur-md rounded-2xl p-6 sm:p-8 space-y-4">
-              <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#00C8A0] block mb-4">
-                PRE-ARRIVAL CHECKLIST
-              </span>
-              <ul className="space-y-3">
-                {CHECKLIST_ITEMS.map((item, idx) => (
-                  <li key={idx} className="flex items-center gap-3 text-sm sm:text-base text-slate-200 font-sans leading-relaxed group">
-                    <div className="relative shrink-0 w-6 h-6 rounded-full border border-white/30 flex items-center justify-center group-has-[:checked]:bg-[#00C8A0] group-has-[:checked]:border-[#00C8A0] transition-all duration-300">
-                      <input
-                        type="checkbox"
-                        className="absolute inset-0 opacity-0 cursor-pointer"
-                        id={`checklist-${idx}`}
-                      />
-                      <svg
-                        className="w-3.5 h-3.5 text-white opacity-0 group-has-[:checked]:opacity-100 transition-opacity duration-200"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        strokeWidth="3"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                      </svg>
-                    </div>
-                    <label htmlFor={`checklist-${idx}`} className="cursor-pointer select-none">
-                      {item}
-                    </label>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
+      {/* Wave Divider Transition into Dark Map Section (#061C27) */}
+      <div className="mt-20">
+        <WaveDivider fill="#061C27" />
       </div>
     </section>
   );

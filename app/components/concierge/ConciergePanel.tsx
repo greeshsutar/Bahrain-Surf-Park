@@ -173,12 +173,49 @@ export default function ConciergePanel({ isOpen, onClose }: ConciergePanelProps)
       <div className="bg-[#086F9F] text-white px-5 py-4 flex items-center justify-between border-b border-white/20 shrink-0 relative">
         <div className="flex items-center gap-3">
           {/* Surf Concierge Robot Character Emblem */}
-          <div className="w-10 h-10 rounded-xl bg-white/15 border border-[#00C8A0]/60 flex items-center justify-center shrink-0 overflow-hidden p-1 shadow-inner">
-            <img
-              src="/icons/surf-concierge-robot.png"
-              alt="Bahrain Surf Concierge Robot"
-              className="w-full h-full object-contain"
-            />
+          <div className="w-10 h-10 rounded-xl bg-white/15 border border-[#00C8A0]/60 flex items-center justify-center shrink-0 overflow-hidden p-1.5 shadow-inner">
+            <svg
+              className="w-full h-full text-[#00C8A0]"
+              viewBox="0 0 48 48"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-label="Bahrain Surf Concierge Emblem"
+            >
+              <path
+                d="M 6 32 C 14 20, 24 18, 34 24 C 38 27, 41 26, 43 22"
+                stroke="#FFFFFF"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              />
+              <path
+                d="M 6 37 C 16 26, 28 25, 37 31 C 41 34, 43 33, 45 30"
+                stroke="#00C8A0"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              />
+              <path
+                d="M 28 8 C 33 14, 31 25, 18 36 C 17 37, 15 35, 16 34 C 23 23, 26 13, 28 8 Z"
+                fill="url(#surf-concierge-panel-grad)"
+                stroke="#FFFFFF"
+                strokeWidth="1.2"
+              />
+              <path
+                d="M 11 25 C 16 16, 25 14, 31 18 C 35 21, 36 25, 33 27 C 30 29, 27 27, 29 24"
+                stroke="#00C8A0"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              />
+              <path
+                d="M 37 8 L 38.5 11 L 41.5 12.5 L 38.5 14 L 37 17 L 35.5 14 L 32.5 12.5 L 35.5 11 Z"
+                fill="#00C8A0"
+              />
+              <defs>
+                <linearGradient id="surf-concierge-panel-grad" x1="16" y1="36" x2="31" y2="8" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#00C8A0" />
+                  <stop offset="1" stopColor="#FFFFFF" />
+                </linearGradient>
+              </defs>
+            </svg>
           </div>
           <div>
             <div className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#00C8A0]">

@@ -5,87 +5,40 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MOTION, isReducedMotion, handleMagneticMouseMove, handleMagneticMouseLeave } from "../../constants/motion";
 
-const ARRIVAL_CATEGORIES = [
+const QUICK_NAV_ITEMS = [
+  { id: "getting-here", label: "GETTING HERE" },
+  { id: "parking-access", label: "PARKING" },
+  { id: "know-before-you-go", label: "WHAT TO BRING" },
+  { id: "visit-essentials", label: "SAFETY & FACILITIES" },
+  { id: "wayfinding-map", label: "MAP" },
+  { id: "visit-faq", label: "FAQ" },
+  { id: "visit-contact", label: "CONTACT" },
+];
+
+const ARRIVAL_STEPS = [
   {
-    num: "01",
+    step: "01",
     title: "GETTING HERE",
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343M18 12a6 6 0 01-12 0 6 6 0 0112 0z" />
-      </svg>
-    ),
-    items: [
-      {
-        label: "From Manama City Center",
-        value: "~25 min via Sheikh Isa Bin Salman Hwy",
-      },
-      {
-        label: "From Bahrain International Airport",
-        value: "~15 min via Sheikh Isa Bin Salman Hwy",
-      },
-      {
-        label: "From Amwaj Islands",
-        value: "~20 min via Coastal Road",
-      },
-      {
-        label: "Rideshare / Taxi",
-        value: "Available via all major apps",
-      },
-    ],
+    subtitle: "Bilaj Al Jazayer, Bahrain",
+    desc: "Located on Bahrain's pristine southwest coast, accessible via Sheikh Isa Bin Salman Highway. Approximately 30 minutes from Manama city center.",
+    ctaLabel: "GET DIRECTIONS ↗",
+    ctaAction: "directions",
   },
   {
-    num: "02",
-    title: "PARKING",
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 17V7a2 2 0 012-2h6a2 2 0 012 2v10m-6 2H7a2 2 0 01-2-2V7a2 2 0 012-2h2" />
-      </svg>
-    ),
-    items: [
-      {
-        label: "Dedicated Visitor Parking",
-        value: "On-site lot with direct entrance access",
-      },
-      {
-        label: "Valet Drop-Off",
-        value: "Available at main entrance during operating hours",
-      },
-      {
-        label: "Accessible Spaces",
-        value: "Reserved spaces near park entry",
-      },
-      {
-        label: "EV Charging",
-        value: "Charging stations available in visitor lot",
-      },
-    ],
+    step: "02",
+    title: "PARKING & RESORT ENTRY",
+    subtitle: "Dedicated Guest Parking",
+    desc: "On-site visitor parking with direct entry to the main entrance lobby. Clear directional signage guides guests from the main highway turn-off.",
+    ctaLabel: "VIEW PARKING INFO ↓",
+    ctaAction: "parking",
   },
   {
-    num: "03",
-    title: "ARRIVAL",
-    icon: (
-      <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-      </svg>
-    ),
-    items: [
-      {
-        label: "Check-In Time",
-        value: "45 minutes before your session",
-      },
-      {
-        label: "Guest Portal Location",
-        value: "Main entrance, clearly signposted",
-      },
-      {
-        label: "What Happens Next",
-        value: "Equipment fitting → Safety briefing → Paddle out",
-      },
-      {
-        label: "Late Arrival",
-        value: "May result in session forfeiture — please plan ahead",
-      },
-    ],
+    step: "03",
+    title: "GUEST CHECK-IN",
+    subtitle: "Check-in 45 Mins Prior",
+    desc: "Arrive 45 minutes before your scheduled session time for gear fitting, locker assignment, and the mandatory safety orientation briefing.",
+    ctaLabel: "CHECK-IN GUIDELINES ↓",
+    ctaAction: "essentials",
   },
 ];
 
@@ -119,8 +72,12 @@ export default function VisitPlan() {
     return () => ctx.revert();
   }, []);
 
-  const handleGetDirections = () => {
-    const el = document.getElementById("location-directions");
+  const handleNavClick = (id: string) => {
+    if (id === "directions") {
+      window.open("https://maps.app.goo.gl/qcxXGozrQb9vLgnX8", "_blank", "noopener,noreferrer");
+      return;
+    }
+    const el = document.getElementById(id);
     if (el) {
       el.scrollIntoView({ behavior: "smooth" });
     }
@@ -130,86 +87,76 @@ export default function VisitPlan() {
     <section
       ref={sectionRef}
       id="arrive-ready"
-      className="bg-[#F7F6F1] text-[#0A1926] py-24 sm:py-32 relative z-10 border-b border-slate-200/80"
+      className="bg-[#F7F6F1] text-[#0A1926] pt-16 sm:pt-20 pb-20 sm:pb-24 relative z-10 border-b border-slate-200/80"
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* LEFT: Large Destination Image */}
-          <div className="lg:col-span-7 arrive-anim">
-            <div className="relative rounded-[24px] overflow-hidden bg-slate-200 aspect-[4/3] sm:aspect-[5/4] bg-cover bg-center" style={{ backgroundImage: "url('/images/bahrain_surf_park_clean.jpg')" }}>
-              <div className="absolute inset-0 bg-gradient-to-t from-[#02141C]/40 via-transparent to-transparent" />
-              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
-                <div className="text-white">
-                  <span className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#00C8A0] block mb-1">ARRIVE READY</span>
-                  <p className="text-sm sm:text-base font-medium">Bilaj Al Jazayer, Bahrain</p>
-                </div>
-                <button
-                  onClick={handleGetDirections}
-                  onMouseMove={handleMagneticMouseMove}
-                  onMouseLeave={handleMagneticMouseLeave}
-                  className="bg-white hover:bg-slate-100 text-[#0A1926] font-extrabold px-6 py-3 rounded-xl text-xs uppercase tracking-widest shadow-lg transition-all cursor-pointer inline-flex items-center gap-2"
-                >
-                  <span>GET DIRECTIONS</span>
-                  <span className="text-sm">→</span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* RIGHT: Practical Arrival Information */}
-          <div className="lg:col-span-5 arrive-anim flex flex-col justify-start">
-            <span className="text-[#0B7FB5] text-xs font-extrabold tracking-[0.25em] uppercase mb-3 block">
-              ARRIVE READY
-            </span>
-
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-[44px] font-bold text-[#0A1926] leading-[1.08] tracking-tight mb-8">
-              Your Arrival,<br />Simplified.
-            </h2>
-
-            <div className="space-y-6">
-              {ARRIVAL_CATEGORIES.map((category, catIdx) => (
-                <div key={category.num} className="border-l-2 border-[#E2E8F0] pl-6 pb-8 last:pb-0 last:border-transparent transition-all duration-300 hover:border-[#00C8A0]">
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className="w-10 h-10 rounded-xl bg-[#00C8A0]/10 flex items-center justify-center text-[#00C8A0] shrink-0">
-                      {category.icon}
-                    </span>
-                    <div>
-                      <span className="font-mono text-xs font-bold text-[#00C8A0]">
-                        {category.num}
-                      </span>
-                      <h3 className="font-serif text-lg font-bold text-[#0A1926] ml-2">
-                        {category.title}
-                      </h3>
-                    </div>
-                  </div>
-
-                  <dl className="space-y-3 ml-13">
-                    {category.items.map((item, itemIdx) => (
-                      <div key={itemIdx} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-2 border-t border-slate-200/60">
-                        <dt className="text-xs sm:text-sm text-slate-500 font-sans">
-                          {item.label}
-                        </dt>
-                        <dd className="text-xs sm:text-sm font-medium text-[#0A1926] font-sans text-right sm:text-left">
-                          {item.value}
-                        </dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
-              ))}
-            </div>
-
-            {/* Primary CTA */}
+      {/* Quick Access Horizontal Utility Navigation Bar */}
+      <div className="sticky top-20 z-30 bg-[#F7F6F1]/90 backdrop-blur-md border-y border-slate-200 shadow-sm py-3 mb-12">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth">
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#0B7FB5] shrink-0 mr-3 hidden sm:inline-block">
+            QUICK ACCESS:
+          </span>
+          {QUICK_NAV_ITEMS.map((item) => (
             <button
-              onClick={handleGetDirections}
-              onMouseMove={handleMagneticMouseMove}
-              onMouseLeave={handleMagneticMouseLeave}
-              className="mt-8 w-full sm:w-auto bg-[#00C8A0] hover:bg-[#00B590] text-[#02141C] font-extrabold px-8 py-4 rounded-xl text-xs uppercase tracking-widest transition-all shadow-xl hover:shadow-[#00C8A0]/30 cursor-pointer inline-flex items-center gap-2"
+              key={item.id}
+              onClick={() => handleNavClick(item.id)}
+              className="px-4 py-2 rounded-full bg-white hover:bg-[#0A1926] hover:text-white border border-slate-200 text-[#0A1926] text-xs font-extrabold uppercase tracking-wider transition-all shrink-0 cursor-pointer shadow-xs"
             >
-              <span>GET DIRECTIONS</span>
-              <span className="text-sm">→</span>
+              {item.label}
             </button>
-          </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+        {/* Section Header */}
+        <div className="arrive-anim max-w-3xl mb-14 text-left">
+          <span className="text-[#0B7FB5] text-xs font-extrabold tracking-[0.25em] uppercase mb-3 block">
+            02 — ARRIVE READY
+          </span>
+          <h2 className="font-serif text-3xl sm:text-5xl font-bold text-[#0A1926] tracking-tight leading-[1.05] mb-5">
+            ARRIVE READY.
+          </h2>
+          <p className="text-slate-600 text-base sm:text-lg leading-relaxed font-sans">
+            From your journey to Bilaj Al Jazayer to checking in at the Guest Portal, here is everything you need for a smooth arrival experience.
+          </p>
+        </div>
+
+        {/* 3-Column Editorial Arrival Steps */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10 items-stretch">
+          {ARRIVAL_STEPS.map((item) => (
+            <div
+              key={item.step}
+              className="arrive-anim bg-white rounded-2xl p-7 sm:p-8 border border-slate-200/80 shadow-md flex flex-col justify-between hover:shadow-xl transition-all duration-300 group"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-5">
+                  <span className="font-serif text-2xl font-bold text-[#00C8A0]">
+                    {item.step}
+                  </span>
+                  <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#0B7FB5] bg-[#0B7FB5]/10 px-2.5 py-1 rounded-md">
+                    {item.subtitle}
+                  </span>
+                </div>
+
+                <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#0A1926] mb-3 group-hover:text-[#0B7FB5] transition-colors">
+                  {item.title}
+                </h3>
+
+                <p className="text-slate-600 text-sm leading-relaxed font-sans mb-6">
+                  {item.desc}
+                </p>
+              </div>
+
+              <button
+                onClick={() => handleNavClick(item.ctaAction === "directions" ? "directions" : item.ctaAction === "parking" ? "parking-access" : "visit-essentials")}
+                onMouseMove={handleMagneticMouseMove}
+                onMouseLeave={handleMagneticMouseLeave}
+                className="w-full bg-[#0A1926] hover:bg-[#0B7FB5] text-white text-xs font-extrabold py-3.5 px-5 rounded-xl uppercase tracking-widest transition-colors inline-flex items-center justify-center gap-2 cursor-pointer mt-auto"
+              >
+                <span>{item.ctaLabel}</span>
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </section>

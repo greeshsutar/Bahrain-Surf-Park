@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MOTION, isReducedMotion, handleMagneticMouseMove, handleMagneticMouseLeave } from "../../constants/motion";
@@ -13,6 +12,7 @@ interface VisitCTAProps {
 
 export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  const parallaxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -20,18 +20,34 @@ export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
     if (!section || isReducedMotion()) return;
 
     const ctx = gsap.context(() => {
+      // Background Parallax
+      if (parallaxRef.current) {
+        gsap.to(parallaxRef.current, {
+          yPercent: 12,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      }
+
+      // Entrance Stagger
       gsap.fromTo(
         ".visit-cta-anim",
-        { opacity: 0, scale: 0.96 },
+        { opacity: 0, scale: 0.97, y: 24 },
         {
           opacity: 1,
           scale: 1,
+          y: 0,
           duration: MOTION.ENTRANCE_DURATION,
           ease: MOTION.ENTRANCE_EASE,
           scrollTrigger: {
             trigger: section,
             start: "top 80%",
-            once: true,
+            toggleActions: "play none none reverse",
           },
         }
       );
@@ -41,43 +57,41 @@ export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
   }, []);
 
   const handleGetDirections = () => {
-    const el = document.getElementById("location-directions");
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    window.open("https://maps.app.goo.gl/qcxXGozrQb9vLgnX8", "_blank", "noopener,noreferrer");
   };
 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-[55vh] sm:min-h-[65vh] lg:min-h-[70vh] flex flex-col justify-center bg-[#02141C] text-white overflow-hidden z-10 pt-24 pb-0"
+      className="relative w-full min-h-[58vh] sm:min-h-[68vh] lg:min-h-[75vh] flex flex-col justify-between bg-[#02141C] text-white overflow-hidden z-10 pt-24 sm:pt-28 pb-0"
     >
-      {/* Background Video */}
-      <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
+      {/* Cinematic Ocean Video Layer with Parallax Scrub */}
+      <div ref={parallaxRef} className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 overflow-hidden will-change-transform">
         <video
           autoPlay
           muted
           loop
           playsInline
           poster="/images/tier5.jpg"
-          className="w-full h-full object-cover opacity-40"
+          className="w-full h-full object-cover opacity-50 scale-105"
         >
           <source src="/videos/surfing.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-t from-[#02141C] via-[#02141C]/75 to-[#02141C]/85" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00C8A0]/15 blur-[160px] rounded-full pointer-events-none" />
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 lg:px-12 relative z-10 text-center visit-cta-anim mb-20">
+      <div className="max-w-4xl mx-auto px-6 lg:px-12 relative z-10 text-center visit-cta-anim my-auto">
         <span className="text-[#00C8A0] text-xs font-extrabold tracking-[0.28em] uppercase mb-4 block">
-          SEE YOU BY THE WAVE
+          09 — FINAL ARRIVAL
         </span>
 
-        <h2 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.05] mb-6">
-          Arrive Ready.<br />Leave With A Story.
+        <h2 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.03] mb-6 drop-shadow-lg">
+          READY FOR THE WAVE?
         </h2>
 
-        <p className="text-slate-200 text-base sm:text-lg font-sans max-w-xl mx-auto mb-10 leading-relaxed">
-          Everything you need is here. Now all that's left is to make the journey.
+        <p className="text-slate-200 text-base sm:text-xl font-sans max-w-xl mx-auto mb-10 leading-relaxed drop-shadow-sm">
+          Plan your arrival. Then enjoy the day.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
@@ -85,25 +99,25 @@ export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
             onClick={() => onOpenBooking()}
             onMouseMove={handleMagneticMouseMove}
             onMouseLeave={handleMagneticMouseLeave}
-            className="bg-[#00C8A0] hover:bg-[#00B590] text-[#02141C] font-extrabold px-9 py-4 rounded-xl text-xs uppercase tracking-widest transition-all shadow-2xl hover:shadow-[#00C8A0]/30 cursor-pointer inline-flex items-center gap-2"
+            className="bg-[#00C8A0] hover:bg-[#00B590] text-[#02141C] font-extrabold px-9 py-4 rounded-xl text-xs uppercase tracking-widest transition-all shadow-2xl hover:shadow-[#00C8A0]/40 cursor-pointer inline-flex items-center gap-2.5 hover:-translate-y-0.5"
           >
             <span>BOOK YOUR EXPERIENCE</span>
-            <span className="text-sm">→</span>
+            <span className="text-sm font-normal">→</span>
           </button>
 
           <button
             onClick={handleGetDirections}
             onMouseMove={handleMagneticMouseMove}
             onMouseLeave={handleMagneticMouseLeave}
-            className="bg-transparent hover:bg-white/10 border border-white/30 text-white font-bold px-8 py-4 rounded-xl text-xs uppercase tracking-widest transition-all inline-flex items-center gap-2"
+            className="bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/50 text-white font-bold px-8 py-4 rounded-xl text-xs uppercase tracking-widest backdrop-blur-md transition-all cursor-pointer inline-flex items-center gap-2 hover:-translate-y-0.5"
           >
             <span>GET DIRECTIONS</span>
-            <span className="text-sm">→</span>
+            <span className="text-sm font-normal">→</span>
           </button>
         </div>
       </div>
 
-      {/* Organic Wave Divider Transitioning into Global Footer */}
+      {/* Organic Wave Divider Transitioning cleanly into Global Footer (#0A1926) */}
       <WaveDivider fill="#0A1926" />
     </section>
   );
