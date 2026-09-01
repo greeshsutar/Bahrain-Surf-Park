@@ -42,7 +42,7 @@ export default function WaveDivider({
     const totalLength = line.getTotalLength();
     gsap.set(line, { strokeDasharray: totalLength, strokeDashoffset: totalLength });
 
-    // Initial position at left start
+    // Set initial position at left start (x=0)
     if (node) {
       const startPt = line.getPointAtLength(0);
       gsap.set(node, { cx: startPt.x, cy: startPt.y });
@@ -51,7 +51,7 @@ export default function WaveDivider({
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: container.parentElement || container,
-        start: "top 75%",
+        start: "top 70%",
         end: "bottom bottom",
         scrub: 0.5,
         onUpdate: (self) => {
@@ -89,6 +89,26 @@ export default function WaveDivider({
       `}
       aria-hidden="true"
     >
+      <style>{`
+        @keyframes greenWaveStream {
+          0% {
+            stroke-dashoffset: 540;
+          }
+          100% {
+            stroke-dashoffset: 0;
+          }
+        }
+        .green-wave-flowing-stream {
+          stroke-dasharray: 180 360;
+          animation: greenWaveStream 4s linear infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .green-wave-flowing-stream {
+            animation: none !important;
+          }
+        }
+      `}</style>
+
       <svg
         className="w-full h-full block"
         viewBox="0 0 1440 200"
@@ -120,17 +140,29 @@ export default function WaveDivider({
           filter="url(#wave-shadow)"
         />
 
-        {/* 2. Optional Green Scroll-Driven Animated Wave Curve & Node */}
+        {/* 2. Green Scroll-Driven & Continuous Left-to-Right Animated Wave Stream */}
         {showGreenScrollLine && (
           <>
-            {/* Background Muted Track Line */}
+            {/* Muted Track Line */}
             <path
               d={waveCurvePath}
               fill="none"
               stroke={greenLineColor}
               strokeWidth="2"
-              strokeOpacity="0.2"
+              strokeOpacity="0.25"
               strokeLinecap="round"
+            />
+
+            {/* Continuous Left-to-Right Flowing Green Stream */}
+            <path
+              d={waveCurvePath}
+              fill="none"
+              stroke={greenLineColor}
+              strokeWidth="3.5"
+              strokeOpacity="0.6"
+              strokeLinecap="round"
+              className="green-wave-flowing-stream"
+              filter="url(#green-glow)"
             />
 
             {/* Scroll-Driven Animated Bright Green Wave Stroke */}
@@ -144,7 +176,7 @@ export default function WaveDivider({
               filter="url(#green-glow)"
             />
 
-            {/* Scroll-Driven Travelling Glowing Green Node */}
+            {/* Scroll-Driven Travelling Glowing Green Node (Left to Right) */}
             <circle
               ref={greenNodeRef}
               r="8"
