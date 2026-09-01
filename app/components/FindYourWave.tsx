@@ -20,7 +20,7 @@ const CARDS_DATA = [
     height: "0.5 – 0.8m",
     ride: "120m",
     board: "Soft-top",
-    price: "Pricing TBA",
+    price: "FROM 25 BHD",
   },
   {
     id: "02",
@@ -33,7 +33,7 @@ const CARDS_DATA = [
     height: "0.8 – 1.2m",
     ride: "140m",
     board: "Funboard",
-    price: "Pricing TBA",
+    price: "FROM 35 BHD",
   },
   {
     id: "03",
@@ -46,7 +46,7 @@ const CARDS_DATA = [
     height: "1.2 – 1.5m",
     ride: "160m",
     board: "Fish / Longboard",
-    price: "Pricing TBA",
+    price: "FROM 45 BHD",
   },
   {
     id: "04",
@@ -59,7 +59,7 @@ const CARDS_DATA = [
     height: "1.5 – 1.8m",
     ride: "180m",
     board: "Shortboard",
-    price: "Pricing TBA",
+    price: "FROM 55 BHD",
   },
   {
     id: "05",
@@ -72,7 +72,7 @@ const CARDS_DATA = [
     height: "1.8 – 2.2m",
     ride: "200m",
     board: "Step-Up",
-    price: "Pricing TBA",
+    price: "FROM 65 BHD",
   },
 ];
 
@@ -274,7 +274,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
     <section
       ref={sectionRef}
       id="find-your-wave"
-      className="relative pt-10 lg:pt-14 pb-10 lg:pb-14 overflow-hidden bg-[#061C27] text-white selection:bg-[#00C8A0] selection:text-[#061C27]"
+      className="relative pt-16 sm:pt-20 pb-16 sm:pb-20 overflow-hidden bg-[#061C27] text-white selection:bg-[#00C8A0] selection:text-[#061C27]"
     >
       {/* Layer 2: Subtle teal radial glow behind center card position */}
       <div

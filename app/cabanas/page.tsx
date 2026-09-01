@@ -31,9 +31,6 @@ export default function CabanasPage() {
 
       {/* 06 — MAKE THE DAY YOUR OWN */}
       <CabanasCTA onOpenBooking={onOpenBooking} />
-
-      {/* 07 — FOOTER */}
-      <Footer onOpenBooking={onOpenBooking} />
     </div>
   );
 }

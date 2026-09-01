@@ -1,136 +1,119 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import VisitHero from "./visit/VisitHero";
-import VisitPlan from "./visit/VisitPlan";
-import VisitAtAGlance from "./visit/VisitAtAGlance";
-import VisitKnowBeforeYouGo from "./visit/VisitKnowBeforeYouGo";
-import VisitMap from "./visit/VisitMap";
-import VisitFAQ from "./visit/VisitFAQ";
-import VisitCTA from "./visit/VisitCTA";
+import { useEffect, useRef } from "react";
+import Link from "next/link";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import WaveDivider from "./WaveDivider";
+import { MOTION, isReducedMotion, handleMagneticMouseMove, handleMagneticMouseLeave } from "../constants/motion";
 
 interface VisitProps {
   onOpenBooking: (tier?: string) => void;
 }
 
-const SECTIONS = [
-  { id: "arrive-ready", label: "ARRIVE" },
-  { id: "visit-at-a-glance", label: "VISIT" },
-  { id: "know-before-you-go", label: "KNOW" },
-  { id: "location-directions", label: "MAP" },
-  { id: "faq", label: "FAQ" },
-];
-
 export default function Visit({ onOpenBooking }: VisitProps) {
-  const [activeSection, setActiveSection] = useState(0);
-  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
-  const observerRef = useRef<IntersectionObserver | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const sections = sectionRefs.current.filter(Boolean) as HTMLElement[];
-    if (sections.length === 0) return;
+    gsap.registerPlugin(ScrollTrigger);
+    const section = sectionRef.current;
+    if (!section || isReducedMotion()) return;
 
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-if (entry.isIntersecting) {
-              const target = entry.target as HTMLElement;
-              const idx = sections.indexOf(target);
-              if (idx !== -1) {
-                setActiveSection(idx);
-              }
-            }
-        });
-      },
-      {
-        rootMargin: "-20% 0px -60% 0px",
-        threshold: [0, 0.25, 0.5, 0.75, 1],
-      }
-    );
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".visit-home-anim",
+        { opacity: 0, y: 24 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: MOTION.ENTRANCE_DURATION,
+          ease: MOTION.ENTRANCE_EASE,
+          stagger: 0.12,
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            toggleActions: "play none none reverse",
+          },
+        }
+      );
+    }, section);
 
-    sections.forEach((section) => observerRef.current?.observe(section));
-
-    return () => {
-      sections.forEach((section) => observerRef.current?.unobserve(section));
-      observerRef.current?.disconnect();
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
-    <div id="visit" className="bg-[#02141C] text-white min-h-screen relative z-10 overflow-x-hidden">
-      {/* Vertical Section Navigation (Desktop only) */}
-      <nav
-        id="section-tracker"
-        className="hidden lg:fixed right-6 top-1/2 -translate-y-1/2 z-40 flex flex-col items-end gap-4 pointer-events-none"
-        aria-label="Page sections"
-      >
-        {SECTIONS.map((section, idx) => (
-          <div
-            key={section.id}
-            ref={(el) => { sectionRefs.current[idx] = el; }}
-            className={`relative group pointer-events-auto transition-all duration-300 ${
-              activeSection === idx ? "opacity-100 translate-x-0" : "opacity-60"
-            }`}
-          >
-            <button
-              onClick={() => {
-                const target = document.getElementById(section.id);
-                if (target) target.scrollIntoView({ behavior: "smooth" });
-              }}
-              className="relative flex items-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 rounded-full px-3 py-2 hover:bg-white/20 hover:border-white/30 transition-all focus:outline-none focus:ring-2 focus:ring-[#00C8A0]"
-              aria-current={activeSection === idx ? "true" : "false"}
-              aria-label={`Scroll to ${section.label}`}
-            >
-              <span
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  activeSection === idx
-                    ? "bg-[#00C8A0] scale-125 shadow-[0_0_8px_rgba(0,200,160,0.6)]"
-                    : "bg-white/40 hover:bg-white/60"
-                }`}
-              />
-              <span className={`text-xs font-extrabold uppercase tracking-[0.1em] whitespace-nowrap transition-all duration-300 ${
-                activeSection === idx ? "text-white opacity-100 w-auto" : "text-white/50 opacity-0 w-0 overflow-hidden"
-              }`}>
-                {section.label}
-              </span>
-            </button>
+    <section
+      ref={sectionRef}
+      id="visit"
+      className="bg-[#F8FAFC] text-[#0A1926] pt-20 sm:pt-24 pb-32 sm:pb-36 relative z-10 overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+          {/* Left Column: Text & CTA */}
+          <div className="lg:col-span-6 flex flex-col justify-center text-left">
+            <span className="visit-home-anim text-[#0B7FB5] text-xs font-extrabold tracking-[0.22em] uppercase mb-3 block">
+              PLAN YOUR VISIT
+            </span>
+
+            <h2 className="visit-home-anim font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#0A1926] tracking-tight leading-[1.1] mb-5">
+              Your Destination on Bahrain&apos;s Southwest Coast
+            </h2>
+
+            <p className="visit-home-anim text-slate-600 text-sm sm:text-base leading-relaxed font-sans mb-4">
+              Located at Bilaj Al Jazayer, Bahrain Surf Park combines world-class wave technology with pristine beach facilities, dining, and luxury cabanas. Just 30 minutes from Manama.
+            </p>
+
+            <p className="visit-home-anim text-slate-600 text-sm sm:text-base leading-relaxed font-sans mb-8">
+              Explore arrival guides, parking information, resort amenities, and guest guidelines to prepare for your day on the water.
+            </p>
+
+            <div className="visit-home-anim flex flex-wrap items-center gap-4">
+              <Link
+                href="/visit"
+                onMouseMove={handleMagneticMouseMove}
+                onMouseLeave={handleMagneticMouseLeave}
+                className="bg-[#0B7FB5] hover:bg-[#0A1926] text-white px-7 py-3.5 rounded-xl text-xs font-extrabold uppercase tracking-widest transition-all duration-300 shadow-md inline-flex items-center gap-2.5"
+              >
+                <span>PLAN YOUR VISIT</span>
+                <span className="text-sm font-normal">→</span>
+              </Link>
+            </div>
           </div>
-        ))}
-      </nav>
 
-      {/* 01 — CINEMATIC ARRIVAL HERO */}
-      <VisitHero onOpenBooking={onOpenBooking} />
+          {/* Right Column: Compact Location Card / Map Embed */}
+          <div className="lg:col-span-6">
+            <div className="visit-home-anim relative rounded-2xl overflow-hidden shadow-xl border border-slate-200/80 bg-[#0A1926] aspect-[16/10]">
+              <img
+                src="/images/bahrain_surf_park_clean.jpg"
+                alt="Bahrain Surf Park Bilaj Al Jazayer Location"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A1926]/80 via-[#0A1926]/30 to-transparent pointer-events-none" />
+              
+              {/* Location Pill & Overlay */}
+              <div className="absolute bottom-5 left-5 right-5 bg-white/95 backdrop-blur-md border border-white/80 rounded-xl p-4 shadow-lg flex items-center justify-between text-xs font-bold text-[#0A1926]">
+                <div className="flex flex-col">
+                  <span className="text-[#0B7FB5] text-[10px] font-black uppercase tracking-widest">LOCATION</span>
+                  <span className="text-sm font-serif font-bold">Bilaj Al Jazayer, Bahrain</span>
+                </div>
 
-      {/* Wave: Hero → Arrive Ready */}
-      <WaveDivider fill="#F7F6F1" className="-bottom-[1px]" />
+                <a
+                  href="https://maps.app.goo.gl/qcxXGozrQb9vLgnX8"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#0B7FB5] hover:bg-[#0A1926] text-white text-[11px] font-extrabold px-3.5 py-2 rounded-lg transition-colors flex items-center gap-1 shrink-0"
+                >
+                  <span>GET DIRECTIONS</span>
+                  <span className="text-[10px]">↗</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      {/* 02 — ARRIVE READY */}
-      <VisitPlan />
-
-      {/* Wave: Arrive Ready → Visit At A Glance */}
-      <WaveDivider fill="#F7F6F1" className="-bottom-[1px]" />
-
-      {/* 03 — YOUR VISIT AT A GLANCE */}
-      <VisitAtAGlance />
-
-      {/* 04 — KNOW BEFORE YOU GO (Cinematic Visual Break) */}
-      <VisitKnowBeforeYouGo />
-
-      {/* Wave: Know Before You Go → Location */}
-      <WaveDivider fill="white" className="-bottom-[1px]" />
-
-      {/* 05 — LOCATION + DIRECTIONS */}
-      <VisitMap />
-
-      {/* Wave: Location → FAQ */}
-      <WaveDivider fill="#061C27" className="-bottom-[1px]" />
-
-      {/* 06 — FAQ / HELP */}
-      <VisitFAQ />
-
-      {/* 07 — FINAL ARRIVAL CTA */}
-      <VisitCTA onOpenBooking={onOpenBooking} />
-    </div>
+      {/* Retained Bottom Wave Divider transitioning cleanly into Footer (#0A1926) */}
+      <WaveDivider fill="#0A1926" showGreenScrollLine={false} />
+    </section>
   );
 }

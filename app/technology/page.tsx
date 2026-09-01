@@ -8,12 +8,8 @@ import WaveControl from "../components/technology/WaveControl";
 import SustainabilitySection from "../components/technology/SustainabilitySection";
 import SafetySection from "../components/technology/SafetySection";
 import TechnologyCTA from "../components/technology/TechnologyCTA";
-import Footer from "../components/Footer";
-import { useBooking } from "../context/BookingContext";
 
 export default function TechnologyPage() {
-  const { onOpenBooking } = useBooking();
-
   return (
     <div className="bg-[#02141C] text-white min-h-screen relative z-10 overflow-x-hidden">
       {/* 1. Hero & Stat Strip */}
@@ -52,9 +48,6 @@ export default function TechnologyPage() {
 
       {/* 8. Final CTA */}
       <TechnologyCTA />
-
-      {/* 9. Footer */}
-      <Footer onOpenBooking={onOpenBooking} />
     </div>
   );
 }

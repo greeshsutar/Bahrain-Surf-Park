@@ -31,9 +31,6 @@ export default function AcademyPage() {
 
       {/* 06 — FINAL CINEMATIC CTA */}
       <AcademyCTA onOpenBooking={onOpenBooking} />
-
-      {/* 07 — FOOTER */}
-      <Footer onOpenBooking={onOpenBooking} />
     </div>
   );
 }

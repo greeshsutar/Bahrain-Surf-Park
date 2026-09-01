@@ -32,7 +32,6 @@ export default function SurfPage() {
       <SurfFAQ />
       <SurfCTA />
       <SurfDestinations />
-      <Footer onOpenBooking={onOpenBooking} />
     </div>
   );
 }

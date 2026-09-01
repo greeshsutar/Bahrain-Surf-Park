@@ -6,7 +6,6 @@ import WaveProgressionTimeline from "../components/find-your-wave/WaveProgressio
 import FeelTheDifference from "../components/find-your-wave/FeelTheDifference";
 import SessionBuilder from "../components/find-your-wave/SessionBuilder";
 import FindYourWaveCTA from "../components/find-your-wave/FindYourWaveCTA";
-import Footer from "../components/Footer";
 import { useBooking } from "../context/BookingContext";
 
 export default function FindYourWavePage() {
@@ -31,9 +30,6 @@ export default function FindYourWavePage() {
 
       {/* 06 — FINAL BOOKING EXPERIENCE */}
       <FindYourWaveCTA onOpenBooking={onOpenBooking} />
-
-      {/* 07 — FOOTER */}
-      <Footer onOpenBooking={onOpenBooking} />
     </div>
   );
 }

@@ -4,14 +4,13 @@ import ServicesHero from "../components/services/ServicesHero";
 import ServicesCardStack from "../components/services/ServicesCardStack";
 import ServicesCinematicExperience from "../components/services/ServicesCinematicExperience";
 import ServicesCTA from "../components/services/ServicesCTA";
-import Footer from "../components/Footer";
 import { useBooking } from "../context/BookingContext";
 
 export default function ServicesPage() {
   const { onOpenBooking } = useBooking();
 
   return (
-    <div className="bg-[#02141C] text-white min-h-screen relative z-10 overflow-x-hidden">
+    <div className="bg-[#02141C] text-[#FFFFFF] min-h-screen relative z-10 overflow-x-hidden">
       {/* 01 — CINEMATIC HERO */}
       <ServicesHero onOpenBooking={onOpenBooking} />
 
@@ -23,9 +22,6 @@ export default function ServicesPage() {
 
       {/* 04 — FINAL CINEMATIC CTA */}
       <ServicesCTA onOpenBooking={onOpenBooking} />
-
-      {/* 05 — FOOTER */}
-      <Footer onOpenBooking={onOpenBooking} />
     </div>
   );
 }
