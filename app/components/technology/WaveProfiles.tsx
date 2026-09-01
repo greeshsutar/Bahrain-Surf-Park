@@ -1,5 +1,11 @@
 "use client";
 
+/**
+ * UNUSED COMPONENT:
+ * Removed from app/technology/page.tsx per content curation strategy to eliminate duplicate pricing data.
+ * Retained for potential repurposing or future reference.
+ */
+
 import { useEffect, useRef, useState } from "react";
 import { useBooking } from "../../context/BookingContext";
 

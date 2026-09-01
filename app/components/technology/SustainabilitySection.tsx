@@ -35,12 +35,12 @@ export default function SustainabilitySection() {
               {/* Radial Aqua Dotted Graphic */}
               <div className="absolute inset-0 rounded-full border-4 border-[#00C7C7]/20 border-t-[#00C7C7] animate-spin" style={{ animationDuration: "20s" }}></div>
 
-              <div className="text-center relative z-10">
-                <div className="font-serif text-5xl sm:text-6xl font-bold text-[#092531] tracking-tight mb-2">
-                  35%
+              <div className="text-center relative z-10 px-4">
+                <div className="font-serif text-2xl sm:text-3xl font-bold text-[#092531] tracking-tight mb-2 uppercase">
+                  ECO-EFFICIENT
                 </div>
-                <div className="text-xs font-extrabold uppercase tracking-widest text-[#007F91] max-w-[140px] mx-auto leading-snug">
-                  LESS ENERGY CONSUMPTION
+                <div className="text-xs font-extrabold uppercase tracking-widest text-[#007F91] max-w-[160px] mx-auto leading-snug">
+                  ENGINEERED FOR EFFICIENT, SUSTAINABLE OPERATION
                 </div>
               </div>
             </div>

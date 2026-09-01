@@ -9,6 +9,7 @@ interface NavbarProps {
 }
 
 const NAV_ITEMS = [
+  { label: "HOME", href: "/" },
   { label: "SURF", href: "/surf" },
   { label: "TECHNOLOGY", href: "/technology" },
   { label: "THE WAVE", href: "/find-your-wave" },
@@ -67,23 +68,18 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
                   key={item.href}
                   href={item.href}
                   className={`py-1 transition-all duration-200 relative nav-anchor ${
-                    isActive
-                      ? isScrolled
-                        ? "text-[#0B7FB5] font-extrabold"
-                        : "text-[#00C8A0] font-extrabold"
-                      : isScrolled
-                      ? "text-[#063B45] hover:text-[#0B7FB5]"
+                    isActive ? "nav-active font-extrabold" : ""
+                  } ${
+                    isScrolled
+                      ? isActive
+                        ? "text-[#0B7FB5]"
+                        : "text-[#063B45] hover:text-[#0B7FB5]"
+                      : isActive
+                      ? "text-[#00C8A0]"
                       : "text-white/90 hover:text-[#00C8A0]"
                   }`}
                 >
                   <span>{item.label}</span>
-                  {isActive && (
-                    <span
-                      className={`absolute bottom-0 left-0 right-0 h-[2px] rounded-full ${
-                        isScrolled ? "bg-[#0B7FB5]" : "bg-[#00C8A0]"
-                      }`}
-                    ></span>
-                  )}
                 </Link>
               );
             })}

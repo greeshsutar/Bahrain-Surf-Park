@@ -4,7 +4,8 @@ const CARDS = [
   {
     title: "HEIGHT CONTROL",
     desc: "Adjust wave height from small and gentle to powerful and hollow.",
-    val: "75%",
+    val: "0.5m – 2.2m",
+    fill: "85%",
     icon: (
       <svg className="w-6 h-6 text-[#00C7C7]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M12 3v18M3 12h18" />
@@ -14,7 +15,8 @@ const CARDS = [
   {
     title: "SPEED CONTROL",
     desc: "Control the speed and power of the wave for different riding styles.",
-    val: "85%",
+    val: "CALIBRATED",
+    fill: "90%",
     icon: (
       <svg className="w-6 h-6 text-[#00C7C7]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <circle cx="12" cy="12" r="9" />
@@ -25,7 +27,8 @@ const CARDS = [
   {
     title: "SHAPE CONTROL",
     desc: "Fine-tune the shape of the wave face for ultimate performance.",
-    val: "90%",
+    val: "DYNAMIC",
+    fill: "95%",
     icon: (
       <svg className="w-6 h-6 text-[#00C7C7]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <circle cx="12" cy="12" r="9" />
@@ -87,7 +90,7 @@ export default function WaveControl() {
                   <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden relative">
                     <div
                       className="h-full bg-gradient-to-r from-[#007F91] to-[#00C7C7] rounded-full"
-                      style={{ width: card.val }}
+                      style={{ width: card.fill }}
                     ></div>
                   </div>
                 </div>
