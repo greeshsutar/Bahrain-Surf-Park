@@ -8,8 +8,12 @@ import WaveControl from "../components/technology/WaveControl";
 import SustainabilitySection from "../components/technology/SustainabilitySection";
 import SafetySection from "../components/technology/SafetySection";
 import TechnologyCTA from "../components/technology/TechnologyCTA";
+import Footer from "../components/Footer";
+import { useBooking } from "../context/BookingContext";
 
 export default function TechnologyPage() {
+  const { onOpenBooking } = useBooking();
+
   return (
     <div className="bg-[#02141C] text-white min-h-screen relative z-10 overflow-x-hidden">
       {/* 1. Hero & Stat Strip */}
@@ -25,7 +29,7 @@ export default function TechnologyPage() {
       <WaveControl />
 
       {/* 5. Wave Tiers Navigation Banner */}
-      <section className="bg-[#061C27] text-white py-12 border-b border-white/10 relative z-10">
+      <section className="bg-[#061C27] text-[#FFFFFF] py-12 border-b border-white/10 relative z-10">
         <div className="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col sm:flex-row items-center justify-between gap-6">
           <p className="text-white/85 text-base sm:text-lg font-sans font-medium text-center sm:text-left">
             Explore all five wave tiers and find your session
@@ -48,6 +52,9 @@ export default function TechnologyPage() {
 
       {/* 8. Final CTA */}
       <TechnologyCTA />
+
+      {/* 9. Footer */}
+      <Footer onOpenBooking={onOpenBooking} />
     </div>
   );
 }

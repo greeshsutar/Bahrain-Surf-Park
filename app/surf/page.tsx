@@ -12,8 +12,12 @@ import SurfAcademy from "../components/surf/SurfAcademy";
 import SurfFAQ from "../components/surf/SurfFAQ";
 import SurfCTA from "../components/surf/SurfCTA";
 import SurfDestinations from "../components/surf/SurfDestinations";
+import Footer from "../components/Footer";
+import { useBooking } from "../context/BookingContext";
 
 export default function SurfPage() {
+  const { onOpenBooking } = useBooking();
+
   return (
     <div className="bg-[#061F2B] text-white min-h-screen relative z-10 overflow-x-hidden">
       <SurfHero />
@@ -28,6 +32,7 @@ export default function SurfPage() {
       <SurfFAQ />
       <SurfCTA />
       <SurfDestinations />
+      <Footer onOpenBooking={onOpenBooking} />
     </div>
   );
 }

@@ -40,10 +40,17 @@ export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
     return () => ctx.revert();
   }, []);
 
+  const handleGetDirections = () => {
+    const el = document.getElementById("location-directions");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-[60vh] sm:min-h-[70vh] flex flex-col justify-center bg-[#02141C] text-white overflow-hidden z-10 pt-24 pb-0"
+      className="relative w-full min-h-[55vh] sm:min-h-[65vh] lg:min-h-[70vh] flex flex-col justify-center bg-[#02141C] text-white overflow-hidden z-10 pt-24 pb-0"
     >
       {/* Background Video */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
@@ -62,15 +69,15 @@ export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
 
       <div className="max-w-4xl mx-auto px-6 lg:px-12 relative z-10 text-center visit-cta-anim mb-20">
         <span className="text-[#00C8A0] text-xs font-extrabold tracking-[0.28em] uppercase mb-4 block">
-          YOUR SESSION AWAITS
+          SEE YOU BY THE WAVE
         </span>
 
         <h2 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.05] mb-6">
-          Your Wave Is Waiting.
+          Arrive Ready.<br />Leave With A Story.
         </h2>
 
         <p className="text-slate-200 text-base sm:text-lg font-sans max-w-xl mx-auto mb-10 leading-relaxed">
-          Plan your visit, choose your session, and get ready to paddle out.
+          Everything you need is here. Now all that's left is to make the journey.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
@@ -80,19 +87,19 @@ export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
             onMouseLeave={handleMagneticMouseLeave}
             className="bg-[#00C8A0] hover:bg-[#00B590] text-[#02141C] font-extrabold px-9 py-4 rounded-xl text-xs uppercase tracking-widest transition-all shadow-2xl hover:shadow-[#00C8A0]/30 cursor-pointer inline-flex items-center gap-2"
           >
-            <span>BOOK YOUR SESSION</span>
+            <span>BOOK YOUR EXPERIENCE</span>
             <span className="text-sm">→</span>
           </button>
 
-          <Link
-            href="/find-your-wave"
+          <button
+            onClick={handleGetDirections}
             onMouseMove={handleMagneticMouseMove}
             onMouseLeave={handleMagneticMouseLeave}
             className="bg-transparent hover:bg-white/10 border border-white/30 text-white font-bold px-8 py-4 rounded-xl text-xs uppercase tracking-widest transition-all inline-flex items-center gap-2"
           >
-            <span>EXPLORE YOUR WAVE</span>
+            <span>GET DIRECTIONS</span>
             <span className="text-sm">→</span>
-          </Link>
+          </button>
         </div>
       </div>
 

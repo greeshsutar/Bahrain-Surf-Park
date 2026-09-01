@@ -7,7 +7,7 @@ export default function TechnologyCTA() {
   const { onOpenBooking } = useBooking();
 
   return (
-    <section className="bg-[#031923] text-white py-24 sm:py-32 relative z-10 overflow-hidden border-b border-white/10">
+    <section className="bg-[#031923] text-white pt-20 sm:pt-28 pb-12 sm:pb-16 relative z-10 overflow-hidden">
       {/* Background Media Placeholder Layer */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
         <video
@@ -20,7 +20,7 @@ export default function TechnologyCTA() {
         >
           <source src="/videos/surfing.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#031923] via-[#031923]/70 to-[#031923]/80"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A1926] via-[#031923]/70 to-[#031923]/80"></div>
       </div>
 
       <div className="max-w-4xl mx-auto px-6 lg:px-12 relative z-10 text-center">

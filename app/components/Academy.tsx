@@ -6,6 +6,7 @@ import AcademyLearningJourney from "./academy/AcademyLearningJourney";
 import AcademyCoaching from "./academy/AcademyCoaching";
 import AcademySessionBuilder from "./academy/AcademySessionBuilder";
 import AcademyCTA from "./academy/AcademyCTA";
+import Footer from "./Footer";
 import { useBooking } from "../context/BookingContext";
 
 export default function Academy() {
@@ -30,6 +31,9 @@ export default function Academy() {
 
       {/* 06 — FINAL CINEMATIC CTA */}
       <AcademyCTA onOpenBooking={onOpenBooking} />
+
+      {/* 07 — FOOTER */}
+      <Footer onOpenBooking={onOpenBooking} />
     </div>
   );
 }

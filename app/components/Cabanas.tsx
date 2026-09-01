@@ -6,6 +6,7 @@ import CabanasExperience from "./cabanas/CabanasExperience";
 import CabanasInteractiveSelector from "./cabanas/CabanasInteractiveSelector";
 import CabanasDayJourney from "./cabanas/CabanasDayJourney";
 import CabanasCTA from "./cabanas/CabanasCTA";
+import Footer from "./Footer";
 import { useBooking } from "../context/BookingContext";
 
 export default function Cabanas() {
@@ -30,6 +31,9 @@ export default function Cabanas() {
 
       {/* 06 — MAKE THE DAY YOUR OWN */}
       <CabanasCTA onOpenBooking={onOpenBooking} />
+
+      {/* 07 — FOOTER */}
+      <Footer onOpenBooking={onOpenBooking} />
     </div>
   );
 }
