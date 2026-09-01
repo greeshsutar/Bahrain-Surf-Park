@@ -5,6 +5,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MOTION, isReducedMotion, handleMagneticMouseMove, handleMagneticMouseLeave } from "../../constants/motion";
+import WaveDivider from "../WaveDivider";
 
 interface FindYourWaveCTAProps {
   onOpenBooking: (tier?: string) => void;
@@ -42,7 +43,7 @@ export default function FindYourWaveCTA({ onOpenBooking }: FindYourWaveCTAProps)
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-[60vh] sm:min-h-[70vh] flex flex-col justify-center bg-[#02141C] text-white overflow-hidden z-10 py-24"
+      className="relative w-full min-h-[60vh] sm:min-h-[70vh] flex flex-col justify-center bg-[#02141C] text-white overflow-hidden z-10 pt-24 pb-0"
     >
       {/* Background Video */}
       <div className="absolute inset-0 w-full h-full z-0 overflow-hidden">
@@ -59,7 +60,7 @@ export default function FindYourWaveCTA({ onOpenBooking }: FindYourWaveCTAProps)
         <div className="absolute inset-0 bg-gradient-to-t from-[#02141C] via-[#02141C]/75 to-[#02141C]/85" />
       </div>
 
-      <div className="max-w-4xl mx-auto px-6 lg:px-12 relative z-10 text-center fyw-cta-anim">
+      <div className="max-w-4xl mx-auto px-6 lg:px-12 relative z-10 text-center fyw-cta-anim mb-20">
         <span className="text-[#00C8A0] text-xs font-extrabold tracking-[0.28em] uppercase mb-4 block">
           READY TO RIDE?
         </span>
@@ -94,6 +95,9 @@ export default function FindYourWaveCTA({ onOpenBooking }: FindYourWaveCTAProps)
           </Link>
         </div>
       </div>
+
+      {/* Organic Wave Divider Transitioning into Global Footer */}
+      <WaveDivider fill="#0A1926" />
     </section>
   );
 }

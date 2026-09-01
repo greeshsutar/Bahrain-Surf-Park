@@ -65,7 +65,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
           <main className="min-h-screen bg-white text-[#0A1926] relative">
             {children}
           </main>
-          <Footer />
+          <Footer onOpenBooking={handleOpenBooking} />
           <BookingModal
             isOpen={isBookingOpen}
             onClose={handleCloseBooking}
