@@ -97,7 +97,7 @@ export default function FindYourWaveCTA({ onOpenBooking }: FindYourWaveCTAProps)
       </div>
 
       {/* Organic Wave Divider Transitioning into Global Footer */}
-      <WaveDivider fill="#0A1926" />
+      <WaveDivider fill="#0A1926" showGreenScrollLine={true} />
     </section>
   );
 }
