@@ -68,7 +68,7 @@ const CARDS_DATA = [
     tierLabel: "TIER 05",
     title: "EXPERT",
     desc: "Powerful, head-high barreling waves engineered for advanced maneuvers and heavy barrels. Reserved for surfers who know their way around a barrel.",
-    img: "/images/tier5.jpg",
+    img: "/images/bahrain_surf_park_clean.jpg",
     height: "1.8 – 2.2m",
     ride: "200m",
     board: "Step-Up",

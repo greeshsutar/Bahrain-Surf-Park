@@ -110,7 +110,7 @@ export default function WelcomeModal() {
         {/* 1. Full-Bleed Real Photography Background */}
         <div className="absolute inset-0 z-0 overflow-hidden">
           <img
-            src="/images/tier5.jpg"
+            src="/images/bahrain_surf_park_clean.jpg"
             alt="Bahrain Surf Park Waves"
             className="w-full h-full object-cover"
           />
