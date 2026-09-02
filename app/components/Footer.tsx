@@ -5,6 +5,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MOTION, isReducedMotion, handleMagneticMouseMove, handleMagneticMouseLeave } from "../constants/motion";
+import WaveDivider from "./WaveDivider";
 
 interface FooterProps {
   onOpenBooking?: (tier?: string) => void;
@@ -49,10 +50,16 @@ export default function Footer({ onOpenBooking }: FooterProps) {
   }, []);
 
   return (
-    <footer
-      ref={footerRef}
-      className="bg-[#0A1926] text-white pt-16 sm:pt-20 pb-12 relative z-10 overflow-hidden font-sans"
-    >
+    <div className="relative w-full z-10 bg-transparent">
+      {/* Signature Wave Divider Header before Footer for all pages */}
+      <div className="relative w-full h-[65px] sm:h-[95px] lg:h-[115px] -mb-1 overflow-hidden pointer-events-none">
+        <WaveDivider fill="#0A1926" showGreenScrollLine={true} />
+      </div>
+
+      <footer
+        ref={footerRef}
+        className="bg-[#0A1926] text-white pt-8 sm:pt-12 pb-12 relative z-10 overflow-hidden font-sans"
+      >
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         
         {/* 1. Bold Closing Statement Header Banner */}
@@ -297,5 +304,6 @@ export default function Footer({ onOpenBooking }: FooterProps) {
 
       </div>
     </footer>
+    </div>
   );
 }
