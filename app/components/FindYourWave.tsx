@@ -439,8 +439,8 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                   data-wave-card
                   onClick={() => handleSelectCard(idx)}
                   className={`wave-card-item shrink-0 cursor-pointer transition-all duration-500 ease-out flex flex-col justify-between snap-center overflow-hidden rounded-[24px] p-4 sm:p-5
-                    w-[82vw] sm:w-[320px] lg:w-[clamp(300px,24vw,370px)]
-                    h-[clamp(370px,47vh,470px)]
+                    w-[82vw] sm:w-[330px] lg:w-[clamp(310px,25vw,380px)]
+                    h-[clamp(400px,51vh,510px)]
                     ${
                       isActive
                         ? "scale-100 opacity-100 z-20 bg-[#F6F4EE] text-[#0A1926] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-2 border-white/70"
@@ -451,7 +451,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                   style={{ willChange: "transform, opacity" }}
                 >
                   {/* Top Image */}
-                  <div className="relative w-full h-[36%] overflow-hidden rounded-[18px] shrink-0 mb-2">
+                  <div className="relative w-full h-[38%] overflow-hidden rounded-[18px] shrink-0 mb-2">
                     <img
                       src={card.img}
                       alt={`${card.title} wave session`}
