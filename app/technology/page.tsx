@@ -11,7 +11,7 @@ import TechnologyCTA from "../components/technology/TechnologyCTA";
 
 export default function TechnologyPage() {
   return (
-    <div className="bg-[#02141C] text-white min-h-screen relative z-10 overflow-x-hidden">
+    <div className="bg-[#02141C] text-white min-h-screen overflow-x-hidden">
       {/* 1. Hero & Stat Strip */}
       <TechnologyHero />
 

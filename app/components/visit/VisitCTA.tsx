@@ -20,7 +20,7 @@ export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
     if (!section || isReducedMotion()) return;
 
     const ctx = gsap.context(() => {
-      // Background Parallax
+      // Parallax Video Layer Scrub
       if (parallaxRef.current) {
         gsap.to(parallaxRef.current, {
           yPercent: 12,
@@ -34,7 +34,7 @@ export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
         });
       }
 
-      // Entrance Stagger
+      // Entrance Stagger Reveal
       gsap.fromTo(
         ".visit-cta-anim",
         { opacity: 0, scale: 0.97, y: 24 },
@@ -63,7 +63,7 @@ export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-[58vh] sm:min-h-[68vh] lg:min-h-[75vh] flex flex-col justify-between bg-[#02141C] text-white overflow-hidden z-10 pt-24 sm:pt-28 pb-0"
+      className="relative w-full min-h-[70vh] lg:min-h-[78vh] flex flex-col justify-between bg-[#02141C] text-white overflow-hidden z-10 pt-24 sm:pt-32 pb-0"
     >
       {/* Cinematic Ocean Video Layer with Parallax Scrub */}
       <div ref={parallaxRef} className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 overflow-hidden will-change-transform">
@@ -78,12 +78,12 @@ export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
           <source src="/videos/surfing.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-t from-[#02141C] via-[#02141C]/75 to-[#02141C]/85" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00C8A0]/15 blur-[160px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-[#00C8A0]/15 blur-[160px] rounded-full pointer-events-none" />
       </div>
 
       <div className="max-w-4xl mx-auto px-6 lg:px-12 relative z-10 text-center visit-cta-anim my-auto">
         <span className="text-[#00C8A0] text-xs font-extrabold tracking-[0.28em] uppercase mb-4 block">
-          09 — FINAL ARRIVAL
+          10 — FINAL ARRIVAL
         </span>
 
         <h2 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.03] mb-6 drop-shadow-lg">
@@ -91,7 +91,7 @@ export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
         </h2>
 
         <p className="text-slate-200 text-base sm:text-xl font-sans max-w-xl mx-auto mb-10 leading-relaxed drop-shadow-sm">
-          Plan your arrival. Then enjoy the day.
+          Your journey starts before you reach the water.
         </p>
 
         <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
@@ -109,7 +109,7 @@ export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
             onClick={handleGetDirections}
             onMouseMove={handleMagneticMouseMove}
             onMouseLeave={handleMagneticMouseLeave}
-            className="bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/50 text-white font-bold px-8 py-4 rounded-xl text-xs uppercase tracking-widest backdrop-blur-md transition-all cursor-pointer inline-flex items-center gap-2 hover:-translate-y-0.5"
+            className="bg-white/10 hover:bg-white/20 border border-white/30 hover:border-white/60 text-white font-bold px-8 py-4 rounded-xl text-xs uppercase tracking-widest backdrop-blur-md transition-all cursor-pointer inline-flex items-center gap-2 hover:-translate-y-0.5"
           >
             <span>GET DIRECTIONS</span>
             <span className="text-sm font-normal">→</span>

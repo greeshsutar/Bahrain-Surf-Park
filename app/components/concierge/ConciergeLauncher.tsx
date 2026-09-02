@@ -123,7 +123,7 @@ export default function ConciergeLauncher({ isOpen, onToggle, onOpen }: Concierg
           } ${
             isOpen
               ? "bg-[#0A1926] text-white border-2 border-[#00C8A0]/60"
-              : "bg-[#F7F7F3] border border-[#0B7FB5]/25 hover:border-[#00C8A0] hover:ring-2 hover:ring-[#00C8A0]/40 group-hover:-translate-y-1 shadow-md hover:shadow-2xl hover:shadow-[#00C8A0]/20"
+              : "bg-[#0A1926] border border-[#00C8A0]/30 hover:border-[#00C8A0] hover:ring-2 hover:ring-[#00C8A0]/40 group-hover:-translate-y-1 shadow-md hover:shadow-2xl hover:shadow-[#00C8A0]/20"
           }`}
         >
           {isOpen ? (
@@ -132,68 +132,76 @@ export default function ConciergeLauncher({ isOpen, onToggle, onOpen }: Concierg
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
             </svg>
           ) : (
-            /* Open State: Rounded Square Launcher with Large Robot & Subtle Wave Contour */
-            <div className="relative w-full h-full flex flex-col items-center justify-center p-1 bg-gradient-to-b from-[#F7F7F3] to-[#EAF4F5] overflow-hidden">
-              
-              {/* 6. Subtle Ocean Wave Contour Background Lines */}
-              <svg className="absolute inset-0 w-full h-full text-[#0B7FB5]/10 pointer-events-none" viewBox="0 0 100 100" fill="none" preserveAspectRatio="none">
-                <path d="M0 45 C30 35, 70 55, 100 45 L100 100 L0 100 Z" fill="currentColor" opacity="0.4" />
-                <path d="M0 65 C40 55, 60 75, 100 65 L100 100 L0 100 Z" fill="currentColor" opacity="0.6" />
-              </svg>
+            /* Open State: Robot Character Launcher */
+            <div className="relative w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-[#0A1926] to-[#0D2B3E] overflow-hidden">
 
-              {/* 4 & 7. Large Robot Character occupying ~82% of launcher with gentle floating motion */}
+              {/* Subtle radial glow behind robot */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="w-10 h-10 rounded-full bg-[#00C8A0]/20 blur-md" />
+              </div>
+
+              {/* Robot Character */}
               <div
-                className={`relative z-10 w-[82%] h-[82%] flex flex-col items-center justify-center animate-robot-float transition-transform duration-300 ${
-                  robotReacting ? "-translate-y-1" : ""
+                className={`relative z-10 w-[80%] h-[80%] flex items-center justify-center animate-robot-float transition-transform duration-300 ${
+                  robotReacting ? "-translate-y-1.5" : ""
                 }`}
               >
                 <svg
-                  className="w-full h-full text-[#00C8A0] transition-transform duration-300 group-hover:scale-[1.05]"
-                  viewBox="0 0 48 48"
+                  viewBox="0 0 56 62"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  aria-label="Bahrain Surf Concierge Icon"
+                  className="w-full h-full drop-shadow-md transition-transform duration-300 group-hover:scale-[1.06]"
+                  aria-label="Surf Concierge Robot"
                 >
-                  <path
-                    d="M 6 32 C 14 20, 24 18, 34 24 C 38 27, 41 26, 43 22"
-                    stroke="#0B7FB5"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M 6 37 C 16 26, 28 25, 37 31 C 41 34, 43 33, 45 30"
-                    stroke="#00C8A0"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M 28 8 C 33 14, 31 25, 18 36 C 17 37, 15 35, 16 34 C 23 23, 26 13, 28 8 Z"
-                    fill="url(#surf-concierge-launcher-grad)"
-                    stroke="#0B7FB5"
-                    strokeWidth="1.2"
-                  />
-                  <path
-                    d="M 11 25 C 16 16, 25 14, 31 18 C 35 21, 36 25, 33 27 C 30 29, 27 27, 29 24"
-                    stroke="#00C8A0"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M 37 8 L 38.5 11 L 41.5 12.5 L 38.5 14 L 37 17 L 35.5 14 L 32.5 12.5 L 35.5 11 Z"
-                    fill="#00C8A0"
-                  />
+                  {/* Antenna */}
+                  <line x1="28" y1="7" x2="28" y2="13" stroke="#0B7FB5" strokeWidth="2" strokeLinecap="round"/>
+                  <circle cx="28" cy="5" r="2.5" fill="#00C8A0"/>
+
+                  {/* Head */}
+                  <rect x="14" y="13" width="28" height="20" rx="7" fill="white" stroke="#C8E8F0" strokeWidth="1.5"/>
+
+                  {/* Eyes */}
+                  <circle cx="22" cy="23" r="4" fill="#0B7FB5"/>
+                  <circle cx="34" cy="23" r="4" fill="#0B7FB5"/>
+                  <circle cx="22" cy="23" r="2.2" fill="#00C8A0"/>
+                  <circle cx="34" cy="23" r="2.2" fill="#00C8A0"/>
+                  <circle cx="23" cy="22" r="0.8" fill="white"/>
+                  <circle cx="35" cy="22" r="0.8" fill="white"/>
+
+                  {/* Mouth / panel */}
+                  <rect x="22" y="29" width="12" height="2.5" rx="1.25" fill="#C8E8F0"/>
+
+                  {/* Neck */}
+                  <rect x="25" y="33" width="6" height="3" rx="1.5" fill="#D0EAF0"/>
+
+                  {/* Body */}
+                  <rect x="12" y="36" width="32" height="20" rx="8" fill="white" stroke="#C8E8F0" strokeWidth="1.5"/>
+
+                  {/* Chest badge */}
+                  <rect x="21" y="42" width="14" height="8" rx="3" fill="#0B7FB5"/>
+                  <circle cx="25" cy="46" r="1.5" fill="#00C8A0"/>
+                  <circle cx="28" cy="46" r="1.5" fill="#00E5B3"/>
+                  <circle cx="31" cy="46" r="1.5" fill="#00C8A0"/>
+
+                  {/* Arms */}
+                  <rect x="3" y="37" width="9" height="14" rx="4.5" fill="white" stroke="#C8E8F0" strokeWidth="1.5"/>
+                  <rect x="44" y="37" width="9" height="14" rx="4.5" fill="white" stroke="#C8E8F0" strokeWidth="1.5"/>
+
+                  {/* Hand dots */}
+                  <circle cx="7.5" cy="53" r="1.5" fill="#C8E8F0"/>
+                  <circle cx="48.5" cy="53" r="1.5" fill="#C8E8F0"/>
+
                   <defs>
-                    <linearGradient id="surf-concierge-launcher-grad" x1="16" y1="36" x2="31" y2="8" gradientUnits="userSpaceOnUse">
-                      <stop stopColor="#00C8A0" />
-                      <stop offset="1" stopColor="#0B7FB5" />
-                    </linearGradient>
+                    <filter id="robot-glow">
+                      <feGaussianBlur stdDeviation="1.5" result="blur"/>
+                      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
                   </defs>
                 </svg>
               </div>
 
-              {/* 8. Animate Inverse Shadow under Robot */}
-              <div className="absolute bottom-1 z-0 w-8 h-1 rounded-full bg-[#0A1926]/20 blur-[1px] animate-robot-shadow pointer-events-none" />
-
+              {/* Shadow under robot */}
+              <div className="absolute bottom-1 z-0 w-8 h-1.5 rounded-full bg-[#0A1926]/15 blur-sm animate-robot-shadow pointer-events-none" />
             </div>
           )}
         </button>

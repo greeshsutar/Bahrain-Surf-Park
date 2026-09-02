@@ -1,6 +1,6 @@
 export default function QuickNav() {
   return (
-    <section id="quick-nav" className="bg-white pt-6 pb-8 sm:pb-12 relative z-10 border-b border-slate-100">
+    <section id="quick-nav" className="bg-white pt-4 pb-5 sm:pb-8 relative z-10 border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         {/* 4-Column Grid matching reference composition */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 text-left items-start">

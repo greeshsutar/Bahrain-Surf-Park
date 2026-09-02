@@ -59,27 +59,28 @@ export default function VisitGettingHere() {
     <section
       ref={sectionRef}
       id="getting-here"
-      className="relative bg-gradient-to-b from-white via-[#F7F6F1]/70 to-[#F7F6F1] text-[#0A1926] py-20 sm:py-28 z-10 border-b border-slate-200/80 overflow-hidden"
+      className="relative bg-gradient-to-b from-white via-[#F7F6F1]/60 to-white text-[#0A1926] py-20 sm:py-28 z-10 border-b border-slate-200/80 overflow-hidden"
     >
-      {/* Soft Ambient Radial Glow */}
+      {/* Ambient Radial Glow */}
       <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-[#0B7FB5]/5 blur-[140px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          {/* Left Column: Editorial Destination Imagery with Parallax Scrub */}
-          <div className="lg:col-span-6 getting-anim">
+          
+          {/* Left Column: Dominant Photography (~58% width) */}
+          <div className="lg:col-span-7 getting-anim">
             <div
               ref={photoParallaxRef}
-              className="relative rounded-3xl overflow-hidden shadow-2xl bg-[#0A1926] aspect-[4/3] sm:aspect-[16/11] border border-slate-200 group hover:shadow-2xl hover:border-[#00C8A0]/40 transition-all duration-500"
+              className="relative rounded-3xl overflow-hidden shadow-2xl bg-[#0A1926] aspect-[4/3] sm:aspect-[16/10] group"
             >
               <img
                 src="/images/bahrain_surf_park_clean.jpg"
                 alt="Bahrain Surf Park Bilaj Al Jazayer Coastline"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0A1926]/85 via-[#0A1926]/30 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A1926]/80 via-transparent to-transparent pointer-events-none" />
               
-              <div className="absolute bottom-6 left-6 right-6 p-5 rounded-2xl bg-white/95 backdrop-blur-md border border-white/80 text-[#0A1926] shadow-xl group-hover:border-[#00C8A0]/50 transition-colors">
+              <div className="absolute bottom-6 left-6 right-6 p-4 sm:p-5 rounded-2xl bg-white/95 backdrop-blur-md border border-white/80 text-[#0A1926] shadow-lg">
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#0B7FB5] block mb-1">
                   DESTINATION LOCATION
                 </span>
@@ -90,10 +91,10 @@ export default function VisitGettingHere() {
             </div>
           </div>
 
-          {/* Right Column: Editorial Location & Travel Info */}
-          <div className="lg:col-span-6 text-left flex flex-col justify-center">
+          {/* Right Column: Asymmetric Information (~42% width) */}
+          <div className="lg:col-span-5 text-left flex flex-col justify-center">
             <span className="getting-anim text-[#0B7FB5] text-xs font-extrabold tracking-[0.25em] uppercase mb-3 block">
-              03 — GETTING HERE
+              04 — GETTING HERE
             </span>
 
             <h2 className="getting-anim font-serif text-3xl sm:text-5xl font-bold text-[#0A1926] leading-[1.05] tracking-tight mb-6">
@@ -115,20 +116,17 @@ export default function VisitGettingHere() {
               Located at Bilaj Al Jazayer on Bahrain's pristine southwest coastline, the park is approximately 30 minutes from Manama city center. Accessible directly via Sheikh Isa Bin Salman Highway with clear directional signage to the resort entrance.
             </p>
 
-            {/* Parking Detail Card with hover lift + shadow */}
-            <div
-              id="parking-access"
-              className="getting-anim bg-white/90 border border-slate-200/90 rounded-2xl p-6 mb-8 space-y-3 shadow-sm hover:shadow-xl hover:border-[#00C8A0]/30 hover:-translate-y-1 transition-all duration-300"
-            >
+            {/* Parking Details (No heavy cards) */}
+            <div id="parking-access" className="getting-anim border-t border-b border-slate-200/90 py-5 mb-8 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-extrabold uppercase tracking-widest text-[#0B7FB5]">
                   PARKING & ARRIVAL ACCESS
                 </span>
-                <span className="text-[10px] font-bold text-[#00C8A0] bg-[#00C8A0]/10 px-2.5 py-1 rounded-md">
+                <span className="text-[10px] font-bold text-[#00C8A0] bg-[#00C8A0]/10 px-2.5 py-0.5 rounded">
                   ON-SITE PARKING
                 </span>
               </div>
-              <p className="text-sm text-slate-700 font-sans leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 font-sans leading-relaxed">
                 Dedicated visitor parking is available directly adjacent to the main Guest Reception building. Designated accessible parking spaces are positioned nearest to the main entrance lobby.
               </p>
             </div>
@@ -145,6 +143,7 @@ export default function VisitGettingHere() {
               </button>
             </div>
           </div>
+
         </div>
       </div>
     </section>

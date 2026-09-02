@@ -274,7 +274,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
     <section
       ref={sectionRef}
       id="find-your-wave"
-      className="relative pt-16 sm:pt-20 pb-16 sm:pb-20 overflow-hidden bg-[#061C27] text-white selection:bg-[#00C8A0] selection:text-[#061C27]"
+      className="relative pt-10 sm:pt-14 pb-10 sm:pb-14 overflow-hidden bg-[#061C27] text-white selection:bg-[#00C8A0] selection:text-[#061C27]"
     >
       {/* Layer 2: Subtle teal radial glow behind center card position */}
       <div

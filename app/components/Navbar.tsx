@@ -45,7 +45,7 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 sm:px-10 flex items-center justify-between ${
           isScrolled
             ? "nav-scrolled bg-white/95 text-[#063B45] shadow-md py-3.5 backdrop-blur-md border-b border-slate-200/80"
-            : "nav-transparent bg-gradient-to-b from-[#02141C]/85 via-[#02141C]/40 to-transparent text-white py-4 sm:py-5"
+            : "nav-transparent bg-transparent text-white py-4 sm:py-5"
         }`}
       >
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">

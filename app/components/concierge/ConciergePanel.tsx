@@ -173,48 +173,47 @@ export default function ConciergePanel({ isOpen, onClose }: ConciergePanelProps)
       <div className="bg-[#086F9F] text-white px-5 py-4 flex items-center justify-between border-b border-white/20 shrink-0 relative">
         <div className="flex items-center gap-3">
           {/* Surf Concierge Robot Character Emblem */}
-          <div className="w-10 h-10 rounded-xl bg-white/15 border border-[#00C8A0]/60 flex items-center justify-center shrink-0 overflow-hidden p-1.5 shadow-inner">
+          <div className="w-10 h-10 rounded-xl bg-white/15 border border-[#00C8A0]/60 flex items-center justify-center shrink-0 overflow-hidden p-1 shadow-inner">
             <svg
-              className="w-full h-full text-[#00C8A0]"
-              viewBox="0 0 48 48"
+              viewBox="0 0 56 62"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              aria-label="Bahrain Surf Concierge Emblem"
+              className="w-full h-full"
+              aria-label="Surf Concierge Robot"
             >
-              <path
-                d="M 6 32 C 14 20, 24 18, 34 24 C 38 27, 41 26, 43 22"
-                stroke="#FFFFFF"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M 6 37 C 16 26, 28 25, 37 31 C 41 34, 43 33, 45 30"
-                stroke="#00C8A0"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M 28 8 C 33 14, 31 25, 18 36 C 17 37, 15 35, 16 34 C 23 23, 26 13, 28 8 Z"
-                fill="url(#surf-concierge-panel-grad)"
-                stroke="#FFFFFF"
-                strokeWidth="1.2"
-              />
-              <path
-                d="M 11 25 C 16 16, 25 14, 31 18 C 35 21, 36 25, 33 27 C 30 29, 27 27, 29 24"
-                stroke="#00C8A0"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-              />
-              <path
-                d="M 37 8 L 38.5 11 L 41.5 12.5 L 38.5 14 L 37 17 L 35.5 14 L 32.5 12.5 L 35.5 11 Z"
-                fill="#00C8A0"
-              />
-              <defs>
-                <linearGradient id="surf-concierge-panel-grad" x1="16" y1="36" x2="31" y2="8" gradientUnits="userSpaceOnUse">
-                  <stop stopColor="#00C8A0" />
-                  <stop offset="1" stopColor="#FFFFFF" />
-                </linearGradient>
-              </defs>
+              {/* Antenna */}
+              <line x1="28" y1="7" x2="28" y2="13" stroke="#00C8A0" strokeWidth="2" strokeLinecap="round"/>
+              <circle cx="28" cy="5" r="2.5" fill="#00C8A0"/>
+
+              {/* Head */}
+              <rect x="14" y="13" width="28" height="20" rx="7" fill="white" fillOpacity="0.95"/>
+
+              {/* Eyes */}
+              <circle cx="22" cy="23" r="4" fill="#0B7FB5"/>
+              <circle cx="34" cy="23" r="4" fill="#0B7FB5"/>
+              <circle cx="22" cy="23" r="2.2" fill="#00C8A0"/>
+              <circle cx="34" cy="23" r="2.2" fill="#00C8A0"/>
+              <circle cx="23" cy="22" r="0.8" fill="white"/>
+              <circle cx="35" cy="22" r="0.8" fill="white"/>
+
+              {/* Mouth */}
+              <rect x="22" y="29" width="12" height="2.5" rx="1.25" fill="#C8E8F0"/>
+
+              {/* Neck */}
+              <rect x="25" y="33" width="6" height="3" rx="1.5" fill="white" fillOpacity="0.6"/>
+
+              {/* Body */}
+              <rect x="12" y="36" width="32" height="20" rx="8" fill="white" fillOpacity="0.9"/>
+
+              {/* Chest badge */}
+              <rect x="21" y="42" width="14" height="8" rx="3" fill="#0B7FB5"/>
+              <circle cx="25" cy="46" r="1.5" fill="#00C8A0"/>
+              <circle cx="28" cy="46" r="1.5" fill="white"/>
+              <circle cx="31" cy="46" r="1.5" fill="#00C8A0"/>
+
+              {/* Arms */}
+              <rect x="3" y="37" width="9" height="14" rx="4.5" fill="white" fillOpacity="0.9"/>
+              <rect x="44" y="37" width="9" height="14" rx="4.5" fill="white" fillOpacity="0.9"/>
             </svg>
           </div>
           <div>

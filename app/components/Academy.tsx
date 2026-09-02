@@ -40,7 +40,7 @@ export default function Academy() {
     <section
       ref={sectionRef}
       id="academy"
-      className="bg-[#F8FAFC] text-[#0A1926] py-20 sm:py-24 relative z-10 border-b border-slate-200/80"
+      className="bg-[#F8FAFC] text-[#0A1926] py-12 sm:py-16 relative z-10 border-b border-slate-200/80"
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">

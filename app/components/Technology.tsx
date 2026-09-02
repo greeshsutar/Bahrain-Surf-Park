@@ -148,7 +148,7 @@ export default function Technology() {
     <section
       ref={sectionRef}
       id="technology"
-      className="relative bg-[#F7F7F3] text-[#0A1926] pt-24 sm:pt-28 lg:pt-32 pb-44 sm:pb-48 lg:pb-52 min-h-[760px] lg:min-h-[820px] z-10 overflow-hidden"
+      className="relative bg-[#F7F7F3] text-[#0A1926] pt-14 sm:pt-18 lg:pt-20 pb-28 sm:pb-32 lg:pb-36 min-h-[760px] lg:min-h-[820px] z-10 overflow-hidden"
     >
       {/* Background Subtle Flowing Ocean Contour Lines & Ambient Glow */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
