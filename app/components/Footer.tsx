@@ -50,17 +50,18 @@ export default function Footer({ onOpenBooking }: FooterProps) {
   }, []);
 
   return (
-    <div className="relative w-full z-10 bg-transparent">
-      {/* Signature Wave Divider Header before Footer for all pages */}
-      <div className="relative w-full h-[65px] sm:h-[95px] lg:h-[115px] -mb-1 overflow-hidden pointer-events-none">
-        <WaveDivider fill="#0A1926" showGreenScrollLine={true} />
-      </div>
+    <footer
+      ref={footerRef}
+      className="bg-[#0A1926] text-white pt-16 sm:pt-20 pb-12 relative z-10 font-sans mt-20 sm:mt-28"
+    >
+      {/* Signature Continuous Wave Divider Header before Footer for all pages */}
+      <WaveDivider
+        fill="#0A1926"
+        showGreenScrollLine={true}
+        className="!top-0 !bottom-auto -translate-y-[99%]"
+      />
 
-      <footer
-        ref={footerRef}
-        className="bg-[#0A1926] text-white pt-8 sm:pt-12 pb-12 relative z-10 overflow-hidden font-sans"
-      >
-      <div className="max-w-7xl mx-auto px-6 lg:px-12">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
         
         {/* 1. Bold Closing Statement Header Banner */}
         <div className="footer-animate border-b border-white/10 pb-16 mb-16 flex flex-col lg:flex-row lg:items-center justify-between gap-8 text-left">
