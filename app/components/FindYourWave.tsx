@@ -84,35 +84,27 @@ const CARDS_DATA = [
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Measurement helper — measures actual DOM positions
+// Measurement helper — calculates exact card positions using layout offsetLeft
 // ─────────────────────────────────────────────────────────────────────────────
 
-function measure(
-  viewport: HTMLDivElement,
-  track: HTMLDivElement
-): { firstX: number; lastX: number; horizontalDistance: number } | null {
+function getCardPositions(viewport: HTMLElement, track: HTMLElement) {
   const cards = Array.from(
-    track.querySelectorAll("[data-wave-card]")
-  ) as HTMLElement[];
-
+    track.querySelectorAll<HTMLElement>("[data-wave-card]")
+  );
   if (!cards.length) return null;
 
-  const viewportRect = viewport.getBoundingClientRect();
-  const firstRect = cards[0].getBoundingClientRect();
-  const lastRect = cards[cards.length - 1].getBoundingClientRect();
+  const vw = viewport.clientWidth;
+  const firstCard = cards[0];
+  const lastCard = cards[cards.length - 1];
 
-  const viewportCenter = viewportRect.left + viewportRect.width / 2;
-  const firstCenter = firstRect.left + firstRect.width / 2;
-  const lastCenter = lastRect.left + lastRect.width / 2;
+  const firstCenter = firstCard.offsetLeft + firstCard.offsetWidth / 2;
+  const lastCenter = lastCard.offsetLeft + lastCard.offsetWidth / 2;
 
-  const firstX = viewportCenter - firstCenter;
-  const lastX = viewportCenter - lastCenter;
+  const firstX = vw / 2 - firstCenter;
+  const lastX = vw / 2 - lastCenter;
+  const distance = firstX - lastX;
 
-  return {
-    firstX,
-    lastX,
-    horizontalDistance: Math.abs(lastX - firstX),
-  };
+  return { firstX, lastX, distance };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -160,82 +152,64 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
     const track = trackRef.current;
     if (!section || !viewport || !track) return;
 
-    // Allow a frame for layout to settle before measuring
-    const rafId = requestAnimationFrame(() => {
-      const ctx = gsap.context(() => {
-        // Reset track to natural position for initial measurement
-        gsap.set(track, { x: 0 });
+    const ctx = gsap.context(() => {
+      const pos = getCardPositions(viewport, track);
+      if (!pos) return;
 
-        const initialMeasure = measure(viewport, track);
-        if (!initialMeasure) return;
+      // Position track at Card 01 initially
+      gsap.set(track, { x: pos.firstX });
 
-        // Set track to first card centered position
-        gsap.set(track, { x: initialMeasure.firstX });
-
-        // ── Create the single ScrollTrigger-driven tween ──────────────────
-        const tween = gsap.fromTo(
-          track,
-          {
-            x: initialMeasure.firstX,
-          },
-          {
-            x: initialMeasure.lastX,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top top",
-              end: () => {
-                // Re-measure on refresh for correct distance
-                gsap.set(track, { clearProps: "x" });
-                const m = measure(viewport, track);
-                if (m) {
-                  gsap.set(track, { x: m.firstX });
-                }
-                return `+=${m?.horizontalDistance ?? initialMeasure.horizontalDistance}`;
-              },
-              pin: viewport,
-              pinSpacing: true,
-              scrub: 0.8,
-              anticipatePin: 1,
-              invalidateOnRefresh: true,
-              snap: {
-                snapTo: 1 / (CARDS_DATA.length - 1),
-                duration: { min: 0.3, max: 0.6 },
-                ease: "power2.inOut",
-                inertia: false,
-              },
-              onUpdate: (self) => {
-                const newIdx = Math.round(
-                  self.progress * (CARDS_DATA.length - 1)
-                );
-                if (newIdx !== activeIndexRef.current) {
-                  activeIndexRef.current = newIdx;
-                  setActiveIndex(newIdx);
-                }
-              },
-              onRefreshInit: () => {
-                // Reset track for clean measurement during refresh
-                gsap.set(track, { x: 0 });
-              },
+      // Create single ScrollTrigger pinned horizontal tween
+      const tween = gsap.fromTo(
+        track,
+        {
+          x: () => getCardPositions(viewport, track)?.firstX ?? 0,
+        },
+        {
+          x: () => getCardPositions(viewport, track)?.lastX ?? 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: () => {
+              const p = getCardPositions(viewport, track);
+              return `+=${p?.distance ?? 2000}`;
             },
-          }
-        );
+            pin: viewport,
+            pinSpacing: true,
+            scrub: 0.6,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            snap: {
+              snapTo: 1 / (CARDS_DATA.length - 1),
+              duration: { min: 0.3, max: 0.6 },
+              ease: "power2.inOut",
+              inertia: false,
+            },
+            onUpdate: (self) => {
+              const index = Math.round(
+                self.progress * (CARDS_DATA.length - 1)
+              );
+              if (activeIndexRef.current !== index) {
+                activeIndexRef.current = index;
+                setActiveIndex(index);
+              }
+            },
+          },
+        }
+      );
 
-        // Store ST instance for arrow navigation
-        stRef.current = tween.scrollTrigger ?? null;
-      }, section);
+      stRef.current = tween.scrollTrigger ?? null;
+    }, sectionRef);
 
-      // Store context for cleanup
-      (section as any).__gsapCtx = ctx;
-    });
+    // Refresh ScrollTrigger after a tick to ensure images & layout fonts are loaded
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 150);
 
     return () => {
-      cancelAnimationFrame(rafId);
-      const section = sectionRef.current;
-      if (section && (section as any).__gsapCtx) {
-        (section as any).__gsapCtx.revert();
-        delete (section as any).__gsapCtx;
-      }
+      clearTimeout(timer);
+      ctx.revert();
       stRef.current = null;
     };
   }, [reduced, isMobile]);
