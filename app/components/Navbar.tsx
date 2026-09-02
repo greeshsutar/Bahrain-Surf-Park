@@ -26,7 +26,7 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 25) {
+      if (window.scrollY > 40) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -45,7 +45,7 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 px-6 sm:px-10 flex items-center justify-between ${
           isScrolled
             ? "nav-scrolled bg-white/95 text-[#063B45] shadow-md py-3.5 backdrop-blur-md border-b border-slate-200/80"
-            : "nav-transparent bg-transparent text-white py-4 sm:py-5"
+            : "nav-transparent !bg-transparent text-white py-4 sm:py-5 !border-none !shadow-none"
         }`}
       >
         <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
