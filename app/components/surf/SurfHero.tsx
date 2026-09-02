@@ -72,15 +72,15 @@ export default function SurfHero() {
           loop
           playsInline
           poster="/images/tier5.jpg"
-          className="w-full h-full object-cover object-center opacity-60"
+          className="w-full h-full object-cover object-center opacity-85"
         >
           <source src="/videos/surfing.mp4" type="video/mp4" />
         </video>
         
-        {/* Layer 1: Dark Scrim Left Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#061F2B] via-[#061F2B]/75 to-transparent z-10 pointer-events-none"></div>
-        {/* Layer 2: Bottom Radial Scrim */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#061F2B] via-transparent to-[#061F2B]/50 z-10 pointer-events-none"></div>
+        {/* Layer 1: Lightened Scrim Left Gradient for clearer video visibility */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#061F2B]/70 via-[#061F2B]/35 to-transparent z-10 pointer-events-none"></div>
+        {/* Layer 2: Softened Bottom & Top Radial Scrim */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#061F2B]/80 via-transparent to-[#061F2B]/30 z-10 pointer-events-none"></div>
       </div>
 
       {/* 2. Main Hero Editorial Typography Layer */}
