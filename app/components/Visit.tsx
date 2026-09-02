@@ -50,7 +50,7 @@ export default function Visit({ onOpenBooking }: VisitProps) {
     <section
       ref={sectionRef}
       id="visit"
-      className="relative bg-[#06111C] text-white pt-14 sm:pt-20 pb-24 sm:pb-32 overflow-hidden"
+      className="relative bg-[#06111C] text-white pt-12 sm:pt-16 pb-12 sm:pb-16 overflow-hidden"
     >
       {/* Background Ambient Glow & Luxury Grid */}
       <div className="absolute inset-0 pointer-events-none">

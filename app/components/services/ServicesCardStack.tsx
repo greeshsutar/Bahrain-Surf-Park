@@ -124,7 +124,8 @@ export default function ServicesCardStack({ onOpenBooking }: ServicesCardStackPr
         scrollTrigger: {
           trigger: container,
           start: "top top",
-          end: `+=${totalCards * 90}%`,
+          end: () => `+=${container.offsetHeight - window.innerHeight}`,
+          invalidateOnRefresh: true,
           scrub: 0.5,
           pin: sticky,
           anticipatePin: 1,
@@ -178,7 +179,7 @@ export default function ServicesCardStack({ onOpenBooking }: ServicesCardStackPr
       {/* Sticky Pinned Viewport Container */}
       <div
         ref={stickyRef}
-        className="sticky top-0 w-full h-screen flex flex-col justify-center items-center overflow-hidden py-6 sm:py-10 px-4 sm:px-8"
+        className="w-full h-screen flex flex-col justify-center items-center overflow-hidden py-6 sm:py-10 px-4 sm:px-8"
       >
         {/* Section Header HUD & Index Indicator */}
         <div className="w-full max-w-6xl mx-auto flex items-center justify-between mb-4 sm:mb-6 px-2 z-50">
