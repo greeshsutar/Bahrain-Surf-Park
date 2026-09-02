@@ -213,8 +213,8 @@ export default function Technology() {
                   <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#0B7FB5]">WAVES / HOUR</span>
                 </div>
                 <div className="flex items-baseline gap-1.5 my-0.5">
-                  <span className="text-xs font-sans font-semibold uppercase tracking-wide text-slate-500">up to</span>
-                  <span ref={stat1Ref} className="font-serif text-4xl sm:text-[44px] font-bold text-[#0A1926] tracking-tight">1,000</span>
+                  <span className="text-xs font-sans font-semibold uppercase tracking-wide text-slate-600">up to</span>
+                  <span ref={stat1Ref} className="font-serif text-4xl sm:text-[44px] font-bold text-black tracking-tight">1,000</span>
                 </div>
                 <p className="text-[12px] text-slate-600 font-medium leading-relaxed mt-1 max-w-[150px]">
                   Industry-leading capacity for endless wave sessions.
@@ -232,7 +232,7 @@ export default function Technology() {
                   <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#0B7FB5]">WAVE PROFILES</span>
                 </div>
                 <div className="my-0.5">
-                  <span ref={stat2Ref} className="font-serif text-4xl sm:text-[44px] font-bold text-[#0A1926] tracking-tight">20+</span>
+                  <span ref={stat2Ref} className="font-serif text-4xl sm:text-[44px] font-bold text-black tracking-tight">20+</span>
                 </div>
                 <p className="text-[12px] text-slate-600 font-medium leading-relaxed mt-1 max-w-[150px]">
                   Programmable wave profiles for every ability and style.
@@ -251,7 +251,7 @@ export default function Technology() {
                   <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#0B7FB5]">SURFERS CAPACITY</span>
                 </div>
                 <div className="my-0.5">
-                  <span ref={stat3Ref} className="font-serif text-4xl sm:text-[44px] font-bold text-[#0A1926] tracking-tight">90</span>
+                  <span ref={stat3Ref} className="font-serif text-4xl sm:text-[44px] font-bold text-black tracking-tight">90</span>
                 </div>
                 <p className="text-[12px] text-slate-600 font-medium leading-relaxed mt-1 max-w-[150px]">
                   Maximum simultaneous surfers across lagoon zones.
