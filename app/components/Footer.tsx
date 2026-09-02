@@ -93,7 +93,7 @@ export default function Footer({ onOpenBooking }: FooterProps) {
                   <img
                     src="/images/logo.png"
                     alt="Bahrain Surf Park"
-                    className="h-13 sm:h-14 w-auto object-contain cursor-pointer"
+                    className="h-14 sm:h-16 w-auto object-contain cursor-pointer"
                   />
                 </Link>
                 <span className="text-white font-bold tracking-wider uppercase text-xs">
