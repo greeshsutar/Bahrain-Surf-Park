@@ -190,8 +190,8 @@ export default function TechnologyIntro() {
                   </span>
                 </div>
                 <div className="flex items-baseline gap-1 my-0.5">
-                  <span className="text-[10px] font-sans font-semibold uppercase tracking-wide text-slate-500">up to</span>
-                  <span ref={stat1Ref} className="font-sans text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0A1926] tracking-tight">
+                  <span className="text-[10px] font-sans font-semibold uppercase tracking-wide text-slate-600">up to</span>
+                  <span ref={stat1Ref} className="font-sans text-2xl sm:text-3xl lg:text-4xl font-extrabold text-black tracking-tight">
                     1,000+
                   </span>
                 </div>
@@ -206,7 +206,7 @@ export default function TechnologyIntro() {
                   </span>
                 </div>
                 <div className="my-0.5">
-                  <span ref={stat2Ref} className="font-sans text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0A1926] tracking-tight">
+                  <span ref={stat2Ref} className="font-sans text-2xl sm:text-3xl lg:text-4xl font-extrabold text-black tracking-tight">
                     20+
                   </span>
                 </div>
@@ -221,7 +221,7 @@ export default function TechnologyIntro() {
                   </span>
                 </div>
                 <div className="my-0.5">
-                  <span ref={stat3Ref} className="font-sans text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0A1926] tracking-tight">
+                  <span ref={stat3Ref} className="font-sans text-2xl sm:text-3xl lg:text-4xl font-extrabold text-black tracking-tight">
                     90
                   </span>
                 </div>
