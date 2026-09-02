@@ -159,6 +159,9 @@ export default function Visit({ onOpenBooking }: VisitProps) {
 
         </div>
       </div>
+
+      {/* Wave Transition */}
+      <WaveDivider fill="#0A1926" showGreenScrollLine={false} />
     </section>
   );
 }
