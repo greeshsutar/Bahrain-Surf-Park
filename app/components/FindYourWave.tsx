@@ -84,31 +84,35 @@ const CARDS_DATA = [
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Helpers
+// Measurement helper — measures actual DOM positions
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Compute the track translateX that perfectly centers card[index] in the viewport. */
-function computeCardX(
-  index: number,
-  viewportWidth: number,
-  cardWidth: number,
-  gap: number
-): number {
-  const centerOffset = viewportWidth / 2 - cardWidth / 2;
-  return centerOffset - index * (cardWidth + gap);
-}
+function measure(
+  viewport: HTMLDivElement,
+  track: HTMLDivElement
+): { firstX: number; lastX: number; horizontalDistance: number } | null {
+  const cards = Array.from(
+    track.querySelectorAll("[data-wave-card]")
+  ) as HTMLElement[];
 
-/** Read the first .wave-card-item dimensions from the DOM. Returns null until mounted. */
-function measureCard(track: HTMLDivElement | null): {
-  cardWidth: number;
-  gap: number;
-} | null {
-  if (!track) return null;
-  const cardNode = track.querySelector<HTMLElement>(".wave-card-item");
-  if (!cardNode) return null;
-  const cardWidth = cardNode.offsetWidth;
-  const gap = parseFloat(window.getComputedStyle(track).gap) || 24;
-  return { cardWidth, gap };
+  if (!cards.length) return null;
+
+  const viewportRect = viewport.getBoundingClientRect();
+  const firstRect = cards[0].getBoundingClientRect();
+  const lastRect = cards[cards.length - 1].getBoundingClientRect();
+
+  const viewportCenter = viewportRect.left + viewportRect.width / 2;
+  const firstCenter = firstRect.left + firstRect.width / 2;
+  const lastCenter = lastRect.left + lastRect.width / 2;
+
+  const firstX = viewportCenter - firstCenter;
+  const lastX = viewportCenter - lastCenter;
+
+  return {
+    firstX,
+    lastX,
+    horizontalDistance: Math.abs(lastX - firstX),
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -123,20 +127,31 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  // Keep a ref to the live ScrollTrigger instance so arrows can scroll to it
+  // Live ScrollTrigger instance for arrow navigation
   const stRef = useRef<ScrollTrigger | null>(null);
 
-  // ── Sync activeIndex ref on every React state change ──────────────────────
-  useEffect(() => {
-    activeIndexRef.current = activeIndex;
-  }, [activeIndex]);
+  // Mobile breakpoint
+  const [isMobile, setIsMobile] = useState(false);
 
-  // ── REDUCED MOTION: skip all pinning ──────────────────────────────────────
+  // Reduced motion check
   const reduced = isReducedMotion();
 
-  // ── Main ScrollTrigger pin + horizontal scrub ──────────────────────────────
+  // ── Track mobile breakpoint ──────────────────────────────────────────────
   useEffect(() => {
-    if (reduced) return;
+    if (typeof window === "undefined") return;
+
+    const mql = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mql.matches);
+
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
+
+  // ── Main ScrollTrigger pin + horizontal scrub ────────────────────────────
+  useEffect(() => {
+    if (reduced || isMobile) return;
+    if (typeof window === "undefined") return;
 
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -145,91 +160,87 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
     const track = trackRef.current;
     if (!section || !viewport || !track) return;
 
-    // We wrap everything in a GSAP context for clean unmount
-    const ctx = gsap.context(() => {
-      // ── Measurement helper (called once now, and again on refresh) ─────────
-      const getMetrics = () => {
-        const vw = viewport.clientWidth;
-        const m = measureCard(track);
-        if (!m) return null;
-        const { cardWidth, gap } = m;
-        const firstX = computeCardX(0, vw, cardWidth, gap);
-        const lastX = computeCardX(CARDS_DATA.length - 1, vw, cardWidth, gap);
-        const travel = Math.abs(lastX - firstX);
-        return { vw, cardWidth, gap, firstX, lastX, travel };
-      };
+    // Allow a frame for layout to settle before measuring
+    const rafId = requestAnimationFrame(() => {
+      const ctx = gsap.context(() => {
+        // Reset track to natural position for initial measurement
+        gsap.set(track, { x: 0 });
 
-      // ── Set section height so it provides enough scroll distance ──────────
-      // sectionHeight = travel + 1 viewport (the pin panel itself)
-      const setSectionHeight = () => {
-        const m = getMetrics();
-        if (!m) return;
-        gsap.set(section, { height: m.travel + window.innerHeight });
-      };
+        const initialMeasure = measure(viewport, track);
+        if (!initialMeasure) return;
 
-      setSectionHeight();
+        // Set track to first card centered position
+        gsap.set(track, { x: initialMeasure.firstX });
 
-      // ── Position track at card 0 before ST runs ───────────────────────────
-      const initialMetrics = getMetrics();
-      if (initialMetrics) {
-        gsap.set(track, { x: initialMetrics.firstX });
-      }
-
-      // ── Create the ScrollTrigger-driven tween ─────────────────────────────
-      const tween = gsap.fromTo(
-        track,
-        { x: () => getMetrics()?.firstX ?? 0 },
-        {
-          x: () => getMetrics()?.lastX ?? 0,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: () => {
-              const m = getMetrics();
-              return m ? `+=${m.travel}` : "+=3000";
-            },
-            pin: viewport,
-            scrub: 0.8,
-            anticipatePin: 1,
-            invalidateOnRefresh: true,
-            snap: {
-              snapTo: 1 / (CARDS_DATA.length - 1),
-              duration: { min: 0.3, max: 0.6 },
-              ease: "power2.inOut",
-              inertia: false,
-            },
-            onUpdate: (self) => {
-              const newIdx = Math.round(
-                self.progress * (CARDS_DATA.length - 1)
-              );
-              if (newIdx !== activeIndexRef.current) {
-                activeIndexRef.current = newIdx;
-                setActiveIndex(newIdx);
-              }
-            },
-            onRefresh: () => {
-              setSectionHeight();
-            },
+        // ── Create the single ScrollTrigger-driven tween ──────────────────
+        const tween = gsap.fromTo(
+          track,
+          {
+            x: initialMeasure.firstX,
           },
-        }
-      );
+          {
+            x: initialMeasure.lastX,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top top",
+              end: () => {
+                // Re-measure on refresh for correct distance
+                gsap.set(track, { clearProps: "x" });
+                const m = measure(viewport, track);
+                if (m) {
+                  gsap.set(track, { x: m.firstX });
+                }
+                return `+=${m?.horizontalDistance ?? initialMeasure.horizontalDistance}`;
+              },
+              pin: viewport,
+              pinSpacing: true,
+              scrub: 0.8,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+              snap: {
+                snapTo: 1 / (CARDS_DATA.length - 1),
+                duration: { min: 0.3, max: 0.6 },
+                ease: "power2.inOut",
+                inertia: false,
+              },
+              onUpdate: (self) => {
+                const newIdx = Math.round(
+                  self.progress * (CARDS_DATA.length - 1)
+                );
+                if (newIdx !== activeIndexRef.current) {
+                  activeIndexRef.current = newIdx;
+                  setActiveIndex(newIdx);
+                }
+              },
+              onRefreshInit: () => {
+                // Reset track for clean measurement during refresh
+                gsap.set(track, { x: 0 });
+              },
+            },
+          }
+        );
 
-      // Store ST instance for arrow navigation
-      stRef.current = tween.scrollTrigger ?? null;
-    }, section);
+        // Store ST instance for arrow navigation
+        stRef.current = tween.scrollTrigger ?? null;
+      }, section);
+
+      // Store context for cleanup
+      (section as any).__gsapCtx = ctx;
+    });
 
     return () => {
-      ctx.revert();
-      stRef.current = null;
-      // Restore natural section height so there's no layout remnant
-      if (sectionRef.current) {
-        gsap.set(sectionRef.current, { clearProps: "height" });
+      cancelAnimationFrame(rafId);
+      const section = sectionRef.current;
+      if (section && (section as any).__gsapCtx) {
+        (section as any).__gsapCtx.revert();
+        delete (section as any).__gsapCtx;
       }
+      stRef.current = null;
     };
-  }, [reduced]);
+  }, [reduced, isMobile]);
 
-  // ── Arrow navigation via ScrollToPlugin ───────────────────────────────────
+  // ── Arrow navigation via ScrollToPlugin ─────────────────────────────────
   const navigateTo = useCallback((targetIdx: number) => {
     const st = stRef.current;
     if (!st) return;
@@ -243,7 +254,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
 
     gsap.to(window, {
       scrollTo: { y: targetScrollY, autoKill: false },
-      duration: 0.7,
+      duration: 0.8,
       ease: "power2.inOut",
       overwrite: "auto",
     });
@@ -253,7 +264,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
   const handleNext = () => navigateTo(activeIndexRef.current + 1);
   const handleSelectCard = (index: number) => navigateTo(index);
 
-  // ── REDUCED MOTION fallback: simple stacked layout, no pin ────────────────
+  // ── REDUCED MOTION fallback: simple stacked layout, no pin ──────────────
   if (reduced) {
     return (
       <section
@@ -295,19 +306,19 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
     );
   }
 
-  // ── MAIN RENDER ───────────────────────────────────────────────────────────
+  // ── MAIN RENDER ─────────────────────────────────────────────────────────
   return (
     <section
       ref={sectionRef}
       id="find-your-wave"
       className="relative bg-[#061C27] text-white selection:bg-[#00C8A0] selection:text-[#061C27]"
-      // Height is set dynamically by GSAP (travel + 100vh).
-      // overflow-visible so the pinned child is not clipped during GSAP pin.
+      style={{ overflow: "visible" }}
     >
       {/* ── Pinned viewport — GSAP pins this element ────────────────────── */}
       <div
         ref={viewportRef}
-        className="relative w-full h-screen flex flex-col overflow-hidden"
+        className="relative w-full flex flex-col overflow-hidden"
+        style={{ height: "100vh" }}
       >
         {/* Background glows & contour lines */}
         <div
@@ -439,6 +450,10 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
           <div
             ref={trackRef}
             className="carousel-track flex items-center gap-4 sm:gap-5 lg:gap-6 py-4 will-change-transform"
+            style={{
+              /* On mobile without ST, allow natural horizontal scroll */
+              ...(isMobile ? { paddingLeft: "8vw", paddingRight: "8vw" } : {}),
+            }}
           >
             {CARDS_DATA.map((card, idx) => {
               const isActive = idx === activeIndex;
@@ -447,6 +462,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
               return (
                 <div
                   key={card.id}
+                  data-wave-card
                   onClick={() => handleSelectCard(idx)}
                   className={`wave-card-item shrink-0 cursor-pointer transition-all duration-500 ease-out flex flex-col justify-between snap-center overflow-hidden rounded-[26px] p-5 sm:p-6
                     w-[82vw] sm:w-[340px] lg:w-[clamp(320px,26vw,400px)]
@@ -568,14 +584,14 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
         {/* ── PAGINATION DOTS ──────────────────────────────────────────────── */}
         <div className="relative z-10 flex items-center justify-center gap-2.5 py-4 flex-shrink-0">
           {CARDS_DATA.map((card, idx) => {
-            const isActive = idx === activeIndex;
+            const dotActive = idx === activeIndex;
             return (
               <button
                 key={card.id}
                 onClick={() => handleSelectCard(idx)}
                 aria-label={`Go to ${card.title}`}
                 className={`transition-all duration-300 cursor-pointer ${
-                  isActive
+                  dotActive
                     ? "w-8 h-2 rounded-full bg-[#00C8A0] shadow-sm"
                     : "w-5 h-2 rounded-full bg-white/30 hover:bg-white/60"
                 }`}
