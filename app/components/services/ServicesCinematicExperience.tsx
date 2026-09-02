@@ -40,25 +40,25 @@ export default function ServicesCinematicExperience() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full bg-[#061C27] text-white overflow-hidden z-10 pt-20"
+      className="relative w-full bg-[#02141C] text-white overflow-hidden z-10"
     >
       {/* Visual Breathing Moment Frame */}
-      <div className="relative w-full h-[50vh] sm:h-[60vh] overflow-hidden my-0">
+      <div className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[75vh] min-h-[460px] overflow-hidden">
         <img
           ref={imgRef}
           src="/images/services/services_hero.jpg"
           alt="Bahrain Surf Park Experience"
-          className="w-full h-[120%] object-cover object-center filter contrast-[105%]"
+          className="w-full h-[125%] object-cover object-center filter contrast-[105%]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#061C27]/90 via-[#061C27]/40 to-[#061C27]/80 flex items-center justify-center p-6 text-center">
-          <h3 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1] max-w-3xl drop-shadow-lg">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#02141C]/60 via-[#02141C]/40 to-transparent flex items-center justify-center p-6 text-center z-10 pb-28">
+          <h3 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1] max-w-3xl drop-shadow-2xl">
             DESIGNED AROUND YOUR EXPERIENCE<span className="text-[#00C8A0]">.</span>
           </h3>
         </div>
-      </div>
 
-      {/* Organic Wave Divider Transitioning into Deep Dark Ocean CTA */}
-      <WaveDivider fill="#02141C" />
+        {/* Large Asymmetric Ocean Swell Wave Divider overlapping bottom of image */}
+        <WaveDivider fill="#02141C" variant="services-ocean" />
+      </div>
     </section>
   );
 }

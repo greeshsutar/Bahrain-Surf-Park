@@ -10,6 +10,7 @@ interface WaveDividerProps {
   className?: string;
   showGreenScrollLine?: boolean;
   greenLineColor?: string;
+  variant?: "default" | "services-ocean";
 }
 
 export default function WaveDivider({
@@ -17,6 +18,7 @@ export default function WaveDivider({
   className = "",
   showGreenScrollLine = false,
   greenLineColor = "#00C8A0",
+  variant = "default",
 }: WaveDividerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const greenLineRef = useRef<SVGPathElement>(null);
@@ -25,8 +27,12 @@ export default function WaveDivider({
   const waveCurvePath =
     "M 0 160 C 150 130, 300 130, 450 158 C 600 188, 730 198, 875 164 C 1020 130, 1160 128, 1300 150 C 1360 160, 1405 164, 1440 155";
 
+  // Large Asymmetric Ocean Swell path for Services page transition
+  const servicesOceanPath =
+    "M -50 160 C 120 70, 260 50, 420 80 C 600 115, 760 185, 960 170 C 1140 155, 1320 95, 1490 120 L 1490 245 L -50 245 Z";
+
   useEffect(() => {
-    if (!showGreenScrollLine) return;
+    if (!showGreenScrollLine || variant === "services-ocean") return;
     gsap.registerPlugin(ScrollTrigger);
 
     const container = containerRef.current;
@@ -68,7 +74,43 @@ export default function WaveDivider({
     }, container);
 
     return () => ctx.revert();
-  }, [showGreenScrollLine]);
+  }, [showGreenScrollLine, variant]);
+
+  if (variant === "services-ocean") {
+    return (
+      <div
+        ref={containerRef}
+        className={`
+          absolute
+          left-0
+          right-0
+          -bottom-[1px]
+          w-full
+          h-[100px]
+          sm:h-[150px]
+          lg:h-[200px]
+          z-20
+          pointer-events-none
+          overflow-hidden
+          ${className}
+        `}
+        aria-hidden="true"
+      >
+        <svg
+          className="w-full h-full block"
+          viewBox="0 0 1440 240"
+          preserveAspectRatio="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d={servicesOceanPath}
+            fill={fill}
+            stroke="none"
+          />
+        </svg>
+      </div>
+    );
+  }
 
   return (
     <div
