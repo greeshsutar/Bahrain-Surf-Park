@@ -305,6 +305,5 @@ export default function Footer({ onOpenBooking }: FooterProps) {
 
       </div>
     </footer>
-    </div>
   );
 }
