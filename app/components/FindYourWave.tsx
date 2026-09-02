@@ -331,21 +331,21 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
         </div>
 
         {/* ── HEADER ──────────────────────────────────────────────────────── */}
-        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-12 pt-10 sm:pt-14 pb-4 flex-shrink-0">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-end">
+        <div className="relative z-10 max-w-7xl mx-auto w-full px-6 lg:px-12 pt-5 sm:pt-7 pb-2 flex-shrink-0">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-end">
             {/* Left */}
             <div className="lg:col-span-6 text-left">
-              <div className="flex items-center gap-3 mb-3">
+              <div className="flex items-center gap-3 mb-2">
                 <span className="text-[#00C8A0] text-xs font-extrabold tracking-[0.2em] uppercase">
                   FIND YOUR WAVE
                 </span>
                 <span className="w-12 h-[1.5px] bg-[#00C8A0]/70 inline-block" />
               </div>
-              <h2 className="font-serif text-4xl sm:text-5xl lg:text-[54px] font-semibold text-white tracking-tight leading-[1.08] mb-4">
+              <h2 className="font-serif text-3xl sm:text-4xl lg:text-[46px] font-semibold text-white tracking-tight leading-[1.08] mb-2">
                 One Place.<br />
                 Many Ways<span className="text-[#00C8A0]">.</span>
               </h2>
-              <p className="text-slate-300/85 text-sm sm:text-base leading-relaxed max-w-md font-sans">
+              <p className="text-slate-300/85 text-xs sm:text-sm leading-relaxed max-w-md font-sans">
                 From your first ride to your next personal best, our waves are
                 designed for every level and every kind of progression.
               </p>
@@ -353,36 +353,36 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
 
             {/* Right: 3 feature items */}
             <div className="lg:col-span-6">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4 pt-4 lg:pt-0">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 lg:pt-0">
                 <div className="flex flex-col text-left">
-                  <div className="w-9 h-9 rounded-full bg-[#00C8A0]/10 border border-[#00C8A0]/30 flex items-center justify-center text-[#00C8A0] mb-3">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                  <div className="w-8 h-8 rounded-full bg-[#00C8A0]/10 border border-[#00C8A0]/30 flex items-center justify-center text-[#00C8A0] mb-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.5 4.5L21.75 6" />
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3 15c4-4 8 2 12-2s4-1 6-1" />
                     </svg>
                   </div>
-                  <h3 className="text-white text-sm font-bold tracking-wide mb-1">100% Customizable</h3>
-                  <p className="text-slate-400 text-xs leading-normal font-sans">Wave height, speed and shape.</p>
+                  <h3 className="text-white text-xs sm:text-sm font-bold tracking-wide mb-0.5">100% Customizable</h3>
+                  <p className="text-slate-400 text-[11px] leading-normal font-sans">Wave height, speed and shape.</p>
                 </div>
 
-                <div className="flex flex-col text-left sm:border-l sm:border-white/15 sm:pl-4">
-                  <div className="w-9 h-9 rounded-full bg-[#00C8A0]/10 border border-[#00C8A0]/30 flex items-center justify-center text-[#00C8A0] mb-3">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                <div className="flex flex-col text-left sm:border-l sm:border-white/15 sm:pl-3">
+                  <div className="w-8 h-8 rounded-full bg-[#00C8A0]/10 border border-[#00C8A0]/30 flex items-center justify-center text-[#00C8A0] mb-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
                     </svg>
                   </div>
-                  <h3 className="text-white text-sm font-bold tracking-wide mb-1">Energy Efficient</h3>
-                  <p className="text-slate-400 text-xs leading-normal font-sans">Smart technology for sustainable waves.</p>
+                  <h3 className="text-white text-xs sm:text-sm font-bold tracking-wide mb-0.5">Energy Efficient</h3>
+                  <p className="text-slate-400 text-[11px] leading-normal font-sans">Smart technology for sustainable waves.</p>
                 </div>
 
-                <div className="flex flex-col text-left sm:border-l sm:border-white/15 sm:pl-4">
-                  <div className="w-9 h-9 rounded-full bg-[#00C8A0]/10 border border-[#00C8A0]/30 flex items-center justify-center text-[#00C8A0] mb-3">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                <div className="flex flex-col text-left sm:border-l sm:border-white/15 sm:pl-3">
+                  <div className="w-8 h-8 rounded-full bg-[#00C8A0]/10 border border-[#00C8A0]/30 flex items-center justify-center text-[#00C8A0] mb-2">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.746 3.746 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
                     </svg>
                   </div>
-                  <h3 className="text-white text-sm font-bold tracking-wide mb-1">Safe &amp; Controlled</h3>
-                  <p className="text-slate-400 text-xs leading-normal font-sans">Consistent, repeatable and safe for all.</p>
+                  <h3 className="text-white text-xs sm:text-sm font-bold tracking-wide mb-0.5">Safe &amp; Controlled</h3>
+                  <p className="text-slate-400 text-[11px] leading-normal font-sans">Consistent, repeatable and safe for all.</p>
                 </div>
               </div>
             </div>
@@ -390,7 +390,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
         </div>
 
         {/* ── CARD TRACK VIEWPORT ──────────────────────────────────────────── */}
-        <div className="relative flex-1 w-full overflow-hidden z-10 flex items-center min-h-0">
+        <div className="relative flex-1 w-full overflow-hidden z-10 flex items-center min-h-0 py-2">
 
           {/* Prev arrow */}
           <button
@@ -423,7 +423,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
           {/* GSAP-controlled card track — only translateX changes during scroll */}
           <div
             ref={trackRef}
-            className="carousel-track flex items-center gap-4 sm:gap-5 lg:gap-6 py-4 will-change-transform"
+            className="carousel-track flex items-center gap-4 sm:gap-5 lg:gap-6 py-2 will-change-transform"
             style={{
               /* On mobile without ST, allow natural horizontal scroll */
               ...(isMobile ? { paddingLeft: "8vw", paddingRight: "8vw" } : {}),
@@ -438,20 +438,20 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                   key={card.id}
                   data-wave-card
                   onClick={() => handleSelectCard(idx)}
-                  className={`wave-card-item shrink-0 cursor-pointer transition-all duration-500 ease-out flex flex-col justify-between snap-center overflow-hidden rounded-[26px] p-5 sm:p-6
-                    w-[82vw] sm:w-[340px] lg:w-[clamp(320px,26vw,400px)]
-                    h-[58vh] sm:h-[60vh] lg:h-[62vh]
+                  className={`wave-card-item shrink-0 cursor-pointer transition-all duration-500 ease-out flex flex-col justify-between snap-center overflow-hidden rounded-[24px] p-4 sm:p-5
+                    w-[82vw] sm:w-[320px] lg:w-[clamp(300px,24vw,370px)]
+                    h-[clamp(370px,47vh,470px)]
                     ${
                       isActive
-                        ? "scale-100 -translate-y-2.5 opacity-100 z-20 bg-[#F6F4EE] text-[#0A1926] shadow-[0_25px_60px_rgba(0,0,0,0.5)] border-2 border-white/70"
+                        ? "scale-100 opacity-100 z-20 bg-[#F6F4EE] text-[#0A1926] shadow-[0_20px_50px_rgba(0,0,0,0.5)] border-2 border-white/70"
                         : diff === 1
-                        ? "scale-[0.95] translate-y-2 opacity-[0.96] z-10 bg-[#F6F4EE]/95 text-[#0A1926]/90 shadow-xl border border-white/30"
-                        : "scale-[0.90] translate-y-4 opacity-[0.75] z-0 bg-[#F6F4EE]/80 text-[#0A1926]/80 shadow-lg border border-white/20"
+                        ? "scale-[0.95] opacity-[0.94] z-10 bg-[#F6F4EE]/95 text-[#0A1926]/90 shadow-xl border border-white/30"
+                        : "scale-[0.90] opacity-[0.75] z-0 bg-[#F6F4EE]/80 text-[#0A1926]/80 shadow-lg border border-white/20"
                     }`}
                   style={{ willChange: "transform, opacity" }}
                 >
                   {/* Top Image */}
-                  <div className="relative w-full h-[38%] overflow-hidden rounded-[20px] shrink-0 mb-3">
+                  <div className="relative w-full h-[36%] overflow-hidden rounded-[18px] shrink-0 mb-2">
                     <img
                       src={card.img}
                       alt={`${card.title} wave session`}
@@ -459,15 +459,15 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />
 
-                    <div className="absolute top-2.5 left-2.5 z-10">
-                      <span className="inline-flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/30 text-[#00C8A0] text-[9px] font-extrabold tracking-widest px-2.5 py-0.5 rounded-full uppercase">
+                    <div className="absolute top-2 left-2 z-10">
+                      <span className="inline-flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/30 text-[#00C8A0] text-[9px] font-extrabold tracking-widest px-2 py-0.5 rounded-full uppercase">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#00C8A0] animate-pulse" />
                         <span>{card.waveBadge}</span>
                       </span>
                     </div>
 
-                    <div className="absolute bottom-2.5 left-3 z-10 text-white pointer-events-none">
-                      <span className="font-serif text-base sm:text-lg font-bold uppercase tracking-wide text-white drop-shadow-md">
+                    <div className="absolute bottom-2 left-2.5 z-10 text-white pointer-events-none">
+                      <span className="font-serif text-sm sm:text-base font-bold uppercase tracking-wide text-white drop-shadow-md">
                         {card.level}
                       </span>
                     </div>
@@ -476,55 +476,55 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                   {/* Card Body */}
                   <div className="flex flex-col justify-between flex-grow text-left">
                     <div>
-                      <span className="text-[#0B7FB5] text-[10px] font-extrabold tracking-[0.2em] uppercase block mb-0.5">
+                      <span className="text-[#0B7FB5] text-[9.5px] font-extrabold tracking-[0.2em] uppercase block mb-0.5">
                         {card.tierLabel}
                       </span>
-                      <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#0A1926] tracking-tight uppercase mb-1">
+                      <h3 className="font-serif text-lg sm:text-xl font-bold text-[#0A1926] tracking-tight uppercase mb-0.5">
                         {card.title}
                       </h3>
-                      <p className="text-slate-600 text-xs leading-relaxed font-sans line-clamp-2 mb-2">
+                      <p className="text-slate-600 text-xs leading-relaxed font-sans line-clamp-2 mb-1.5">
                         {card.desc}
                       </p>
                     </div>
 
                     <div>
                       {/* Spec Grid */}
-                      <div className="grid grid-cols-3 gap-1 py-2 border-y border-slate-200/80 my-2">
+                      <div className="grid grid-cols-3 gap-1 py-1.5 border-y border-slate-200/80 my-1">
                         <div className="flex flex-col">
                           <div className="flex items-center gap-1 mb-0.5">
                             <svg className="w-3 h-3 text-[#0B7FB5]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M3 15c4-4 8 2 12-2s4-1 6-1" />
                             </svg>
-                            <span className="text-[8.5px] font-extrabold uppercase tracking-widest text-slate-400">HEIGHT</span>
+                            <span className="text-[8px] font-extrabold uppercase tracking-widest text-slate-400">HEIGHT</span>
                           </div>
-                          <span className="text-xs font-bold text-[#0A1926]">{card.height}</span>
+                          <span className="text-[11px] font-bold text-[#0A1926]">{card.height}</span>
                         </div>
 
-                        <div className="flex flex-col border-l border-slate-200/80 pl-2">
+                        <div className="flex flex-col border-l border-slate-200/80 pl-1.5">
                           <div className="flex items-center gap-1 mb-0.5">
                             <svg className="w-3 h-3 text-[#0B7FB5]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
-                            <span className="text-[8.5px] font-extrabold uppercase tracking-widest text-slate-400">RIDE</span>
+                            <span className="text-[8px] font-extrabold uppercase tracking-widest text-slate-400">RIDE</span>
                           </div>
-                          <span className="text-xs font-bold text-[#0A1926]">{card.ride}</span>
+                          <span className="text-[11px] font-bold text-[#0A1926]">{card.ride}</span>
                         </div>
 
-                        <div className="flex flex-col border-l border-slate-200/80 pl-2">
+                        <div className="flex flex-col border-l border-slate-200/80 pl-1.5">
                           <div className="flex items-center gap-1 mb-0.5">
                             <svg className="w-3 h-3 text-[#0B7FB5]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" d="M12 2v20M8 6h8" />
                             </svg>
-                            <span className="text-[8.5px] font-extrabold uppercase tracking-widest text-slate-400">BOARD</span>
+                            <span className="text-[8px] font-extrabold uppercase tracking-widest text-slate-400">BOARD</span>
                           </div>
-                          <span className="text-xs font-bold text-[#0A1926] truncate">{card.board}</span>
+                          <span className="text-[11px] font-bold text-[#0A1926] truncate">{card.board}</span>
                         </div>
                       </div>
 
                       {/* Price + CTA */}
                       <div className="flex items-center justify-between pt-1">
                         <div className="flex flex-col">
-                          <span className="text-[8.5px] font-extrabold uppercase tracking-widest text-slate-400">SESSION RATE</span>
+                          <span className="text-[8px] font-extrabold uppercase tracking-widest text-slate-400">SESSION RATE</span>
                           <span className="text-xs sm:text-sm font-bold text-[#0A1926] font-sans tracking-tight">{card.price}</span>
                         </div>
 
@@ -538,8 +538,8 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                           aria-label={`Book ${card.title} session`}
                           className={`rounded-full flex items-center justify-center transition-all duration-300 cursor-pointer shadow-md ${
                             isActive
-                              ? "w-9 h-9 sm:w-10 sm:h-10 bg-[#074754] text-white hover:bg-[#00C8A0] hover:text-[#061C27] hover:scale-105"
-                              : "w-8 h-8 sm:w-9 sm:h-9 bg-white border border-slate-300 text-[#074754] hover:bg-[#074754] hover:text-white"
+                              ? "w-8 h-8 sm:w-9 sm:h-9 bg-[#074754] text-white hover:bg-[#00C8A0] hover:text-[#061C27] hover:scale-105"
+                              : "w-7 h-7 sm:w-8 sm:h-8 bg-white border border-slate-300 text-[#074754] hover:bg-[#074754] hover:text-white"
                           }`}
                         >
                           <svg className="w-3.5 h-3.5 stroke-[2.5]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -556,7 +556,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
         </div>
 
         {/* ── PAGINATION DOTS ──────────────────────────────────────────────── */}
-        <div className="relative z-10 flex items-center justify-center gap-2.5 py-4 flex-shrink-0">
+        <div className="relative z-10 flex items-center justify-center gap-2.5 py-2 flex-shrink-0">
           {CARDS_DATA.map((card, idx) => {
             const dotActive = idx === activeIndex;
             return (
@@ -575,7 +575,7 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
         </div>
 
         {/* ── SECTION FOOTER BRANDING ───────────────────────────────────────── */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 pb-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-extrabold tracking-[0.22em] uppercase text-white/70 pt-4 flex-shrink-0">
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 lg:px-12 pb-3 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-extrabold tracking-[0.22em] uppercase text-white/70 pt-2 flex-shrink-0">
           <div className="flex items-center gap-2">
             <svg className="w-4 h-4 text-[#00C8A0]" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18L9 11.25l4.5 4.5L21.75 6" />
