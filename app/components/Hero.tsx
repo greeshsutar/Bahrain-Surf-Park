@@ -4,12 +4,14 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MOTION, isReducedMotion, handleMagneticMouseMove, handleMagneticMouseLeave } from "../constants/motion";
+import { useLanguage } from "../context/LanguageContext";
 
 interface HeroProps {
   onOpenBooking: (tier?: string) => void;
 }
 
 export default function Hero({ onOpenBooking }: HeroProps) {
+  const { lang, t } = useLanguage();
   const heroSectionRef = useRef<HTMLElement>(null);
   const parallaxWrapperRef = useRef<HTMLDivElement>(null);
   const cinematicFilterRef = useRef<HTMLDivElement>(null);
@@ -285,18 +287,42 @@ export default function Hero({ onOpenBooking }: HeroProps) {
           <div className="hero-eyebrow mb-3 flex items-center gap-2 opacity-0">
             <span className="inline-flex items-center gap-2 bg-[#00C8A0]/15 backdrop-blur-md border border-[#00C8A0]/40 text-[#00C8A0] text-xs font-extrabold tracking-[0.2em] uppercase px-3.5 py-1.5 rounded-full shadow-sm">
               <span className="w-2 h-2 rounded-full bg-[#00C8A0] animate-pulse" />
-              <span>Opening 2026 • Bilaj Al Jazayer, Bahrain Southwest Coast</span>
+              <span>
+                {lang === "ar"
+                  ? "افتتاح 2026 • بلاج الجزائر، الساحل الجنوبي الغربي للبحرين"
+                  : "Opening 2026 • Bilaj Al Jazayer, Bahrain Southwest Coast"}
+              </span>
             </span>
           </div>
 
           {/* Left-Aligned Display Headline */}
-          <h1 className="hero-headline font-serif text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] font-bold text-white tracking-tight leading-[1.08] mb-5 opacity-0">
-            Island Luxury.<br />Perfect Waves.
+          <h1
+            className={`hero-headline font-serif text-4xl sm:text-5xl md:text-6xl lg:text-[4.25rem] font-bold text-white leading-[1.08] mb-5 opacity-0 ${
+              lang === "ar" ? "tracking-normal font-sans" : "tracking-tight"
+            }`}
+          >
+            {lang === "ar" ? (
+              <>
+                فخامة الجزيرة.<br />
+                أمواج مثالية.
+              </>
+            ) : (
+              <>
+                Island Luxury.<br />
+                Perfect Waves.
+              </>
+            )}
           </h1>
 
           {/* Left-Aligned Subtitle */}
-          <p className="hero-subtitle text-sm sm:text-base text-white/90 font-medium leading-relaxed max-w-[500px] mb-8 font-sans opacity-0">
-            The world's most advanced wave technology meeting the spirit of island living in the heart of Bahrain.
+          <p
+            className={`hero-subtitle text-sm sm:text-base text-white/90 font-medium leading-relaxed max-w-[500px] mb-8 font-sans opacity-0 ${
+              lang === "ar" ? "tracking-normal" : ""
+            }`}
+          >
+            {lang === "ar"
+              ? "تقنية الأمواج الأكثر تقدمًا في العالم تلتقي بروح الحياة الساحلية في قلب البحرين."
+              : "The world's most advanced wave technology meeting the spirit of island living in the heart of Bahrain."}
           </p>
 
           {/* Left-Aligned Dual Action Buttons */}
@@ -307,10 +333,12 @@ export default function Hero({ onOpenBooking }: HeroProps) {
               onClick={(e) => handleNavClick(e, "#find-your-wave")}
               onMouseMove={handleMagneticMouseMove}
               onMouseLeave={handleMagneticMouseLeave}
-              className="bg-gradient-to-r from-[#00C8A0] to-[#0B7FB5] hover:opacity-95 text-white px-7 py-3.5 rounded-lg text-xs font-bold uppercase tracking-widest shadow-xl transition-all inline-flex items-center gap-2 cursor-pointer"
+              className={`bg-gradient-to-r from-[#00C8A0] to-[#0B7FB5] hover:opacity-95 text-white px-7 py-3.5 rounded-lg text-xs font-bold ${
+                lang === "ar" ? "tracking-normal font-sans" : "uppercase tracking-widest"
+              } shadow-xl transition-all inline-flex items-center gap-2 cursor-pointer`}
             >
-              <span>DISCOVER THE PARK</span>
-              <span className="text-sm font-normal">→</span>
+              <span>{lang === "ar" ? "استكشف الحديقة" : "DISCOVER THE PARK"}</span>
+              <span className="text-sm font-normal">{lang === "ar" ? "←" : "→"}</span>
             </a>
 
             {/* Secondary Action Button */}
@@ -319,14 +347,16 @@ export default function Hero({ onOpenBooking }: HeroProps) {
               onClick={(e) => handleNavClick(e, "#technology")}
               onMouseMove={handleMagneticMouseMove}
               onMouseLeave={handleMagneticMouseLeave}
-              className="inline-flex items-center gap-3 text-white text-xs font-bold uppercase tracking-wider hover:text-[#00C8A0] transition-colors group cursor-pointer"
+              className={`inline-flex items-center gap-3 text-white text-xs font-bold ${
+                lang === "ar" ? "tracking-normal font-sans" : "uppercase tracking-wider"
+              } hover:text-[#00C8A0] transition-colors group cursor-pointer`}
             >
               <span className="w-9 h-9 border border-white/40 rounded-full flex items-center justify-center bg-black/15 group-hover:border-white transition-all">
                 <svg className="w-3.5 h-3.5 fill-current text-white translate-x-[1px]" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z" />
                 </svg>
               </span>
-              <span>WATCH THE EXPERIENCE</span>
+              <span>{lang === "ar" ? "شاهد التجربة" : "WATCH THE EXPERIENCE"}</span>
             </a>
           </div>
         </div>

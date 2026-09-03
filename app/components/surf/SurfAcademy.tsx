@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function SurfAcademy() {
   return (
-    <section className="bg-[#061F2B] text-white py-20 sm:py-28 relative z-10 overflow-hidden border-b border-white/10">
+    <section className="bg-[#061F2B] text-white py-14 sm:py-20 relative z-10 overflow-hidden border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 text-left">
         
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">

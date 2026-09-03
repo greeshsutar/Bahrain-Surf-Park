@@ -7,7 +7,7 @@ export default function ConsistencySection() {
   const { onOpenBooking } = useBooking();
 
   return (
-    <section id="tech-section-06" className="bg-[#062B36] text-white py-20 sm:py-28 relative z-10 border-b border-white/10">
+    <section id="tech-section-06" className="bg-[#062B36] text-white py-14 sm:py-20 relative z-10 border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
@@ -16,7 +16,7 @@ export default function ConsistencySection() {
             <MediaPlaceholder
               aspectRatio="aspect-[16/10]"
               label="CONSISTENCY PROOF"
-              fallbackImage="/images/tier5.jpg"
+              fallbackImage="/images/wave_engineering.jpg"
             />
           </div>
 

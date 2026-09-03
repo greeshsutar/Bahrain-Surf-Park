@@ -25,7 +25,7 @@ const DAY_MOMENTS = [
     time: "01:00 PM",
     title: "PADDLE OUT & SURF",
     desc: "Step directly onto the water line from your cabana deck for your scheduled lagoon wave session.",
-    img: "/images/tier5.jpg",
+    img: "/images/cabanas/cabanas_hero.jpg",
   },
   {
     num: "04",

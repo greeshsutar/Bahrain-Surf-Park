@@ -45,7 +45,7 @@ const COLUMNS = [
 
 export default function SafetySection() {
   return (
-    <section id="tech-section-08" className="bg-[#031923] text-white py-20 sm:py-28 relative z-10 border-b border-white/10">
+    <section id="tech-section-08" className="bg-[#031923] text-white py-14 sm:py-20 relative z-10 border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 text-left">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center mb-16">
@@ -70,7 +70,7 @@ export default function SafetySection() {
             <MediaPlaceholder
               aspectRatio="aspect-[16/9]"
               label="SAFETY & MONITORING CROP"
-              fallbackImage="/images/tier1.jpg"
+              fallbackImage="/images/bahrain_surf_park_clean.jpg"
             />
           </div>
 

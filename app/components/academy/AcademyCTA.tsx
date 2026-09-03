@@ -52,7 +52,7 @@ export default function AcademyCTA({ onOpenBooking }: AcademyCTAProps) {
           muted
           loop
           playsInline
-          poster="/images/tier5.jpg"
+          poster="/images/academy_hero.jpg"
           className="w-full h-full object-cover opacity-40"
         >
           <source src="/videos/ocean.mp4" type="video/mp4" />

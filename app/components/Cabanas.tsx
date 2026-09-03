@@ -5,9 +5,12 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MOTION, isReducedMotion, handleMagneticMouseMove, handleMagneticMouseLeave } from "../constants/motion";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function Cabanas() {
   const sectionRef = useRef<HTMLElement>(null);
+  const { lang } = useLanguage();
+  const isRtl = lang === "ar";
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -54,28 +57,36 @@ export default function Cabanas() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A1926]/60 via-transparent to-transparent pointer-events-none" />
               <div className="absolute bottom-4 left-5 right-5 flex items-center justify-between text-xs text-white">
-                <span className="font-mono text-[#00C8A0] font-bold uppercase tracking-wider">PRIVATE LAGOON HAVENS</span>
-                <span className="font-sans text-white/80 font-medium">Dedicated Concierge Service</span>
+                <span className={`font-mono text-[#00C8A0] font-bold ${isRtl ? "tracking-normal font-sans" : "uppercase tracking-wider"}`}>
+                  {isRtl ? "ملاذات خاصة على البحيرة" : "PRIVATE LAGOON HAVENS"}
+                </span>
+                <span className="font-sans text-white/80 font-medium">
+                  {isRtl ? "خدمة كونسيرج مخصصة" : "Dedicated Concierge Service"}
+                </span>
               </div>
             </div>
           </div>
 
           {/* Right Column: Text & CTA */}
           <div className="lg:col-span-6 order-1 lg:order-2 flex flex-col justify-center text-left">
-            <span className="cabanas-home-anim text-[#00C8A0] text-xs font-extrabold tracking-[0.22em] uppercase mb-3 block">
-              ISLAND HOSPITALITY
+            <span className={`cabanas-home-anim text-[#00C8A0] text-xs font-extrabold mb-3 block ${isRtl ? "tracking-normal font-sans" : "tracking-[0.22em] uppercase"}`}>
+              {isRtl ? "الضيافة الساحلية" : "ISLAND HOSPITALITY"}
             </span>
 
-            <h2 className="cabanas-home-anim font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#0A1926] tracking-tight leading-[1.1] mb-5">
-              Private Luxury Cabanas Overlooking the Wave
+            <h2 className={`cabanas-home-anim font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#0A1926] leading-[1.1] mb-5 ${isRtl ? "tracking-normal font-sans" : "tracking-tight"}`}>
+              {isRtl ? "كابانات فاخرة خاصة مطلة على الأمواج" : "Private Luxury Cabanas Overlooking the Wave"}
             </h2>
 
             <p className="cabanas-home-anim text-slate-600 text-sm sm:text-base leading-relaxed font-sans mb-4">
-              Elevate your day at Bahrain Surf Park in your private shaded sanctuary. Complete with premium daybeds, personal climate controls, dedicated dining service, and uninterrupted vistas of the surfing lagoon.
+              {isRtl
+                ? "ارتقِ بيومك في حديقة البحرين لركوب الأمواج في ملاذ مكيّف ومريح خاص بك، مجهز بأسرة نهارية فاخرة وخدمات طعام مخصصة وإطلالات بانورامية على البحيرة."
+                : "Elevate your day at Bahrain Surf Park in your private shaded sanctuary. Complete with premium daybeds, personal climate controls, dedicated dining service, and uninterrupted vistas of the surfing lagoon."}
             </p>
 
             <p className="cabanas-home-anim text-slate-600 text-sm sm:text-base leading-relaxed font-sans mb-8">
-              Available for full-day reservations, family gatherings, or VIP group hospitality packages.
+              {isRtl
+                ? "متاحة بالحجز اليومي الكامل أو الجمعات العائلية أو باقات الضيافة لكبار الشخصيات."
+                : "Available for full-day reservations, family gatherings, or VIP group hospitality packages."}
             </p>
 
             <div className="cabanas-home-anim">
@@ -83,10 +94,10 @@ export default function Cabanas() {
                 href="/cabanas"
                 onMouseMove={handleMagneticMouseMove}
                 onMouseLeave={handleMagneticMouseLeave}
-                className="bg-[#0A1926] hover:bg-[#0B7FB5] text-white px-7 py-3.5 rounded-xl text-xs font-extrabold uppercase tracking-widest transition-all duration-300 shadow-md inline-flex items-center gap-2.5"
+                className={`bg-[#00C8A0] hover:bg-[#0A1926] text-[#061C27] hover:text-white px-7 py-3.5 rounded-xl text-xs font-extrabold ${isRtl ? "tracking-normal font-sans" : "uppercase tracking-widest"} transition-all duration-300 shadow-md inline-flex items-center gap-2.5`}
               >
-                <span>EXPLORE PRIVATE CABANAS</span>
-                <span className="text-sm font-normal">→</span>
+                <span>{isRtl ? "استكشف الكابانات والباقات" : "EXPLORE CABANAS & PACKAGES"}</span>
+                <span className="text-sm font-normal">{isRtl ? "←" : "→"}</span>
               </Link>
             </div>
           </div>

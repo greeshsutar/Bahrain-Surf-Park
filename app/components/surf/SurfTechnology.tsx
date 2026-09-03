@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function SurfTechnology() {
   return (
-    <section className="bg-[#061F2B] text-white py-20 sm:py-28 relative z-10 overflow-hidden border-b border-white/10">
+    <section className="bg-[#061F2B] text-white py-14 sm:py-20 relative z-10 overflow-hidden border-b border-white/10">
       {/* Background Tech Glow */}
       <div className="absolute top-1/2 right-10 w-[600px] h-[600px] bg-[#00C8A0]/[0.05] rounded-full blur-3xl pointer-events-none"></div>
 
@@ -59,7 +59,7 @@ export default function SurfTechnology() {
           <div className="lg:col-span-5">
             <div className="w-full rounded-3xl overflow-hidden shadow-2xl relative border border-white/20 h-[360px] sm:h-[440px] bg-slate-900 group">
               <video autoPlay muted loop playsInline className="w-full h-full object-cover">
-                <source src="/videos/create_a_video.mp4" type="video/mp4" />
+                <source src="/videos/wave.mp4" type="video/mp4" />
               </video>
               <div className="absolute inset-0 bg-gradient-to-t from-[#061F2B] via-transparent to-transparent"></div>
               

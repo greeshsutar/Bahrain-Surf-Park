@@ -57,7 +57,7 @@ const STAGES = [
 
 export default function MotionToWave() {
   return (
-    <section id="tech-section-03" className="bg-[#F7F8F6] text-[#092531] py-20 sm:py-28 relative z-10 border-b border-slate-200/80">
+    <section id="tech-section-03" className="bg-[#F7F8F6] text-[#092531] py-14 sm:py-20 relative z-10 border-b border-slate-200/80">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 text-left">
         
         <div className="max-w-2xl mb-14">

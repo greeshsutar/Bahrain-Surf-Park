@@ -20,7 +20,7 @@ export default function SessionFinder() {
   const rec = calculateRecommendation();
 
   return (
-    <section className="bg-[#061F2B] text-white py-20 sm:py-28 relative z-10 overflow-hidden border-b border-white/10">
+    <section className="bg-[#061F2B] text-white py-14 sm:py-20 relative z-10 overflow-hidden border-b border-white/10">
       <div className="max-w-4xl mx-auto px-6 lg:px-12 relative z-10 text-left">
         
         <span className="text-[#00C8A0] text-xs font-extrabold tracking-[0.25em] uppercase mb-3 block">

@@ -15,10 +15,10 @@ export default function TechnologyCTA() {
           muted
           loop
           playsInline
-          poster="/images/tier5.jpg"
+          poster="/images/wave_engineering.jpg"
           className="w-full h-full object-cover opacity-40"
         >
-          <source src="/videos/surfing.mp4" type="video/mp4" />
+          <source src="/videos/ocean.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-t from-[#0A1926] via-[#031923]/70 to-[#031923]/80"></div>
       </div>

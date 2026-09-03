@@ -87,7 +87,7 @@ export default function CabanasExperience() {
     <section
       ref={sectionRef}
       id="cabana-experience"
-      className="bg-[#061C27] text-white py-24 sm:py-32 relative z-10 border-b border-white/10"
+      className="bg-[#061C27] text-white py-16 sm:py-20 relative z-10 border-b border-white/10"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12 text-left">
         

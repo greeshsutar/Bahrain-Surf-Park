@@ -118,7 +118,7 @@ export default function WaveProgressionTimeline() {
     <section
       ref={sectionRef}
       id="wave-progression"
-      className="bg-[#082F3D] text-white py-24 sm:py-32 relative z-10 overflow-hidden border-b border-white/10"
+      className="bg-[#082F3D] text-white py-16 sm:py-20 relative z-10 overflow-hidden border-b border-white/10"
     >
       {/* Subtle Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#00C8A0]/[0.05] rounded-full blur-3xl pointer-events-none" />

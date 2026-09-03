@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import gsap from "gsap";
@@ -11,21 +11,30 @@ import Footer from "./Footer";
 import BookingModal from "./BookingModal";
 import WelcomeModal from "./WelcomeModal";
 import { BookingProvider } from "../context/BookingContext";
+import { LanguageProvider } from "../context/LanguageContext";
 import SurfConcierge from "./concierge/SurfConcierge";
 
 export default function SiteShell({ children }: { children: React.ReactNode }) {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
   const [selectedBookingTier, setSelectedBookingTier] = useState<string | undefined>(undefined);
   const pathname = usePathname();
+  const lenisRef = useRef<Lenis | null>(null);
 
+  // 1. Single Global Lenis Instance
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+
+    if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
 
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
+
+    lenisRef.current = lenis;
 
     lenis.on("scroll", () => {
       ScrollTrigger.update();
@@ -41,8 +50,27 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
     return () => {
       gsap.ticker.remove(tickerFn);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
+
+  // 2. Reset Scroll Position to Top on Route Navigation
+  useEffect(() => {
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0, { immediate: true });
+    }
+    window.scrollTo(0, 0);
+
+    const timer = setTimeout(() => {
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(0, { immediate: true });
+      }
+      window.scrollTo(0, 0);
+      ScrollTrigger.refresh();
+    }, 50);
+
+    return () => clearTimeout(timer);
+  }, [pathname]);
 
   const handleOpenBooking = (tier?: string) => {
     setSelectedBookingTier(tier);
@@ -56,25 +84,27 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
   const isHomePage = pathname === "/";
 
   return (
-    <BookingProvider value={{ onOpenBooking: handleOpenBooking }}>
-      {isHomePage ? (
-        children
-      ) : (
-        <>
-          <Navbar onOpenBooking={handleOpenBooking} />
-          <main className="min-h-screen bg-white text-[#0A1926] relative">
-            {children}
-          </main>
-          <Footer onOpenBooking={handleOpenBooking} />
-          <BookingModal
-            isOpen={isBookingOpen}
-            onClose={handleCloseBooking}
-            selectedTier={selectedBookingTier}
-          />
-          <WelcomeModal />
-        </>
-      )}
-      <SurfConcierge />
-    </BookingProvider>
+    <LanguageProvider>
+      <BookingProvider value={{ onOpenBooking: handleOpenBooking }}>
+        {isHomePage ? (
+          children
+        ) : (
+          <>
+            <Navbar onOpenBooking={handleOpenBooking} />
+            <main className="min-h-screen bg-white text-[#0A1926] relative">
+              {children}
+            </main>
+            <Footer onOpenBooking={handleOpenBooking} />
+            <BookingModal
+              isOpen={isBookingOpen}
+              onClose={handleCloseBooking}
+              selectedTier={selectedBookingTier}
+            />
+            <WelcomeModal />
+          </>
+        )}
+        <SurfConcierge />
+      </BookingProvider>
+    </LanguageProvider>
   );
 }

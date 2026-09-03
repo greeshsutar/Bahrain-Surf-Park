@@ -5,8 +5,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import WaveDivider from "./WaveDivider";
 import { MOTION, isReducedMotion, handleMagneticMouseMove, handleMagneticMouseLeave } from "../constants/motion";
+import { useLanguage } from "../context/LanguageContext";
 
 export default function Technology() {
+  const { lang, t } = useLanguage();
+  const isRtl = lang === "ar";
   const sectionRef = useRef<HTMLElement>(null);
   const oceanVideoContainerRef = useRef<HTMLDivElement>(null);
   const stat1Ref = useRef<HTMLSpanElement>(null);
@@ -104,34 +107,47 @@ export default function Technology() {
     }
 
     // 3. Animated count-up counter for technical numbers
+    const statsRow = section.querySelector(".tech-stat-item")?.parentElement;
     const countObj = { val1: 0, val2: 0, val3: 0 };
+    let counterTween: gsap.core.Tween | null = null;
 
-    const counterTween = gsap.to(countObj, {
-      val1: 1000,
-      val2: 20,
-      val3: 90,
-      duration: reduced ? 0 : 2.2,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: section,
-        start: "top 70%",
-      },
-      onUpdate: () => {
-        if (stat1Ref.current) {
-          stat1Ref.current.textContent = Math.floor(countObj.val1).toLocaleString();
-        }
-        if (stat2Ref.current) {
-          stat2Ref.current.textContent = `${Math.floor(countObj.val2)}+`;
-        }
-        if (stat3Ref.current) {
-          stat3Ref.current.textContent = Math.floor(countObj.val3).toString();
-        }
-      },
-    });
+    if (reduced) {
+      if (stat1Ref.current) stat1Ref.current.textContent = (1000).toLocaleString();
+      if (stat2Ref.current) stat2Ref.current.textContent = "20+";
+      if (stat3Ref.current) stat3Ref.current.textContent = "90";
+    } else {
+      if (stat1Ref.current) stat1Ref.current.textContent = "0";
+      if (stat2Ref.current) stat2Ref.current.textContent = "0+";
+      if (stat3Ref.current) stat3Ref.current.textContent = "0";
+
+      counterTween = gsap.to(countObj, {
+        val1: 1000,
+        val2: 20,
+        val3: 90,
+        duration: 1.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: statsRow || section,
+          start: "top 80%",
+          once: true,
+        },
+        onUpdate: () => {
+          if (stat1Ref.current) {
+            stat1Ref.current.textContent = Math.floor(countObj.val1).toLocaleString();
+          }
+          if (stat2Ref.current) {
+            stat2Ref.current.textContent = `${Math.floor(countObj.val2)}+`;
+          }
+          if (stat3Ref.current) {
+            stat3Ref.current.textContent = Math.floor(countObj.val3).toString();
+          }
+        },
+      });
+    }
 
     return () => {
       tl.kill();
-      counterTween.kill();
+      if (counterTween) counterTween.kill();
       if (videoParallax) videoParallax.kill();
     };
   }, []);
@@ -177,32 +193,40 @@ export default function Technology() {
             
             {/* Eyebrow */}
             <div className="tech-eyebrow mb-2">
-              <span className="text-[#0B7FB5] text-[12px] sm:text-[13px] font-bold tracking-[0.22em] uppercase block">
-                WAVEGARDEN COVE® ENGINEERING
+              <span className={`text-[#0B7FB5] text-[12px] sm:text-[13px] font-bold block ${isRtl ? "tracking-normal font-sans" : "tracking-[0.22em] uppercase"}`}>
+                {t.techEyebrow}
               </span>
               <div className="w-10 h-[1.5px] bg-[#00C8A0] mt-2 opacity-80"></div>
             </div>
 
             {/* Main Headline */}
-            <h2 className="tech-heading font-serif text-5xl sm:text-6xl lg:text-[70px] font-bold text-[#0A1926] leading-[0.98] tracking-tight mb-7">
-              The Physics of<br />Perfection
+            <h2 className={`tech-heading font-serif text-5xl sm:text-6xl lg:text-[70px] font-bold text-[#0A1926] leading-[0.98] mb-7 ${isRtl ? "tracking-normal font-sans" : "tracking-tight"}`}>
+              {isRtl ? (
+                <>
+                  فيزياء الإتقان<br />والتميز
+                </>
+              ) : (
+                <>
+                  The Physics of<br />Perfection
+                </>
+              )}
             </h2>
 
             {/* Paragraph 1 */}
             <p className="tech-body text-slate-600 text-base sm:text-[17.5px] leading-[1.65] font-sans max-w-[620px] mb-4">
-              Our lagoon is powered by a 52-module Wavegarden Cove technology system, capable of generating up to 1,000 ocean-like waves per hour. Each wave profile is programmatically controlled to modify height, speed, and shape in real time.
+              {t.techBody1}
             </p>
 
             {/* Paragraph 2 */}
             <p className="tech-body text-slate-600 text-base sm:text-[17.5px] leading-[1.65] font-sans max-w-[620px] mb-8">
-              Through custom hydrodynamic modules, we optimize energy usage while delivering precise wave geometries. This creates a consistent and highly customizable surfing environment.
+              {t.techBody2}
             </p>
 
             {/* Thin Horizontal Top Divider */}
             <div className="border-t border-slate-200 my-7"></div>
 
-            {/* Clean Horizontal 3-Column Statistics System (No Cards / No Glass / Thin Dividers) */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4 text-left my-7 py-1">
+            {/* Clean Horizontal 3-Column Statistics System with Translucent White Contrast Surface */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4 text-left my-7 p-4 sm:p-5 rounded-2xl bg-white/85 backdrop-blur-md border border-white/90 shadow-lg text-[#0A1926]">
               
               {/* Stat 01: Waves / Hour */}
               <div className="tech-stat-item flex flex-col">
@@ -210,14 +234,14 @@ export default function Technology() {
                   <svg className="w-3.5 h-3.5 stroke-[2.5]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2 12c.6 0 1.2-.2 1.6-.6 1-.8 2.2-.8 3.2 0 .8.6 1.8.8 2.8.4 1-.4 2.2-.4 3.2.2.8.5 1.8.6 2.8.2 1-.4 2.2-.4 3.2.2.6.4 1.4.6 2.2.6"/>
                   </svg>
-                  <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#0B7FB5]">WAVES / HOUR</span>
+                  <span className={`text-[11px] font-bold text-[#0B7FB5] ${isRtl ? "tracking-normal font-sans" : "uppercase tracking-[0.18em]"}`}>{t.techStat1Label}</span>
                 </div>
                 <div className="flex items-baseline gap-1.5 my-0.5">
-                  <span className="text-xs font-sans font-semibold uppercase tracking-wide text-slate-600">up to</span>
-                  <span ref={stat1Ref} className="font-serif text-4xl sm:text-[44px] font-bold text-black tracking-tight">1,000</span>
+                  <span className="text-xs font-sans font-semibold uppercase tracking-wide text-slate-500">{isRtl ? "حتى" : "up to"}</span>
+                  <span ref={stat1Ref} className="font-serif text-4xl sm:text-[44px] font-bold text-[#0A1926] tracking-tight">1,000</span>
                 </div>
                 <p className="text-[12px] text-slate-600 font-medium leading-relaxed mt-1 max-w-[150px]">
-                  Industry-leading capacity for endless wave sessions.
+                  {t.techStat1Sub}
                 </p>
               </div>
 
@@ -229,13 +253,13 @@ export default function Technology() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2 12c.6 0 1.2-.2 1.6-.6 1-.8 2.2-.8 3.2 0 .8.6 1.8.8 2.8.4 1-.4 2.2-.4 3.2.2"/>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M2 18c.6 0 1.2-.2 1.6-.6 1-.8 2.2-.8 3.2 0 .8.6 1.8.8 2.8.4 1-.4 2.2-.4 3.2.2"/>
                   </svg>
-                  <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#0B7FB5]">WAVE PROFILES</span>
+                  <span className={`text-[11px] font-bold text-[#0B7FB5] ${isRtl ? "tracking-normal font-sans" : "uppercase tracking-[0.18em]"}`}>{t.techStat2Label}</span>
                 </div>
                 <div className="my-0.5">
-                  <span ref={stat2Ref} className="font-serif text-4xl sm:text-[44px] font-bold text-black tracking-tight">20+</span>
+                  <span ref={stat2Ref} className="font-serif text-4xl sm:text-[44px] font-bold text-[#0A1926] tracking-tight">20+</span>
                 </div>
                 <p className="text-[12px] text-slate-600 font-medium leading-relaxed mt-1 max-w-[150px]">
-                  Programmable wave profiles for every ability and style.
+                  {t.techStat2Sub}
                 </p>
               </div>
 
@@ -248,13 +272,13 @@ export default function Technology() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M22 21v-2a4 4 0 0 1 0 7.75"/>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M16 3.13a4 4 0 0 1 0 7.75"/>
                   </svg>
-                  <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#0B7FB5]">SURFERS CAPACITY</span>
+                  <span className={`text-[11px] font-bold text-[#0B7FB5] ${isRtl ? "tracking-normal font-sans" : "uppercase tracking-[0.18em]"}`}>{t.techStat3Label}</span>
                 </div>
                 <div className="my-0.5">
-                  <span ref={stat3Ref} className="font-serif text-4xl sm:text-[44px] font-bold text-black tracking-tight">90</span>
+                  <span ref={stat3Ref} className="font-serif text-4xl sm:text-[44px] font-bold text-[#0A1926] tracking-tight">90</span>
                 </div>
                 <p className="text-[12px] text-slate-600 font-medium leading-relaxed mt-1 max-w-[150px]">
-                  Maximum simultaneous surfers across lagoon zones.
+                  {t.techStat3Sub}
                 </p>
               </div>
 
@@ -267,10 +291,10 @@ export default function Technology() {
                 onClick={(e) => handleNavClick(e, "#find-your-wave")}
                 onMouseMove={handleMagneticMouseMove}
                 onMouseLeave={handleMagneticMouseLeave}
-                className="bg-[#0B7FB5] hover:bg-[#0A1926] text-white px-7 py-3.5 h-[52px] rounded-[8px] text-[15px] font-extrabold uppercase tracking-wider transition-all duration-300 shadow-md inline-flex items-center justify-center gap-2.5 cursor-pointer"
+                className={`bg-[#0B7FB5] hover:bg-[#0A1926] text-white px-7 py-3.5 h-[52px] rounded-[8px] text-[15px] font-extrabold ${isRtl ? "tracking-normal font-sans" : "uppercase tracking-wider"} transition-all duration-300 shadow-md inline-flex items-center justify-center gap-2.5 cursor-pointer`}
               >
-                <span>EXPLORE WAVE TIERS</span>
-                <span className="text-sm font-normal">→</span>
+                <span>{t.techCta}</span>
+                <span className="text-sm font-normal">{isRtl ? "←" : "→"}</span>
               </a>
             </div>
 
@@ -296,7 +320,7 @@ export default function Technology() {
               <div className="tech-status-pill absolute bottom-5 left-5 right-5 bg-white/95 backdrop-blur-md border border-white/80 rounded-[14px] h-[50px] px-5 shadow-lg flex items-center justify-between z-20 text-xs font-bold text-[#0A1926]">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-[#00C8A0] animate-pulse"></span>
-                  <span>Wave Generator Active</span>
+                  <span>{t.techStatusActive}</span>
                 </div>
                 
                 <span className="w-[1px] h-4 bg-[#0A1926]/20"></span>
@@ -307,7 +331,7 @@ export default function Technology() {
                   rel="noopener noreferrer"
                   className="hover:text-[#0B7FB5] transition-colors flex items-center gap-1 text-slate-600"
                 >
-                  <span>Bilaj Al Jazayer, Bahrain</span>
+                  <span>{isRtl ? "بلاج الجزائر، البحرين" : "Bilaj Al Jazayer, Bahrain"}</span>
                   <span className="text-[10px]">↗</span>
                 </a>
               </div>
@@ -317,8 +341,8 @@ export default function Technology() {
             <div className="w-full max-w-full lg:max-w-[700px] xl:max-w-[740px] flex items-center gap-2 mt-4 text-left px-1">
               <span className="w-2 h-2 rounded-full bg-[#00C8A0] animate-pulse shrink-0"></span>
               <div className="flex items-center gap-1.5 flex-wrap">
-                <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#00C8A0]">LIVE SYSTEM STATUS</span>
-                <span className="text-[11px] text-slate-600 font-medium">— Real-time wave generation in progress</span>
+                <span className={`text-[10px] font-extrabold text-[#00C8A0] ${isRtl ? "tracking-normal font-sans" : "uppercase tracking-widest"}`}>{t.techStatusLive}</span>
+                <span className="text-[11px] text-slate-600 font-medium">{t.techStatusSub}</span>
               </div>
             </div>
 

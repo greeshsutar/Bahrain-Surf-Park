@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import WaveCard, { WaveLevelData } from "./WaveCard";
+import { useLanguage } from "../../context/LanguageContext";
 
 const WAVE_LEVELS: WaveLevelData[] = [
   {
@@ -15,7 +16,6 @@ const WAVE_LEVELS: WaveLevelData[] = [
     ride: "120m",
     board: "Soft-top",
     img: "/images/tier1.jpg",
-    video: "/videos/surfing.mp4",
   },
   {
     id: "novice",
@@ -28,7 +28,6 @@ const WAVE_LEVELS: WaveLevelData[] = [
     ride: "140m",
     board: "Funboard",
     img: "/images/tier2.jpg",
-    video: "/videos/surfing.mp4",
   },
   {
     id: "progressive",
@@ -41,7 +40,6 @@ const WAVE_LEVELS: WaveLevelData[] = [
     ride: "160m",
     board: "Fish / Longboard",
     img: "/images/tier3.jpg",
-    video: "/videos/surfing.mp4",
   },
   {
     id: "intermediate",
@@ -54,7 +52,6 @@ const WAVE_LEVELS: WaveLevelData[] = [
     ride: "180m",
     board: "Shortboard",
     img: "/images/tier4.jpg",
-    video: "/videos/surfing.mp4",
   },
   {
     id: "expert",
@@ -67,11 +64,12 @@ const WAVE_LEVELS: WaveLevelData[] = [
     ride: "200m",
     board: "Step-Up",
     img: "/images/tier5.jpg",
-    video: "/videos/surfing.mp4",
   },
 ];
 
 export default function WaveSelector() {
+  const { lang } = useLanguage();
+  const isRtl = lang === "ar";
   const [activeIndex, setActiveIndex] = useState<number>(2); // Default PROGRESSIVE
   const trackRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLElement>(null);
@@ -143,7 +141,7 @@ export default function WaveSelector() {
     <section
       id="find-your-wave-selector"
       ref={containerRef}
-      className="bg-[#061F2B] text-white py-20 sm:py-28 relative z-10 overflow-hidden border-b border-white/10"
+      className="bg-[#061F2B] text-white py-14 sm:py-20 relative z-10 overflow-hidden border-b border-white/10"
     >
       {/* Background Atmosphere Layers */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-[#00C8A0]/[0.07] rounded-full blur-3xl pointer-events-none"></div>
@@ -157,14 +155,14 @@ export default function WaveSelector() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 text-left mb-12">
-        <span className="text-[#00C8A0] text-xs font-extrabold tracking-[0.25em] uppercase mb-3 block">
-          SIGNATURE WAVE SELECTOR
+        <span className={`text-[#00C8A0] text-xs font-extrabold mb-3 block ${isRtl ? "tracking-normal font-sans" : "tracking-[0.25em] uppercase"}`}>
+          {isRtl ? "محدد الأمواج المتميز" : "SIGNATURE WAVE SELECTOR"}
         </span>
-        <h2 className="font-serif text-3xl sm:text-5xl lg:text-[3.5rem] font-bold text-white tracking-tight leading-[1.08] mb-4">
-          FIND YOUR WAVE.
+        <h2 className={`font-serif text-3xl sm:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.08] mb-4 ${isRtl ? "tracking-normal font-sans" : "tracking-tight"}`}>
+          {isRtl ? "اطلب موجتك." : "FIND YOUR WAVE."}
         </h2>
         <p className="text-white/80 text-base sm:text-xl font-serif italic max-w-2xl">
-          ONE PLACE. EVERY LEVEL OF PROGRESSION.
+          {isRtl ? "مكان واحد. لكل مستوى من مستويات التطور." : "ONE PLACE. EVERY LEVEL OF PROGRESSION."}
         </p>
       </div>
 

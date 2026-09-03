@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { isReducedMotion, handleMagneticMouseMove, handleMagneticMouseLeave } from "../../constants/motion";
+import { useLanguage } from "../../context/LanguageContext";
 
 interface AcademyHeroProps {
   onOpenBooking: (tier?: string) => void;
@@ -11,6 +12,8 @@ interface AcademyHeroProps {
 export default function AcademyHero({ onOpenBooking }: AcademyHeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
+  const { lang } = useLanguage();
+  const isRtl = lang === "ar";
 
   useEffect(() => {
     if (isReducedMotion()) {
@@ -76,16 +79,26 @@ export default function AcademyHero({ onOpenBooking }: AcademyHeroProps) {
       {/* Hero Content */}
       <div className="relative z-20 max-w-7xl mx-auto w-full px-6 sm:px-12 pt-36 sm:pt-40 md:pt-44 pb-16 my-auto flex flex-col justify-center text-left">
         <div className="max-w-2xl">
-          <span className="acad-hero-eyebrow text-[#00C8A0] text-xs sm:text-sm font-extrabold tracking-[0.25em] uppercase mb-4 block">
-            THE SURF ACADEMY
+          <span className={`acad-hero-eyebrow text-[#00C8A0] text-xs sm:text-sm font-extrabold mb-4 block ${isRtl ? "tracking-normal font-sans" : "tracking-[0.25em] uppercase"}`}>
+            {isRtl ? "أكاديمية ركوب الأمواج" : "THE SURF ACADEMY"}
           </span>
 
-          <h1 className="acad-hero-headline font-serif text-5xl sm:text-7xl lg:text-[80px] font-bold text-white tracking-tight leading-[0.98] mb-6 drop-shadow-md">
-            Learn To Surf.<br />Learn To Ride.
+          <h1 className={`acad-hero-headline font-serif text-5xl sm:text-7xl lg:text-[80px] font-bold text-white leading-[0.98] mb-6 drop-shadow-md ${isRtl ? "tracking-normal font-sans" : "tracking-tight"}`}>
+            {isRtl ? (
+              <>
+                تعلم ركوب الأمواج.<br />أتقن أداءك.
+              </>
+            ) : (
+              <>
+                Learn To Surf.<br />Learn To Ride.
+              </>
+            )}
           </h1>
 
           <p className="acad-hero-body text-slate-200 text-base sm:text-lg font-sans leading-relaxed max-w-xl mb-8">
-            From your first paddle to your next breakthrough, build confidence, technique and flow with expert ISA-certified coaching.
+            {isRtl
+              ? "من محاولتك الأولى حتى إتقانك لأفضل ركوب، ابنِ الثقة والتقنية والانسيابية مع مدربين معتمدين دوليًا من ISA."
+              : "From your first paddle to your next breakthrough, build confidence, technique and flow with expert ISA-certified coaching."}
           </p>
 
           <div className="acad-hero-cta flex flex-wrap items-center gap-4 sm:gap-5">
@@ -93,19 +106,23 @@ export default function AcademyHero({ onOpenBooking }: AcademyHeroProps) {
               onClick={() => onOpenBooking()}
               onMouseMove={handleMagneticMouseMove}
               onMouseLeave={handleMagneticMouseLeave}
-              className="bg-[#00C8A0] hover:bg-[#00B590] text-[#02141C] font-extrabold px-8 py-4 rounded-xl text-xs uppercase tracking-widest transition-all shadow-xl hover:shadow-[#00C8A0]/30 cursor-pointer inline-flex items-center gap-2"
+              className={`bg-[#00C8A0] hover:bg-[#00B590] text-[#02141C] font-extrabold px-8 py-4 rounded-xl text-xs transition-all shadow-xl hover:shadow-[#00C8A0]/30 cursor-pointer inline-flex items-center gap-2 ${
+                isRtl ? "tracking-normal font-sans" : "uppercase tracking-widest"
+              }`}
             >
-              <span>START YOUR JOURNEY</span>
-              <span className="text-sm">→</span>
+              <span>{isRtl ? "ابدأ رحلتك" : "START YOUR JOURNEY"}</span>
+              <span className="text-sm">{isRtl ? "←" : "→"}</span>
             </button>
 
             <button
               onClick={handleScrollToLevels}
               onMouseMove={handleMagneticMouseMove}
               onMouseLeave={handleMagneticMouseLeave}
-              className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold px-7 py-4 rounded-xl text-xs uppercase tracking-widest backdrop-blur-md transition-all cursor-pointer inline-flex items-center gap-2"
+              className={`bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold px-7 py-4 rounded-xl text-xs backdrop-blur-md transition-all cursor-pointer inline-flex items-center gap-2 ${
+                isRtl ? "tracking-normal font-sans" : "uppercase tracking-widest"
+              }`}
             >
-              <span>EXPLORE THE ACADEMY</span>
+              <span>{isRtl ? "استكشف الأكاديمية" : "EXPLORE THE ACADEMY"}</span>
               <span className="text-xs">↓</span>
             </button>
           </div>

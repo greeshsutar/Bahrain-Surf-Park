@@ -86,29 +86,42 @@ export default function TechnologyIntro() {
       );
     }
 
-    // Phase 5 count-up numbers tween
+    // Phase 5 count-up numbers tween triggered when metrics row enters viewport
+    const metricsContainer = section.querySelector(".intro-phase-metrics");
     const countObj = { val1: 0, val2: 0, val3: 0 };
-    const counterTween = gsap.to(countObj, {
-      val1: 1000,
-      val2: 20,
-      val3: 90,
-      duration: reduced ? 0 : 1.4,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: section,
-        start: "top 70%",
-        once: true,
-      },
-      onUpdate: () => {
-        if (stat1Ref.current) stat1Ref.current.textContent = Math.floor(countObj.val1).toLocaleString();
-        if (stat2Ref.current) stat2Ref.current.textContent = `${Math.floor(countObj.val2)}+`;
-        if (stat3Ref.current) stat3Ref.current.textContent = Math.floor(countObj.val3).toString();
-      },
-    });
+    let counterTween: gsap.core.Tween | null = null;
+
+    if (reduced) {
+      if (stat1Ref.current) stat1Ref.current.textContent = (1000).toLocaleString();
+      if (stat2Ref.current) stat2Ref.current.textContent = "20+";
+      if (stat3Ref.current) stat3Ref.current.textContent = "90";
+    } else {
+      if (stat1Ref.current) stat1Ref.current.textContent = "0";
+      if (stat2Ref.current) stat2Ref.current.textContent = "0+";
+      if (stat3Ref.current) stat3Ref.current.textContent = "0";
+
+      counterTween = gsap.to(countObj, {
+        val1: 1000,
+        val2: 20,
+        val3: 90,
+        duration: 1.8,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: metricsContainer || section,
+          start: "top 80%",
+          once: true,
+        },
+        onUpdate: () => {
+          if (stat1Ref.current) stat1Ref.current.textContent = Math.floor(countObj.val1).toLocaleString();
+          if (stat2Ref.current) stat2Ref.current.textContent = `${Math.floor(countObj.val2)}+`;
+          if (stat3Ref.current) stat3Ref.current.textContent = Math.floor(countObj.val3).toString();
+        },
+      });
+    }
 
     return () => {
       tl.kill();
-      counterTween.kill();
+      if (counterTween) counterTween.kill();
     };
   }, []);
 
@@ -124,7 +137,7 @@ export default function TechnologyIntro() {
     <section
       ref={sectionRef}
       id="tech-section-01"
-      className="relative bg-[#F0EEE7] text-[#0A1926] pt-24 sm:pt-32 pb-32 sm:pb-40 z-10 overflow-hidden"
+      className="relative bg-[#F0EEE7] text-[#0A1926] pt-24 sm:pt-32 pb-0 z-10 overflow-x-hidden"
     >
       {/* 1. Hydrodynamic Contour Blueprint Lines & Ambient Soft Teal Glow */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden" aria-hidden="true">
@@ -146,7 +159,7 @@ export default function TechnologyIntro() {
         <div className="absolute top-1/4 right-5 w-[600px] h-[600px] bg-[#00C8A0]/[0.09] rounded-full blur-3xl pointer-events-none" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 pb-8 sm:pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           {/* Left Column: Editorial Engineering Narrative (approx 40% width) */}
@@ -192,7 +205,7 @@ export default function TechnologyIntro() {
                 <div className="flex items-baseline gap-1 my-0.5">
                   <span className="text-[10px] font-sans font-semibold uppercase tracking-wide text-slate-600">up to</span>
                   <span ref={stat1Ref} className="font-sans text-2xl sm:text-3xl lg:text-4xl font-extrabold text-black tracking-tight">
-                    1,000+
+                    1,000
                   </span>
                 </div>
               </div>
@@ -253,25 +266,18 @@ export default function TechnologyIntro() {
         </div>
       </div>
 
-      {/* Visual Transition into Section 02 (#tech-section-02 WaveCreation): Hydrodynamic Wave Contour */}
-      <div className="absolute bottom-0 left-0 right-0 w-full h-[70px] sm:h-[90px] pointer-events-none z-20 overflow-hidden" aria-hidden="true">
+      {/* Seamless Wave Transition into MotionToWave (#F7F8F6) */}
+      <div className="relative w-full leading-[0] mt-6" aria-hidden="true">
         <svg
-          className="w-full h-full block"
-          viewBox="0 0 1440 120"
+          className="w-full block"
+          viewBox="0 0 1440 100"
           preserveAspectRatio="none"
           xmlns="http://www.w3.org/2000/svg"
+          style={{ display: 'block', marginBottom: '-2px' }}
         >
           <path
-            d="M 0 60 C 240 100, 480 30, 720 70 C 960 110, 1200 40, 1440 80 L 1440 125 L 0 125 Z"
-            fill="#02141C"
-          />
-          <path
-            d="M 0 60 C 240 100, 480 30, 720 70 C 960 110, 1200 40, 1440 80"
-            fill="none"
-            stroke="#00C8A0"
-            strokeWidth="1.5"
-            strokeOpacity="0.4"
-            strokeDasharray="6 4"
+            d="M 0 40 C 240 85, 480 10, 720 55 C 960 100, 1200 20, 1440 65 L 1440 100 L 0 100 Z"
+            fill="#F7F8F6"
           />
         </svg>
       </div>

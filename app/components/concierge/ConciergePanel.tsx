@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { getPageContext, QuickAction } from "../../constants/conciergeData";
 import { useBooking } from "../../context/BookingContext";
+import { useLanguage } from "../../context/LanguageContext";
 import { ConciergeResponseBody } from "../../api/concierge/route";
 
 export interface MessageItem {
@@ -29,6 +30,8 @@ export default function ConciergePanel({ isOpen, onClose }: ConciergePanelProps)
   const pathname = usePathname();
   const router = useRouter();
   const { onOpenBooking } = useBooking();
+  const { lang } = useLanguage();
+  const isRtl = lang === "ar";
 
   const [inputQuery, setInputQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -43,13 +46,21 @@ export default function ConciergePanel({ isOpen, onClose }: ConciergePanelProps)
       const initialMessage: MessageItem = {
         id: "msg-welcome",
         sender: "concierge",
-        text: `${contextConfig.headerPrompt}\n\nWelcome to Bahrain Surf Park! I'm your Surf Concierge. I can guide you through wave levels, visit logistics, technology, or assist with booking your session.`,
-        suggestedActions: contextConfig.suggestions,
+        text: isRtl
+          ? "مرحبًا بك في حديقة البحرين لركوب الأمواج! أنا كونسيرج ركوب الأمواج. يمكنني مساعدتك في استكشاف مستويات الأمواج، لوجستيات الزيارة، أو الحجز."
+          : `${contextConfig.headerPrompt}\n\nWelcome to Bahrain Surf Park! I'm your Surf Concierge. I can guide you through wave levels, visit logistics, technology, or assist with booking your session.`,
+        suggestedActions: isRtl
+          ? [
+              { label: "مستويات الأمواج", query: "ما هي مستويات الأمواج المتاحة؟" },
+              { label: "احجز جلسة", query: "كيف يمكنني حجز جلسة ركوب أمواج؟" },
+              { label: "الكابانات الفاخرة", query: "أخبرني عن الكابانات الفاخرة" },
+            ]
+          : contextConfig.suggestions,
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       };
       setMessages([initialMessage]);
     }
-  }, [contextConfig, messages.length]);
+  }, [contextConfig, messages.length, isRtl]);
 
   // Dynamic Context update when pathname changes
   useEffect(() => {
@@ -167,18 +178,22 @@ export default function ConciergePanel({ isOpen, onClose }: ConciergePanelProps)
     <div
       role="dialog"
       aria-label="Bahrain Surf Park Surf Concierge"
-      className="fixed z-[9999] transition-all duration-300 ease-out flex flex-col overflow-hidden bg-[#0B7FB5] text-white border-2 border-white/20 shadow-2xl shadow-[#0A1926]/50 animate-greeting-appear bottom-20 right-5 sm:right-7 lg:bottom-[108px] lg:right-[28px] w-[calc(100vw-2rem)] sm:w-[410px] h-[580px] max-h-[82vh] rounded-2xl max-sm:bottom-0 max-sm:right-0 max-sm:left-0 max-sm:w-full max-sm:h-[88vh] max-sm:max-h-[88vh] max-sm:rounded-t-3xl max-sm:rounded-b-none"
+      className="fixed z-[9999] transition-all duration-300 ease-out flex flex-col overflow-hidden bg-[#061B24]/95 text-white border border-[#00C8A0]/25 backdrop-blur-2xl shadow-[0_24px_80px_rgba(0,0,0,0.55)] animate-greeting-appear bottom-20 right-5 sm:right-7 lg:bottom-[108px] lg:right-[28px] w-[calc(100vw-2rem)] sm:w-[410px] h-[580px] max-h-[82vh] rounded-2xl max-sm:bottom-0 max-sm:right-0 max-sm:left-0 max-sm:w-full max-sm:h-[88vh] max-sm:max-h-[88vh] max-sm:rounded-t-3xl max-sm:rounded-b-none"
     >
-      {/* Ocean Blue Concierge Header */}
-      <div className="bg-[#086F9F] text-white px-5 py-4 flex items-center justify-between border-b border-white/20 shrink-0 relative">
+      {/* Ambient Radial Atmosphere Glow Layers inside Panel */}
+      <div className="absolute top-0 right-0 w-[280px] h-[280px] bg-[#00C8A0]/[0.06] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 left-0 w-[240px] h-[240px] bg-[#0B7FB5]/[0.08] rounded-full blur-3xl pointer-events-none" />
+
+      {/* Refined Ocean Header */}
+      <div className="bg-[#0A1926]/90 backdrop-blur-md text-white px-5 py-4 flex items-center justify-between border-b border-white/10 shrink-0 relative z-20">
         <div className="flex items-center gap-3">
-          {/* Surf Concierge Robot Character Emblem */}
-          <div className="w-10 h-10 rounded-xl bg-white/15 border border-[#00C8A0]/60 flex items-center justify-center shrink-0 overflow-hidden p-1 shadow-inner">
+          {/* Surf Concierge Avatar Container */}
+          <div className="w-11 h-11 rounded-xl bg-gradient-to-b from-[#0B7FB5]/30 to-[#0A1926] border border-[#00C8A0]/40 flex items-center justify-center shrink-0 p-1.5 shadow-inner">
             <svg
               viewBox="0 0 56 62"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className="w-full h-full"
+              className="w-full h-full drop-shadow-sm"
               aria-label="Surf Concierge Robot"
             >
               {/* Antenna */}
@@ -217,12 +232,15 @@ export default function ConciergePanel({ isOpen, onClose }: ConciergePanelProps)
             </svg>
           </div>
           <div>
-            <div className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#00C8A0]">
+            <div className="text-[9.5px] font-extrabold uppercase tracking-[0.22em] text-[#00C8A0] block mb-0.5">
               BAHRAIN SURF PARK
             </div>
-            <div className="text-sm font-bold tracking-wide uppercase text-white flex items-center gap-2">
+            <div className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
               <span>SURF CONCIERGE</span>
-              <span className="w-2 h-2 rounded-full bg-[#00C8A0] animate-pulse" />
+              <span className="inline-flex items-center gap-1 text-[9.5px] font-extrabold text-[#00C8A0] tracking-widest normal-case ml-1 bg-[#00C8A0]/10 px-2 py-0.5 rounded-full border border-[#00C8A0]/25">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00C8A0] animate-pulse" />
+                ONLINE
+              </span>
             </div>
           </div>
         </div>
@@ -231,7 +249,7 @@ export default function ConciergePanel({ isOpen, onClose }: ConciergePanelProps)
         <button
           onClick={onClose}
           aria-label="Close Concierge"
-          className="w-8 h-8 rounded-full bg-white/15 hover:bg-white/30 text-white flex items-center justify-center transition-colors cursor-pointer"
+          className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 text-white/80 hover:text-white flex items-center justify-center transition-all cursor-pointer"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
@@ -239,24 +257,33 @@ export default function ConciergePanel({ isOpen, onClose }: ConciergePanelProps)
         </button>
       </div>
 
-      {/* Solid Ocean Blue Message Stream */}
-      <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 font-sans text-left bg-[#0B7FB5]">
+      {/* Calm Deep Ocean Message Stream */}
+      <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 font-sans text-left bg-[#03131A] relative z-10">
         {messages.map((msg) => (
           <div
             key={msg.id}
             className={`flex flex-col ${msg.sender === "user" ? "items-end" : "items-start"} animate-fadeIn`}
           >
             {/* Sender Label */}
-            <span className="text-[10px] font-extrabold uppercase tracking-wider text-cyan-100 mb-1 px-1">
-              {msg.sender === "user" ? "YOU" : "SURF CONCIERGE"}
+            <span className={`text-[9px] font-extrabold uppercase tracking-[0.2em] mb-1 px-1 flex items-center gap-1.5 ${
+              msg.sender === "user" ? "text-white/50" : "text-[#00C8A0]"
+            }`}>
+              {msg.sender === "user" ? (
+                "YOU"
+              ) : (
+                <>
+                  <span className="w-1 h-1 rounded-full bg-[#00C8A0]" />
+                  <span>SURF CONCIERGE</span>
+                </>
+              )}
             </span>
 
             {/* Bubble Container */}
             <div
               className={
                 msg.sender === "user"
-                  ? "bg-[#0A1926] text-white rounded-2xl rounded-tr-xs px-4 py-2.5 text-xs sm:text-sm font-medium max-w-[85%] shadow-md border border-[#00C8A0]/50"
-                  : "bg-white text-[#0A1926] rounded-2xl rounded-tl-xs p-4 shadow-md text-xs sm:text-sm leading-relaxed max-w-[92%]"
+                  ? "bg-[#0A1926] text-white rounded-2xl rounded-tr-xs px-4 py-3 text-xs sm:text-sm font-medium max-w-[85%] shadow-md border border-[#00C8A0]/35 font-sans"
+                  : "bg-[#F7F7F3] text-[#0A1926] rounded-2xl rounded-tl-xs p-4 shadow-lg border border-white/20 text-xs sm:text-sm leading-relaxed max-w-[90%] font-sans"
               }
             >
               {/* Formatted Text Lines */}
@@ -272,12 +299,13 @@ export default function ConciergePanel({ isOpen, onClose }: ConciergePanelProps)
 
               {/* Action CTA Button */}
               {msg.actionCTA && (
-                <div className="mt-3 pt-3 border-t border-slate-200">
+                <div className="mt-3.5 pt-3 border-t border-slate-200/80">
                   <button
                     onClick={() => handleCTAAction(msg.actionCTA)}
-                    className="w-full py-2.5 px-3 rounded-lg bg-[#00C8A0] hover:bg-[#00E5B3] text-[#0A1926] text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer"
+                    className="w-full py-2.5 px-4 rounded-xl bg-[#00C8A0] hover:bg-[#00E5B3] text-[#0A1926] text-xs font-black uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer group/cta"
                   >
                     <span>{msg.actionCTA.label}</span>
+                    <span className="transition-transform duration-300 group-hover/cta:translate-x-1">→</span>
                   </button>
                 </div>
               )}
@@ -285,12 +313,12 @@ export default function ConciergePanel({ isOpen, onClose }: ConciergePanelProps)
 
             {/* Quick Action Suggestions */}
             {msg.suggestedActions && msg.suggestedActions.length > 0 && (
-              <div className="mt-2.5 flex flex-wrap gap-1.5 max-w-[95%]">
+              <div className="mt-3 flex flex-wrap gap-2 max-w-[95%]">
                 {msg.suggestedActions.map((action, aIdx) => (
                   <button
                     key={aIdx}
                     onClick={() => handleSendMessage(action.query)}
-                    className="text-[11px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full bg-white/20 hover:bg-white text-white hover:text-[#0A1926] border border-white/40 transition-all shadow-xs cursor-pointer"
+                    className="text-[10.5px] font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-[#00C8A0] text-white/90 hover:text-[#0A1926] border border-white/15 hover:border-[#00C8A0] transition-all duration-300 shadow-xs cursor-pointer hover:-translate-y-0.5"
                   >
                     {action.label}
                   </button>
@@ -303,10 +331,11 @@ export default function ConciergePanel({ isOpen, onClose }: ConciergePanelProps)
         {/* Loading Indicator */}
         {isLoading && (
           <div className="flex flex-col items-start animate-pulse">
-            <span className="text-[10px] font-extrabold uppercase tracking-wider text-cyan-100 mb-1 px-1">
-              SURF CONCIERGE
+            <span className="text-[9px] font-extrabold uppercase tracking-[0.2em] text-[#00C8A0] mb-1 px-1 flex items-center gap-1.5">
+              <span className="w-1 h-1 rounded-full bg-[#00C8A0]" />
+              <span>SURF CONCIERGE</span>
             </span>
-            <div className="bg-white rounded-2xl rounded-tl-xs px-4 py-3 shadow-md flex items-center gap-1.5">
+            <div className="bg-[#F7F7F3] rounded-2xl rounded-tl-xs px-4 py-3 shadow-md flex items-center gap-2 border border-white/20">
               <span className="w-2 h-2 rounded-full bg-[#00C8A0] animate-bounce" />
               <span className="w-2 h-2 rounded-full bg-[#00C8A0] animate-bounce [animation-delay:0.2s]" />
               <span className="w-2 h-2 rounded-full bg-[#00C8A0] animate-bounce [animation-delay:0.4s]" />
@@ -317,27 +346,27 @@ export default function ConciergePanel({ isOpen, onClose }: ConciergePanelProps)
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Area */}
-      <div className="p-3.5 bg-[#086F9F] border-t border-white/20 shrink-0">
+      {/* Dark Glass Input Bar */}
+      <div className="p-3.5 sm:p-4 bg-[#0A1926]/95 backdrop-blur-md border-t border-white/10 shrink-0 relative z-20">
         <form
           onSubmit={(e) => {
             e.preventDefault();
             handleSendMessage();
           }}
-          className="flex items-center gap-2 bg-white/15 border border-white/30 rounded-xl px-3 py-1.5 focus-within:border-[#00C8A0] focus-within:bg-white/25 transition-all shadow-inner"
+          className="flex items-center gap-2 bg-white/5 border border-white/15 rounded-xl px-3.5 py-1.5 focus-within:border-[#00C8A0] focus-within:bg-white/10 transition-all shadow-inner"
         >
           <input
             type="text"
             value={inputQuery}
             onChange={(e) => setInputQuery(e.target.value)}
-            placeholder="ASK ABOUT YOUR SURF EXPERIENCE..."
-            className="flex-1 bg-transparent text-xs sm:text-sm text-white placeholder:text-white/70 focus:outline-none py-1.5 font-sans font-medium"
+            placeholder={isRtl ? "اسأل الكونسيرج عن الأمواج والأسعار أو الحجز..." : "ASK ABOUT YOUR SURF EXPERIENCE..."}
+            className="flex-1 bg-transparent text-xs sm:text-sm text-white placeholder:text-white/40 focus:outline-none py-1.5 font-sans font-medium"
           />
           <button
             type="submit"
             disabled={!inputQuery.trim() || isLoading}
             aria-label="Send message"
-            className="w-8 h-8 rounded-lg bg-[#00C8A0] hover:bg-[#00E5B3] disabled:opacity-40 text-[#0A1926] flex items-center justify-center transition-all cursor-pointer shrink-0 font-bold"
+            className="w-8.5 h-8.5 rounded-lg bg-[#00C8A0] hover:bg-[#00E5B3] disabled:opacity-30 text-[#0A1926] flex items-center justify-center transition-all cursor-pointer shrink-0 font-bold shadow-md hover:scale-105"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />

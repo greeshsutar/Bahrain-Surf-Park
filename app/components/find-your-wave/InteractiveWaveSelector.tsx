@@ -311,7 +311,7 @@ export default function InteractiveWaveSelector({ onOpenBooking }: InteractiveWa
     <section
       ref={sectionRef}
       id="find-your-wave-selector"
-      className="bg-[#F7F6F1] text-[#0A1926] py-24 sm:py-32 relative z-10 border-b border-slate-200/80"
+      className="bg-[#F7F6F1] text-[#0A1926] py-16 sm:py-20 relative z-10 border-b border-slate-200/80"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">

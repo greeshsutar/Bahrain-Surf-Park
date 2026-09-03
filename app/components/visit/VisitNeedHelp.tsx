@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MOTION, isReducedMotion, handleMagneticMouseMove, handleMagneticMouseLeave } from "../../constants/motion";
-import WaveDivider from "../WaveDivider";
 
 interface VisitNeedHelpProps {
   onOpenBooking?: (tier?: string) => void;
@@ -95,8 +94,8 @@ export default function VisitNeedHelp({ onOpenBooking }: VisitNeedHelpProps) {
         </div>
       </div>
 
-      {/* Wave Divider Transitioning into Final Arrival CTA (#02141C) */}
-      <WaveDivider fill="#02141C" />
+      {/* Flat Horizontal Transition into Final Arrival CTA (#02141C) */}
+      <div className="w-full h-12 bg-[#02141C]" aria-hidden="true" />
     </section>
   );
 }

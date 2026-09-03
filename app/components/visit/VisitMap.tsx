@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MOTION, isReducedMotion, handleMagneticMouseMove, handleMagneticMouseLeave } from "../../constants/motion";
+import WaveDivider from "../WaveDivider";
 
 export default function VisitMap() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -59,13 +60,13 @@ export default function VisitMap() {
     <section
       ref={sectionRef}
       id="wayfinding-map"
-      className="relative bg-gradient-to-b from-[#061C27] via-[#02141C] to-[#0A1926] text-white py-24 sm:py-32 z-10 overflow-hidden"
+      className="relative bg-gradient-to-b from-[#061C27] via-[#02141C] to-[#0A1926] text-white py-16 sm:py-20 z-10 overflow-hidden"
     >
       {/* Soft Ambient Radial Scrims */}
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00C8A0]/10 blur-[150px] rounded-full pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-[450px] h-[450px] bg-[#0B7FB5]/10 blur-[130px] rounded-full pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 mb-12 sm:mb-16">
         <div className="text-left mb-12 visit-map-anim max-w-2xl">
           <span className="text-[#00C8A0] text-xs font-extrabold tracking-[0.25em] uppercase mb-3 block">
             06 — FIND YOUR WAY
@@ -138,6 +139,9 @@ export default function VisitMap() {
           </div>
         </div>
       </div>
+
+      {/* Organic Wave Divider Transitioning into Visitor Essentials (#F7F6F1) */}
+      <WaveDivider fill="#F7F6F1" />
     </section>
   );
 }

@@ -81,7 +81,7 @@ export default function AcademyLevelSelector({ onOpenBooking }: AcademyLevelSele
     <section
       ref={sectionRef}
       id="academy-levels"
-      className="bg-[#F7F6F1] text-[#0A1926] py-24 sm:py-32 relative z-10 border-b border-slate-200/80"
+      className="bg-[#F7F6F1] text-[#0A1926] py-16 sm:py-20 relative z-10 border-b border-slate-200/80"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12 text-left">
         

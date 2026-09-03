@@ -71,7 +71,7 @@ export default function VisitFAQ() {
     <section
       ref={sectionRef}
       id="faq"
-      className="relative bg-gradient-to-b from-[#0A1926] via-[#061C27] to-[#02141C] text-white py-24 sm:py-32 z-10 overflow-hidden"
+      className="relative bg-gradient-to-b from-[#0A1926] via-[#061C27] to-[#02141C] text-white py-16 sm:py-20 z-10 overflow-hidden"
     >
       {/* Soft Ambient Radial Scrims */}
       <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-[#00C8A0]/10 blur-[150px] rounded-full pointer-events-none" />

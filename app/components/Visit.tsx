@@ -11,6 +11,7 @@ import {
   handleMagneticMouseMove,
   handleMagneticMouseLeave,
 } from "../constants/motion";
+import { useLanguage } from "../context/LanguageContext";
 
 interface VisitProps {
   onOpenBooking?: (tier?: string) => void;
@@ -18,6 +19,8 @@ interface VisitProps {
 
 export default function Visit({ onOpenBooking }: VisitProps) {
   const sectionRef = useRef<HTMLElement>(null);
+  const { lang } = useLanguage();
+  const isRtl = lang === "ar";
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -68,38 +71,58 @@ export default function Visit({ onOpenBooking }: VisitProps) {
             {/* Pill Tag */}
             <div className="visit-anim-item inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 w-fit mb-6 backdrop-blur-md">
               <span className="w-2 h-2 rounded-full bg-[#00D4B2] animate-pulse" />
-              <span className="text-[#00D4B2] text-[11px] font-bold tracking-[0.2em] uppercase">
-                Plan Your Sanctuary
+              <span className={`text-[#00D4B2] text-[11px] font-bold ${isRtl ? "tracking-normal font-sans" : "tracking-[0.2em] uppercase"}`}>
+                {isRtl ? "خطط لملاذكم" : "Plan Your Sanctuary"}
               </span>
             </div>
 
             {/* Main Headline */}
-            <h2 className="visit-anim-item font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight leading-[1.08] mb-6 text-slate-100">
-              Your Coastal Haven on <span className="italic font-light text-[#00D4B2]">Bahrain's</span> Southwest Shore.
+            <h2 className={`visit-anim-item font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-normal leading-[1.08] mb-6 text-slate-100 ${isRtl ? "tracking-normal font-sans" : "tracking-tight"}`}>
+              {isRtl ? (
+                <>
+                  ملاذكم الساحلي على الشاطئ الجنوبي الغربي <span className="italic font-light text-[#00D4B2]">للبحرين</span>.
+                </>
+              ) : (
+                <>
+                  Your Coastal Haven on <span className="italic font-light text-[#00D4B2]">Bahrain's</span> Southwest Shore.
+                </>
+              )}
             </h2>
 
             {/* Paragraphs */}
-            <p className="visit-anim-item text-slate-300 text-base sm:text-lg leading-relaxed font-light mb-4">
-              Set along the turquoise edge of Bilaj Al Jazayer, Bahrain Surf Park seamlessly fuses state-of-the-art wave technology with world-class dining, private oceanfront cabanas, and pristine coastal serenity.
+            <p className="visit-anim-item text-slate-300 text-base sm:text-lg leading-relaxed font-light mb-4 font-sans">
+              {isRtl
+                ? "على امتداد المياه الفيروزية لبلاج الجزائر، تدمج حديقة البحرين لركوب الأمواج أحدث تكنولوجيا الأمواج مع أرقى خدمات الضيافة والكابانات الساحلية الفاخرة."
+                : "Set along the turquoise edge of Bilaj Al Jazayer, Bahrain Surf Park seamlessly fuses state-of-the-art wave technology with world-class dining, private oceanfront cabanas, and pristine coastal serenity."}
             </p>
 
-            <p className="visit-anim-item text-slate-400 text-sm sm:text-base leading-relaxed font-light mb-8">
-              Just 30 minutes from downtown Manama, everything is tailored for effortless arrival, private leisure, and uninterrupted surf sessions.
+            <p className="visit-anim-item text-slate-400 text-sm sm:text-base leading-relaxed font-light mb-8 font-sans">
+              {isRtl
+                ? "على بعد 30 دقيقة فقط من وسط المنامة، كل شيء مجهز لوصولكم المريح وجلسات الأمواج الفريدة."
+                : "Just 30 minutes from downtown Manama, everything is tailored for effortless arrival, private leisure, and uninterrupted surf sessions."}
             </p>
 
             {/* Key Quick Stats */}
             <div className="visit-anim-item grid grid-cols-3 gap-4 py-5 mb-8 border-y border-white/10">
               <div>
-                <span className="block text-xl sm:text-2xl font-semibold text-white">30m</span>
-                <span className="text-[11px] tracking-wider uppercase text-slate-400">From Manama</span>
+                <span className="block text-xl sm:text-2xl font-semibold text-white">
+                  {isRtl ? "30 د" : "30m"}
+                </span>
+                <span className={`text-[11px] text-slate-400 ${isRtl ? "tracking-normal font-sans" : "tracking-wider uppercase"}`}>
+                  {isRtl ? "من المنامة" : "From Manama"}
+                </span>
               </div>
               <div>
                 <span className="block text-xl sm:text-2xl font-semibold text-[#00D4B2]">5★</span>
-                <span className="text-[11px] tracking-wider uppercase text-slate-400">Beach Club</span>
+                <span className={`text-[11px] text-slate-400 ${isRtl ? "tracking-normal font-sans" : "tracking-wider uppercase"}`}>
+                  {isRtl ? "نادي شاطئي" : "Beach Club"}
+                </span>
               </div>
               <div>
                 <span className="block text-xl sm:text-2xl font-semibold text-white">100%</span>
-                <span className="text-[11px] tracking-wider uppercase text-slate-400">Curated Waves</span>
+                <span className={`text-[11px] text-slate-400 ${isRtl ? "tracking-normal font-sans" : "tracking-wider uppercase"}`}>
+                  {isRtl ? "أمواج مخصصة" : "Curated Waves"}
+                </span>
               </div>
             </div>
 
@@ -109,11 +132,11 @@ export default function Visit({ onOpenBooking }: VisitProps) {
                 href="/visit"
                 onMouseMove={handleMagneticMouseMove}
                 onMouseLeave={handleMagneticMouseLeave}
-                className="group relative inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-[#0B7FB5] to-[#00D4B2] text-[#06111C] font-extrabold text-xs uppercase tracking-widest transition-all duration-300 shadow-[0_0_30px_rgba(0,212,178,0.25)] hover:shadow-[0_0_40px_rgba(0,212,178,0.45)] hover:scale-[1.02]"
+                className={`group relative inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-[#0B7FB5] to-[#00D4B2] text-[#06111C] font-extrabold text-xs ${isRtl ? "tracking-normal font-sans" : "uppercase tracking-widest"} transition-all duration-300 shadow-[0_0_30px_rgba(0,212,178,0.25)] hover:shadow-[0_0_40px_rgba(0,212,178,0.45)] hover:scale-[1.02]`}
               >
-                <span>Explore Destination</span>
+                <span>{isRtl ? "استكشف الوجهة" : "Explore Destination"}</span>
                 <span className="transition-transform duration-300 group-hover:translate-x-1">
-                  →
+                  {isRtl ? "←" : "→"}
                 </span>
               </Link>
             </div>
@@ -135,11 +158,11 @@ export default function Visit({ onOpenBooking }: VisitProps) {
                 {/* Floating Glassmorphism Location Tag */}
                 <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 bg-slate-900/80 backdrop-blur-xl border border-white/15 rounded-2xl p-4 sm:p-5 flex items-center justify-between shadow-2xl transition-all duration-300 group-hover:border-[#00D4B2]/40">
                   <div className="flex flex-col pr-3">
-                    <span className="text-[#00D4B2] text-[10px] font-black uppercase tracking-[0.2em] mb-0.5">
-                      Destination Coordinates
+                    <span className={`text-[#00D4B2] text-[10px] font-black mb-0.5 ${isRtl ? "tracking-normal font-sans" : "uppercase tracking-[0.2em]"}`}>
+                      {isRtl ? "إحداثيات الوجهة" : "Destination Coordinates"}
                     </span>
                     <span className="text-sm sm:text-base font-medium text-white tracking-tight">
-                      Bilaj Al Jazayer, Bahrain
+                      {isRtl ? "بلاج الجزائر، البحرين" : "Bilaj Al Jazayer, Bahrain"}
                     </span>
                   </div>
 
@@ -149,7 +172,7 @@ export default function Visit({ onOpenBooking }: VisitProps) {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 bg-white/10 hover:bg-[#00D4B2] text-white hover:text-[#06111C] text-xs font-bold px-4 py-2.5 rounded-xl transition-all duration-300 border border-white/15 shrink-0"
                   >
-                    <span>Directions</span>
+                    <span>{isRtl ? "الاتجاهات" : "Directions"}</span>
                     <span className="text-xs">↗</span>
                   </a>
                 </div>

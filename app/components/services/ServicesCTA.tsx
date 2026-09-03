@@ -52,10 +52,10 @@ export default function ServicesCTA({ onOpenBooking }: ServicesCTAProps) {
           muted
           loop
           playsInline
-          poster="/images/tier5.jpg"
+          poster="/images/services/services_hero.jpg"
           className="w-full h-full object-cover opacity-40"
         >
-          <source src="/videos/surfing.mp4" type="video/mp4" />
+          <source src="/videos/ocean.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-t from-[#02141C] via-[#02141C]/75 to-[#02141C]/85" />
       </div>

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { getPageContext } from "../../constants/conciergeData";
+import { useLanguage } from "../../context/LanguageContext";
 
 interface ConciergeLauncherProps {
   isOpen: boolean;
@@ -13,6 +14,8 @@ interface ConciergeLauncherProps {
 export default function ConciergeLauncher({ isOpen, onToggle, onOpen }: ConciergeLauncherProps) {
   const pathname = usePathname();
   const contextConfig = getPageContext(pathname);
+  const { lang } = useLanguage();
+  const isRtl = lang === "ar";
 
   const [showProactiveGreeting, setShowProactiveGreeting] = useState(false);
   const [robotReacting, setRobotReacting] = useState(false);
@@ -57,44 +60,46 @@ export default function ConciergeLauncher({ isOpen, onToggle, onOpen }: Concierg
   };
 
   return (
-    <div className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 lg:bottom-[28px] lg:right-[28px] z-[9999] flex flex-col items-end gap-2.5 pointer-events-none">
+    <div className={`fixed bottom-5 ${isRtl ? "left-5 sm:left-6 lg:left-[28px] items-start" : "right-5 sm:right-6 lg:right-[28px] items-end"} z-[9999] flex flex-col gap-2.5 pointer-events-none`}>
       
-      {/* 11 & 12. Proactive Conversational Speech Bubble (Positioned ABOVE and pointing to the robot) */}
+      {/* 1. Proactive Conversational Speech Bubble (Positioned ABOVE the robot) */}
       {showProactiveGreeting && !isOpen && (
         <div
           onClick={handleGreetingClick}
-          className="pointer-events-auto cursor-pointer relative mb-1.5 w-[260px] sm:w-[290px] p-3.5 sm:p-4 rounded-2xl bg-[#F7F7F3] text-[#062B36] border border-[#0B7FB5]/25 shadow-xl shadow-[#0A1926]/10 transition-all duration-300 hover:border-[#00C8A0] hover:-translate-y-1 group/bubble animate-greeting-appear"
+          className="pointer-events-auto cursor-pointer relative mb-1.5 w-[270px] sm:w-[300px] p-4 rounded-2xl bg-[#F7F7F3] text-[#0A1926] border border-[#00C8A0]/30 shadow-2xl shadow-[#0A1926]/20 transition-all duration-300 hover:border-[#00C8A0] hover:-translate-y-1 group/bubble animate-greeting-appear font-sans"
         >
           {/* Speech Bubble Pointer Tail pointing down toward robot launcher */}
-          <div className="absolute -bottom-1.5 right-7 w-3.5 h-3.5 bg-[#F7F7F3] border-r border-b border-[#0B7FB5]/25 rotate-45 pointer-events-none" />
+          <div className={`absolute -bottom-1.5 ${isRtl ? "left-7" : "right-7"} w-3.5 h-3.5 bg-[#F7F7F3] border-r border-b border-[#00C8A0]/30 rotate-45 pointer-events-none`} />
 
           {/* Header */}
-          <div className="flex items-center justify-between mb-1">
+          <div className="flex items-center justify-between mb-1.5">
             <div className="flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-[#00C8A0] animate-pulse" />
-              <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#00C8A0]">
-                SURF CONCIERGE
+              <span className={`text-[9.5px] font-extrabold text-[#00C8A0] ${isRtl ? "tracking-normal font-sans" : "uppercase tracking-[0.2em]"}`}>
+                {isRtl ? "كونسيرج ركوب الأمواج" : "SURF CONCIERGE"}
               </span>
             </div>
             {/* Dismiss Button */}
             <button
               onClick={handleDismissGreeting}
               aria-label="Dismiss greeting"
-              className="text-slate-400 hover:text-[#062B36] text-xs font-bold transition-colors p-0.5 cursor-pointer"
+              className="text-slate-400 hover:text-[#0A1926] text-xs font-bold transition-colors p-0.5 cursor-pointer"
             >
               ✕
             </button>
           </div>
 
-          {/* Contextual Message Text (No quotation marks, clean typography) */}
-          <p className="text-xs sm:text-[13px] font-medium text-[#062B36] leading-relaxed font-sans mb-2">
-            {contextConfig.proactiveGreeting}
+          {/* Contextual Message Text */}
+          <p className="text-xs sm:text-[13px] font-medium text-[#0A1926] leading-relaxed font-sans mb-2.5">
+            {isRtl
+              ? "مرحبًا بك في حديقة البحرين لركوب الأمواج! أنا كونسيرج ركوب الأمواج، كيف يمكنني مساعدتك اليوم؟"
+              : contextConfig.proactiveGreeting}
           </p>
 
           {/* Lightweight CTA Action */}
-          <div className="inline-flex items-center gap-1 text-[11px] font-extrabold uppercase tracking-wider text-[#00C8A0] group-hover/bubble:text-[#0B7FB5] transition-colors">
-            <span>FIND YOUR WAVE</span>
-            <span className="transition-transform duration-300 group-hover/bubble:translate-x-1">→</span>
+          <div className="inline-flex items-center gap-1.5 text-[10.5px] font-extrabold text-[#00C8A0] group-hover/bubble:text-[#0B7FB5] transition-colors">
+            <span>{isRtl ? "تحدث مع الكونسيرج" : "FIND YOUR WAVE"}</span>
+            <span className="transition-transform duration-300 group-hover/bubble:translate-x-1">{isRtl ? "←" : "→"}</span>
           </div>
         </div>
       )}
@@ -102,28 +107,34 @@ export default function ConciergeLauncher({ isOpen, onToggle, onOpen }: Concierg
       {/* Main Square Launcher Row */}
       <div className="pointer-events-auto group flex items-center gap-3 relative">
         
-        {/* 9. Separate Hover Tooltip Label (Launcher stays square!) */}
+        {/* Hover Tooltip Label */}
         <div
-          className={`hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0A1926]/95 backdrop-blur-md text-white text-[11px] font-extrabold uppercase tracking-widest border border-[#0B7FB5]/30 shadow-lg pointer-events-none transition-all duration-300 ${
+          className={`hidden sm:flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0A1926]/95 backdrop-blur-md text-white text-[10.5px] font-extrabold border border-[#00C8A0]/30 shadow-xl pointer-events-none transition-all duration-300 ${
+            isRtl ? "tracking-normal font-sans" : "uppercase tracking-widest"
+          } ${
             isOpen ? "opacity-0 translate-x-2 pointer-events-none" : "opacity-0 group-hover:opacity-100 group-hover:translate-x-0"
           }`}
         >
           <span className="w-1.5 h-1.5 rounded-full bg-[#00C8A0] animate-pulse" />
-          <span>SURF CONCIERGE</span>
+          <span>{isRtl ? "كونسيرج ركوب الأمواج" : "SURF CONCIERGE"}</span>
         </div>
 
-        {/* 3. Rounded Square Launcher Button (72x72 Desktop, 68x68 Tablet, 64x64 Mobile) */}
+        {/* Breathing Aura Glow Behind Launcher */}
+        {!isOpen && (
+          <div className="absolute -inset-1.5 rounded-[22px] bg-[#00C8A0]/20 blur-md opacity-30 animate-pulse pointer-events-none" />
+        )}
+
+        {/* Launcher Button (64x64 mobile, 68x68 tablet, 72x72 desktop) */}
         <button
           onClick={onToggle}
           aria-label={isOpen ? "Close Surf Concierge" : "Open Surf Concierge"}
           aria-expanded={isOpen}
-          className={`relative flex items-center justify-center rounded-[16px] aspect-square transition-all duration-300 cursor-pointer shadow-xl focus:outline-none focus:ring-2 focus:ring-[#00C8A0]/60 overflow-hidden ${
-            /* Target dimensions: 64x64 mobile, 68x68 tablet, 72x72 desktop */
+          className={`relative flex items-center justify-center rounded-[18px] aspect-square transition-all duration-300 cursor-pointer shadow-2xl focus:outline-none focus:ring-2 focus:ring-[#00C8A0]/60 overflow-hidden ${
             "w-[64px] h-[64px] sm:w-[68px] sm:h-[68px] lg:w-[72px] lg:h-[72px]"
           } ${
             isOpen
-              ? "bg-[#0A1926] text-white border-2 border-[#00C8A0]/60"
-              : "bg-[#0A1926] border border-[#00C8A0]/30 hover:border-[#00C8A0] hover:ring-2 hover:ring-[#00C8A0]/40 group-hover:-translate-y-1 shadow-md hover:shadow-2xl hover:shadow-[#00C8A0]/20"
+              ? "bg-[#0A1926] text-white border-2 border-[#00C8A0]"
+              : "bg-[#0A1926] border border-[#00C8A0]/35 hover:border-[#00C8A0] group-hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,200,160,0.25)]"
           }`}
         >
           {isOpen ? (
@@ -132,25 +143,25 @@ export default function ConciergeLauncher({ isOpen, onToggle, onOpen }: Concierg
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
             </svg>
           ) : (
-            /* Open State: Robot Character Launcher */
-            <div className="relative w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-[#0A1926] to-[#0D2B3E] overflow-hidden">
+            /* Open State: Robot Character Launcher with Ocean Glass Background */
+            <div className="relative w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-[#0A1926] via-[#082332] to-[#041219] overflow-hidden">
 
               {/* Subtle radial glow behind robot */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-10 h-10 rounded-full bg-[#00C8A0]/20 blur-md" />
+                <div className="w-10 h-10 rounded-full bg-[#00C8A0]/25 blur-md" />
               </div>
 
               {/* Robot Character */}
               <div
-                className={`relative z-10 w-[80%] h-[80%] flex items-center justify-center animate-robot-float transition-transform duration-300 ${
-                  robotReacting ? "-translate-y-1.5" : ""
+                className={`relative z-10 w-[78%] h-[78%] flex items-center justify-center animate-robot-float transition-transform duration-300 ${
+                  robotReacting ? "-translate-y-1.5 scale-105" : "group-hover:scale-[1.05]"
                 }`}
               >
                 <svg
                   viewBox="0 0 56 62"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-full h-full drop-shadow-md transition-transform duration-300 group-hover:scale-[1.06]"
+                  className="w-full h-full drop-shadow-md transition-transform duration-300"
                   aria-label="Surf Concierge Robot"
                 >
                   {/* Antenna */}
@@ -190,18 +201,11 @@ export default function ConciergeLauncher({ isOpen, onToggle, onOpen }: Concierg
                   {/* Hand dots */}
                   <circle cx="7.5" cy="53" r="1.5" fill="#C8E8F0"/>
                   <circle cx="48.5" cy="53" r="1.5" fill="#C8E8F0"/>
-
-                  <defs>
-                    <filter id="robot-glow">
-                      <feGaussianBlur stdDeviation="1.5" result="blur"/>
-                      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-                    </filter>
-                  </defs>
                 </svg>
               </div>
 
               {/* Shadow under robot */}
-              <div className="absolute bottom-1 z-0 w-8 h-1.5 rounded-full bg-[#0A1926]/15 blur-sm animate-robot-shadow pointer-events-none" />
+              <div className="absolute bottom-1 z-0 w-8 h-1.5 rounded-full bg-[#0A1926]/20 blur-sm animate-robot-shadow pointer-events-none" />
             </div>
           )}
         </button>

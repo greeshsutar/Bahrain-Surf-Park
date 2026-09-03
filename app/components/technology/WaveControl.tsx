@@ -40,7 +40,7 @@ const CARDS = [
 
 export default function WaveControl() {
   return (
-    <section id="tech-section-04" className="bg-[#031923] text-white py-20 sm:py-28 relative z-10 border-b border-white/10">
+    <section id="tech-section-04" className="bg-[#031923] text-white py-14 sm:py-20 relative z-10 border-b border-white/10">
       <div className="max-w-7xl mx-auto px-6 lg:px-12 text-left">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">

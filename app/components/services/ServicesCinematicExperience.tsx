@@ -46,7 +46,7 @@ export default function ServicesCinematicExperience() {
       <div className="relative w-full h-[60vh] sm:h-[70vh] lg:h-[75vh] min-h-[460px] overflow-hidden">
         <img
           ref={imgRef}
-          src="/images/services/services_hero.jpg"
+          src="/images/dining.jpg"
           alt="Bahrain Surf Park Experience"
           className="w-full h-[125%] object-cover object-center filter contrast-[105%]"
         />

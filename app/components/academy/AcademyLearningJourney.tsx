@@ -200,7 +200,7 @@ export default function AcademyLearningJourney() {
       {/* IMAGE BREAK: Full-Width Cinematic Parallax Moment */}
       <div className="relative w-full h-[50vh] sm:h-[60vh] overflow-hidden my-0">
         <img
-          src="/images/academy_hero.jpg"
+          src="/images/academy_coaching.jpg"
           alt="Surfer in ocean lagoon"
           className="w-full h-full object-cover object-center filter contrast-[105%]"
         />

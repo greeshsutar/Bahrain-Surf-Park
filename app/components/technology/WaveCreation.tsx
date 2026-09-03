@@ -244,7 +244,7 @@ export default function WaveCreation() {
             
             {/* 100% CLEAN Aerial Photograph (Zero baked-in text or graphics) */}
             <img
-              src="/images/bahrain_surf_park_clean.jpg"
+              src="/images/wave_engineering.jpg"
               alt="Bahrain Surf Park clean masterplan aerial photograph"
               className="w-full h-auto object-cover block rounded-2xl"
             />
@@ -310,7 +310,7 @@ export default function WaveCreation() {
         <div className="block md:hidden space-y-6">
           <div className="relative w-full rounded-2xl overflow-hidden border border-[#00C8C8]/30 shadow-xl bg-[#073845]">
             <img
-              src="/images/bahrain_surf_park_clean.jpg"
+              src="/images/wave_engineering.jpg"
               alt="Bahrain Surf Park clean masterplan aerial photograph"
               className="w-full h-auto object-cover block rounded-2xl"
             />

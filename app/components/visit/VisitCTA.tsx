@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MOTION, isReducedMotion, handleMagneticMouseMove, handleMagneticMouseLeave } from "../../constants/motion";
-import WaveDivider from "../WaveDivider";
+
 
 interface VisitCTAProps {
   onOpenBooking: (tier?: string) => void;
@@ -63,7 +63,7 @@ export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-[70vh] lg:min-h-[78vh] flex flex-col justify-between bg-[#02141C] text-white overflow-hidden z-10 pt-24 sm:pt-32 pb-0"
+      className="relative w-full min-h-[70vh] lg:min-h-[78vh] flex flex-col justify-between bg-[#02141C] text-white z-10 pt-24 sm:pt-32 pb-20"
     >
       {/* Cinematic Ocean Video Layer with Parallax Scrub */}
       <div ref={parallaxRef} className="absolute inset-0 w-full h-[120%] -top-[10%] z-0 overflow-hidden will-change-transform">
@@ -72,10 +72,10 @@ export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
           muted
           loop
           playsInline
-          poster="/images/tier5.jpg"
+          poster="/images/bahrain_surf_park_clean.jpg"
           className="w-full h-full object-cover opacity-50 scale-105"
         >
-          <source src="/videos/surfing.mp4" type="video/mp4" />
+          <source src="/videos/create_a_video.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-t from-[#02141C] via-[#02141C]/75 to-[#02141C]/85" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] bg-[#00C8A0]/15 blur-[160px] rounded-full pointer-events-none" />
@@ -117,8 +117,8 @@ export default function VisitCTA({ onOpenBooking }: VisitCTAProps) {
         </div>
       </div>
 
-      {/* Organic Wave Divider Transitioning cleanly into Global Footer (#0A1926) */}
-      <WaveDivider fill="#0A1926" />
+      {/* Flat Divider into Global Footer (#0A1926) */}
+      <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#0A1926] pointer-events-none z-20" aria-hidden="true" />
     </section>
   );
 }

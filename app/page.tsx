@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import CinematicIntro from "./components/CinematicIntro";
 import Navbar from "./components/Navbar";
 import ScrollTracker from "./components/ScrollTracker";
 import Hero from "./components/Hero";
@@ -25,28 +25,6 @@ export default function Home() {
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
-
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-    });
-
-    lenis.on("scroll", () => {
-      ScrollTrigger.update();
-    });
-
-    const tickerFn = (time: number) => {
-      lenis.raf(time * 1000);
-    };
-
-    gsap.ticker.add(tickerFn);
-    gsap.ticker.lagSmoothing(0);
-
-    return () => {
-      gsap.ticker.remove(tickerFn);
-      lenis.destroy();
-    };
   }, []);
 
   const handleOpenBooking = (tier?: string) => {
@@ -60,6 +38,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-white text-[#0A1926] relative">
+      <CinematicIntro onOpenBooking={handleOpenBooking} />
       <Navbar onOpenBooking={handleOpenBooking} />
       <ScrollTracker />
       <Hero onOpenBooking={handleOpenBooking} />

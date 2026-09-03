@@ -131,7 +131,7 @@ export default function VisitKnowBeforeYouGo() {
     <section
       ref={sectionRef}
       id="know-before-you-go"
-      className="relative bg-gradient-to-b from-[#F7F6F1] via-white to-[#F7F6F1] text-[#0A1926] pt-24 sm:pt-32 pb-24 z-10 overflow-hidden"
+      className="relative bg-white text-[#0A1926] pt-24 sm:pt-32 pb-24 z-10 overflow-hidden"
     >
       {/* Background Texture & Soft Ambient Glow */}
       <div className="absolute inset-0 opacity-[0.025] bg-[radial-gradient(#0A1926_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none" />
@@ -154,8 +154,8 @@ export default function VisitKnowBeforeYouGo() {
         {/* 2-Column Editorial Interactive Experience (No vertical cards) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           
-          {/* Left Column: Interactive Vertical List with Thin Rules (~55% width) */}
-          <div className="lg:col-span-7 text-left space-y-0 divide-y divide-slate-300/80 border-t border-b border-slate-300/80 know-anim">
+          {/* Left Column: Interactive Vertical List with Card Lift & Teal Accent Bar (~55% width) */}
+          <div className="lg:col-span-7 text-left space-y-3 know-anim">
             {GUIDELINES.map((item, idx) => {
               const isActive = activeIndex === idx;
               return (
@@ -164,10 +164,19 @@ export default function VisitKnowBeforeYouGo() {
                   id={item.id}
                   onMouseEnter={() => handleItemHover(idx)}
                   onClick={() => handleItemHover(idx)}
-                  className={`py-7 px-4 sm:px-6 cursor-pointer transition-all duration-300 group ${
-                    isActive ? "bg-white/90 shadow-sm" : "hover:bg-white/40"
+                  className={`relative py-6 pl-7 pr-5 sm:pr-7 cursor-pointer transition-all duration-300 ease-out group rounded-2xl border overflow-hidden ${
+                    isActive
+                      ? "bg-white shadow-xl shadow-slate-900/8 -translate-y-1 border-slate-200"
+                      : "bg-white/50 hover:bg-white hover:shadow-lg hover:shadow-slate-900/6 hover:-translate-y-1 border-slate-200/60 hover:border-slate-200"
                   }`}
                 >
+                  {/* Teal accent bar — grows in on hover/active */}
+                  <span
+                    className={`absolute left-0 top-0 bottom-0 w-1 bg-[#00C8A0] transition-transform duration-300 ease-out origin-top ${
+                      isActive ? "scale-y-100" : "scale-y-0 group-hover:scale-y-100"
+                    }`}
+                  />
+
                   <div className="flex items-baseline justify-between mb-2">
                     <div className="flex items-center gap-3">
                       <span className={`font-mono text-xs font-bold transition-colors ${isActive ? "text-[#00C8A0]" : "text-slate-400"}`}>

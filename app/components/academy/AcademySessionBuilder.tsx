@@ -67,7 +67,7 @@ export default function AcademySessionBuilder({ onOpenBooking }: AcademySessionB
     <section
       ref={sectionRef}
       id="session-builder"
-      className="bg-[#0A1926] text-white py-24 sm:py-32 relative z-10 border-b border-white/10"
+      className="bg-[#0A1926] text-white py-16 sm:py-20 relative z-10 border-b border-white/10"
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
         

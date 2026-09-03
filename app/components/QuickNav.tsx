@@ -1,4 +1,11 @@
+"use client";
+
+import { useLanguage } from "../context/LanguageContext";
+
 export default function QuickNav() {
+  const { lang } = useLanguage();
+  const isRtl = lang === "ar";
+
   return (
     <section id="quick-nav" className="bg-white pt-4 pb-5 sm:pb-8 relative z-10 border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -14,8 +21,12 @@ export default function QuickNav() {
               </svg>
             </div>
             <div>
-              <h3 className="font-sans text-xs font-black uppercase tracking-wider text-[#0A1926] mb-1">WORLD-CLASS WAVES</h3>
-              <p className="text-[#063B45]/70 text-xs font-medium leading-relaxed">Consistent, perfect waves for every ability.</p>
+              <h3 className={`font-sans text-xs font-black text-[#0A1926] mb-1 ${isRtl ? "tracking-normal" : "uppercase tracking-wider"}`}>
+                {isRtl ? "أمواج عالمية المستوى" : "WORLD-CLASS WAVES"}
+              </h3>
+              <p className="text-[#063B45]/70 text-xs font-medium leading-relaxed">
+                {isRtl ? "أمواج متناسقة ومثالية لجميع المستويات." : "Consistent, perfect waves for every ability."}
+              </p>
             </div>
           </div>
 
@@ -30,8 +41,12 @@ export default function QuickNav() {
               </svg>
             </div>
             <div>
-              <h3 className="font-sans text-xs font-black uppercase tracking-wider text-[#0A1926] mb-1">ISLAND LIVING</h3>
-              <p className="text-[#063B45]/70 text-xs font-medium leading-relaxed">Luxury facilities surrounded by natural beauty.</p>
+              <h3 className={`font-sans text-xs font-black text-[#0A1926] mb-1 ${isRtl ? "tracking-normal" : "uppercase tracking-wider"}`}>
+                {isRtl ? "الحياة الساحلية" : "ISLAND LIVING"}
+              </h3>
+              <p className="text-[#063B45]/70 text-xs font-medium leading-relaxed">
+                {isRtl ? "مرافق فاخرة تحيط بها الطبيعة الساحلية الخلابة." : "Luxury facilities surrounded by natural beauty."}
+              </p>
             </div>
           </div>
 
@@ -45,8 +60,12 @@ export default function QuickNav() {
               </svg>
             </div>
             <div>
-              <h3 className="font-sans text-xs font-black uppercase tracking-wider text-[#0A1926] mb-1">ADVANCED TECHNOLOGY</h3>
-              <p className="text-[#063B45]/70 text-xs font-medium leading-relaxed">Powered by next-generation wave technology.</p>
+              <h3 className={`font-sans text-xs font-black text-[#0A1926] mb-1 ${isRtl ? "tracking-normal" : "uppercase tracking-wider"}`}>
+                {isRtl ? "تكنولوجيا متطورة" : "ADVANCED TECHNOLOGY"}
+              </h3>
+              <p className="text-[#063B45]/70 text-xs font-medium leading-relaxed">
+                {isRtl ? "مدعوم بالجيل القادم من تقنيات الأمواج الذكية." : "Powered by next-generation wave technology."}
+              </p>
             </div>
           </div>
 
@@ -59,8 +78,12 @@ export default function QuickNav() {
               </svg>
             </div>
             <div>
-              <h3 className="font-sans text-xs font-black uppercase tracking-wider text-[#0A1926] mb-1">AUTHENTIC BAHRAIN</h3>
-              <p className="text-[#063B45]/70 text-xs font-medium leading-relaxed">Inspired by our culture, connected to our island.</p>
+              <h3 className={`font-sans text-xs font-black text-[#0A1926] mb-1 ${isRtl ? "tracking-normal" : "uppercase tracking-wider"}`}>
+                {isRtl ? "أصالة البحرين" : "AUTHENTIC BAHRAIN"}
+              </h3>
+              <p className="text-[#063B45]/70 text-xs font-medium leading-relaxed">
+                {isRtl ? "مستوحى من ثقافتنا العريقة ومرتبط بهوية جزيرتنا." : "Inspired by our culture, connected to our island."}
+              </p>
             </div>
           </div>
 

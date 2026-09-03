@@ -275,12 +275,11 @@ export default function BookingModal({ isOpen, onClose, selectedTier }: BookingM
             </div>
             <h4 className="text-lg font-bold text-[#0A1926] mb-2">Request Received</h4>
             <p className="text-xs text-[#063B45]/80 leading-relaxed max-w-sm mx-auto mb-6">
-              Thanks — we'll be in touch to confirm your session and finalize your wave schedule at Bilaj Al Jazayer.
+              Thank you, {fullName}. Your session request for {sessionType} on {date} has been logged. Our concierge team will confirm your slot via {email}.
             </p>
             <button
-              id="booking-reset-btn"
               onClick={onClose}
-              className="bg-[#0A1926] hover:bg-[#063B45] text-white px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
+              className="bg-[#063B45] hover:bg-[#0B7FB5] text-white px-6 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all cursor-pointer"
             >
               Done
             </button>

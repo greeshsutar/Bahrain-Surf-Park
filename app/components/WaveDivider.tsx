@@ -27,9 +27,9 @@ export default function WaveDivider({
   const waveCurvePath =
     "M 0 160 C 150 130, 300 130, 450 158 C 600 188, 730 198, 875 164 C 1020 130, 1160 128, 1300 150 C 1360 160, 1405 164, 1440 155";
 
-  // Large Asymmetric Ocean Swell path for Services page transition
+  // Flat divider path for Services page transition
   const servicesOceanPath =
-    "M -50 160 C 120 70, 260 50, 420 80 C 600 115, 760 185, 960 170 C 1140 155, 1320 95, 1490 120 L 1490 245 L -50 245 Z";
+    "M -50 180 L 1490 180 L 1490 245 L -50 245 Z";
 
   useEffect(() => {
     if (!showGreenScrollLine || variant === "services-ocean") return;

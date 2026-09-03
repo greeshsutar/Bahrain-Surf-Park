@@ -59,10 +59,10 @@ export default function VisitGettingHere() {
     <section
       ref={sectionRef}
       id="getting-here"
-      className="relative bg-gradient-to-b from-white via-[#F7F6F1]/60 to-white text-[#0A1926] py-20 sm:py-28 z-10 border-b border-slate-200/80 overflow-hidden"
+      className="relative bg-[#06222C] text-white py-14 sm:py-20 z-10 overflow-hidden"
     >
       {/* Ambient Radial Glow */}
-      <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-[#0B7FB5]/5 blur-[140px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[550px] h-[550px] bg-[#00C8A0]/10 blur-[140px] rounded-full pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -74,7 +74,7 @@ export default function VisitGettingHere() {
               className="relative rounded-3xl overflow-hidden shadow-2xl bg-[#0A1926] aspect-[4/3] sm:aspect-[16/10] group"
             >
               <img
-                src="/images/bahrain_surf_park_clean.jpg"
+                src="/images/wave_engineering.jpg"
                 alt="Bahrain Surf Park Bilaj Al Jazayer Coastline"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
@@ -93,40 +93,40 @@ export default function VisitGettingHere() {
 
           {/* Right Column: Asymmetric Information (~42% width) */}
           <div className="lg:col-span-5 text-left flex flex-col justify-center">
-            <span className="getting-anim text-[#0B7FB5] text-xs font-extrabold tracking-[0.25em] uppercase mb-3 block">
+            <span className="getting-anim text-[#00C8A0] text-xs font-extrabold tracking-[0.25em] uppercase mb-3 block">
               04 — GETTING HERE
             </span>
 
-            <h2 className="getting-anim font-serif text-3xl sm:text-5xl font-bold text-[#0A1926] leading-[1.05] tracking-tight mb-6">
+            <h2 className="getting-anim font-serif text-3xl sm:text-5xl font-bold text-white leading-[1.05] tracking-tight mb-6">
               GETTING HERE.
             </h2>
 
             <div className="getting-anim border-l-2 border-[#00C8A0] pl-5 mb-8">
-              <p className="font-serif text-lg sm:text-xl font-bold text-[#0A1926] mb-1">
+              <p className="font-serif text-lg sm:text-xl font-bold text-white mb-1">
                 BAHRAIN SURF PARK
               </p>
-              <p className="text-slate-600 text-sm sm:text-base font-sans leading-relaxed">
+              <p className="text-white/70 text-sm sm:text-base font-sans leading-relaxed">
                 Bilaj Al Jazayer<br />
                 Southwest Coast<br />
                 Kingdom of Bahrain
               </p>
             </div>
 
-            <p className="getting-anim text-slate-600 text-sm sm:text-base leading-relaxed font-sans mb-8">
+            <p className="getting-anim text-white/70 text-sm sm:text-base leading-relaxed font-sans mb-8">
               Located at Bilaj Al Jazayer on Bahrain's pristine southwest coastline, the park is approximately 30 minutes from Manama city center. Accessible directly via Sheikh Isa Bin Salman Highway with clear directional signage to the resort entrance.
             </p>
 
             {/* Parking Details (No heavy cards) */}
-            <div id="parking-access" className="getting-anim border-t border-b border-slate-200/90 py-5 mb-8 space-y-2">
+            <div id="parking-access" className="getting-anim border-t border-b border-white/15 py-5 mb-8 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-extrabold uppercase tracking-widest text-[#0B7FB5]">
+                <span className="text-xs font-extrabold uppercase tracking-widest text-[#00C8A0]">
                   PARKING & ARRIVAL ACCESS
                 </span>
                 <span className="text-[10px] font-bold text-[#00C8A0] bg-[#00C8A0]/10 px-2.5 py-0.5 rounded">
                   ON-SITE PARKING
                 </span>
               </div>
-              <p className="text-xs sm:text-sm text-slate-600 font-sans leading-relaxed">
+              <p className="text-xs sm:text-sm text-white/70 font-sans leading-relaxed">
                 Dedicated visitor parking is available directly adjacent to the main Guest Reception building. Designated accessible parking spaces are positioned nearest to the main entrance lobby.
               </p>
             </div>

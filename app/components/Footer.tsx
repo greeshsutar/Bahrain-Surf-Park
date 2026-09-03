@@ -5,6 +5,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MOTION, isReducedMotion, handleMagneticMouseMove, handleMagneticMouseLeave } from "../constants/motion";
+import { useLanguage } from "../context/LanguageContext";
 
 interface FooterProps {
   onOpenBooking?: (tier?: string) => void;
@@ -12,6 +13,8 @@ interface FooterProps {
 
 export default function Footer({ onOpenBooking }: FooterProps) {
   const footerRef = useRef<HTMLElement>(null);
+  const { lang, navItems, bookNowText, t } = useLanguage();
+  const isRtl = lang === "ar";
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -58,14 +61,16 @@ export default function Footer({ onOpenBooking }: FooterProps) {
         {/* 1. Bold Closing Statement Header Banner */}
         <div className="footer-animate border-b border-white/10 pb-16 mb-16 flex flex-col lg:flex-row lg:items-center justify-between gap-8 text-left">
           <div className="max-w-2xl">
-            <span className="text-[#00C8A0] text-xs font-extrabold tracking-[0.2em] uppercase mb-3 block">
-              THE NEXT CHAPTER
+            <span className={`text-[#00C8A0] text-xs font-extrabold mb-3 block ${isRtl ? "tracking-normal font-sans" : "tracking-[0.2em] uppercase"}`}>
+              {isRtl ? "الفصل القادم" : "THE NEXT CHAPTER"}
             </span>
-            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.12] mb-4">
-              Your Wave Is Waiting.
+            <h2 className={`font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-[1.12] mb-4 ${isRtl ? "tracking-normal font-sans" : "tracking-tight"}`}>
+              {isRtl ? "موجتك بانتظارك." : "Your Wave Is Waiting."}
             </h2>
             <p className="text-white/70 text-sm sm:text-base leading-relaxed max-w-xl">
-              Where world-class technology meets the spirit of island living on the coast of Bahrain. Join us as we redefine coastal surf culture.
+              {isRtl
+                ? "حيث تلتقي التقنية العالمية بروح الحياة الساحلية على سواحل البحرين."
+                : "Where world-class technology meets the spirit of island living on the coast of Bahrain. Join us as we redefine coastal surf culture."}
             </p>
           </div>
 
@@ -74,10 +79,10 @@ export default function Footer({ onOpenBooking }: FooterProps) {
               onClick={() => onOpenBooking?.()}
               onMouseMove={handleMagneticMouseMove}
               onMouseLeave={handleMagneticMouseLeave}
-              className="bg-gradient-to-r from-[#00C8A0] to-[#0B7FB5] hover:opacity-95 text-white px-8 py-4 rounded-lg text-xs font-extrabold uppercase tracking-widest shadow-xl transition-all inline-flex items-center gap-2.5 cursor-pointer"
+              className={`bg-gradient-to-r from-[#00C8A0] to-[#0B7FB5] hover:opacity-95 text-white px-8 py-4 rounded-lg text-xs font-extrabold ${isRtl ? "tracking-normal font-sans" : "uppercase tracking-widest"} shadow-xl transition-all inline-flex items-center gap-2.5 cursor-pointer`}
             >
-              <span>BOOK YOUR SESSION</span>
-              <span className="text-sm font-normal">→</span>
+              <span>{isRtl ? "احجز جلستك الآن" : "BOOK YOUR SESSION"}</span>
+              <span className="text-sm font-normal">{isRtl ? "←" : "→"}</span>
             </button>
           </div>
         </div>
@@ -93,7 +98,7 @@ export default function Footer({ onOpenBooking }: FooterProps) {
                   <img
                     src="/images/logo.png"
                     alt="Bahrain Surf Park"
-                    className="h-14 sm:h-16 w-auto object-contain cursor-pointer"
+                    className="h-18 sm:h-20 md:h-22 w-auto object-contain cursor-pointer"
                   />
                 </Link>
                 <span className="text-white font-bold tracking-wider uppercase text-xs">

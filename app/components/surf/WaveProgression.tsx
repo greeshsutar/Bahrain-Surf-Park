@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "../../context/LanguageContext";
 
-const STAGES = [
+const STAGES_EN = [
   { level: "BEGINNER", title: "01. Whitewater Control", desc: "Building confidence, standing up consistently, and mastering soft beach breaks." },
   { level: "NOVICE", title: "02. Open-Face Takeoffs", desc: "Angle takeoffs, trimming along open faces, and understanding timing." },
   { level: "PROGRESSIVE", title: "03. Flow & Turn Execution", desc: "Generating speed, waist-high peeling waves, and carving clean bottom turns." },
@@ -10,11 +11,22 @@ const STAGES = [
   { level: "ADVANCED", title: "05. Heavy Barrels", desc: "Head-high barreling reefs, high-line speed runs, and technical tube riding." },
 ];
 
+const STAGES_AR = [
+  { level: "المبتدئ", title: "01. التحكم في المياه البيضاء", desc: "بناء الثقة، والوقوف باستمرار، وإتقان توازن الموجات الشاطئية الهادئة." },
+  { level: "المبتدئ المتقدم", title: "02. الانطلاق على الوجه المفتوح", desc: "الانطلاق بزاوية، والتحرك على الأمواج المفتوحة، وفهم التوقيت الصحيح." },
+  { level: "المتطور", title: "03. تنفيذ الانعطافات والانسيابية", desc: "توليد السرعة، وركوب أمواج بارتفاع الخصر، وتنفيذ انعطافات سفلية ناعمة." },
+  { level: "المتوسط", title: "04. السرعة والمناورات", desc: "جدار بارتفاع الصدر، وممارسة مناورات العودة والقطع بقوة وسرعة." },
+  { level: "الخبير / المتقدم", title: "05. الأنابيب العميقة", desc: "أمواج بارتفاع الرأس مع أنبوب كامل، وركوب تقني للمحترفين." },
+];
+
 export default function WaveProgression() {
   const [activeStage, setActiveStage] = useState<number>(2);
+  const { lang } = useLanguage();
+  const isRtl = lang === "ar";
+  const stages = isRtl ? STAGES_AR : STAGES_EN;
 
   return (
-    <section className="bg-[#082F3D] text-white py-20 sm:py-28 relative z-10 overflow-hidden border-b border-white/10">
+    <section className="bg-[#082F3D] text-white py-14 sm:py-20 relative z-10 overflow-hidden border-b border-white/10">
       <style>{`
         .wave-light-stroke {
           stroke-dasharray: 250 1000;
@@ -85,16 +97,18 @@ export default function WaveProgression() {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 text-left">
         
-        <span className="text-[#00C8A0] text-xs font-extrabold tracking-[0.25em] uppercase mb-3 block">
-          THE PROGRESSION SYSTEM
+        <span className={`text-[#00C8A0] text-xs font-extrabold mb-3 block ${isRtl ? "tracking-normal font-sans" : "tracking-[0.25em] uppercase"}`}>
+          {isRtl ? "نظام التطور والتدرج" : "THE PROGRESSION SYSTEM"}
         </span>
 
-        <h2 className="font-serif text-3xl sm:text-5xl font-bold text-white tracking-tight leading-[1.08] mb-4">
-          START HERE. GO ANYWHERE.
+        <h2 className={`font-serif text-3xl sm:text-5xl font-bold text-white leading-[1.08] mb-4 ${isRtl ? "tracking-normal font-sans" : "tracking-tight"}`}>
+          {isRtl ? "ابدأ من هنا. وانطلق لأي مكان." : "START HERE. GO ANYWHERE."}
         </h2>
 
         <p className="text-white/80 text-sm sm:text-base font-sans max-w-xl mb-16">
-          Surfing is a lifelong journey. Our calibrated lagoon allows you to step onto the wave line exactly where you are and progress at your own pace.
+          {isRtl
+            ? "ركوب الأمواج هو شغف مدى الحياة. تتيح لك بحيرتنا المعايرة الانضمام لمستوى خط الموجة بالضبط حيثما تكون والتطور بوتيرتك الخاصة."
+            : "Surfing is a lifelong journey. Our calibrated lagoon allows you to step onto the wave line exactly where you are and progress at your own pace."}
         </p>
 
         {/* Organic Wave-Shaped SVG Progression Timeline */}
@@ -125,7 +139,7 @@ export default function WaveProgression() {
 
           {/* 5 Stage Node Selector */}
           <div className="grid grid-cols-1 sm:grid-cols-5 gap-4 text-left">
-            {STAGES.map((stage, idx) => {
+            {stages.map((stage, idx) => {
               const isSelected = idx === activeStage;
               const isStage3Active = idx === 2 && activeStage === 2;
 
@@ -143,11 +157,11 @@ export default function WaveProgression() {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span
-                      className={`text-[10px] font-extrabold uppercase tracking-widest ${
+                      className={`text-[10px] font-extrabold ${isRtl ? "tracking-normal font-sans" : "uppercase tracking-widest"} ${
                         isSelected ? "text-[#00C8A0]" : "text-white/50"
                       }`}
                     >
-                      STAGE 0{idx + 1}
+                      {isRtl ? `المرحلة 0${idx + 1}` : `STAGE 0${idx + 1}`}
                     </span>
                     <span
                       className={`w-2.5 h-2.5 rounded-full transition-all ${
@@ -156,7 +170,7 @@ export default function WaveProgression() {
                     ></span>
                   </div>
 
-                  <h4 className="font-serif text-lg font-bold mb-1 text-white">{stage.level}</h4>
+                  <h4 className={`font-serif text-lg font-bold mb-1 text-white ${isRtl ? "tracking-normal font-sans" : ""}`}>{stage.level}</h4>
                   <p className="text-[11px] text-white/70 leading-relaxed font-sans line-clamp-3">
                     {stage.desc}
                   </p>

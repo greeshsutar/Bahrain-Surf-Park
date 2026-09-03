@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MOTION, isReducedMotion } from "../../constants/motion";
+import WaveDivider from "../WaveDivider";
 
 const ESSENTIALS_LIST = [
   {
@@ -98,7 +99,7 @@ export default function VisitAtAGlance() {
     <section
       ref={sectionRef}
       id="visit-essentials"
-      className="relative bg-gradient-to-b from-[#F7F6F1] via-white to-[#F7F6F1] text-[#0A1926] py-24 sm:py-32 z-10 border-b border-slate-200/80 overflow-hidden"
+      className="relative bg-gradient-to-b from-[#F7F6F1] via-white to-[#F7F6F1] text-[#0A1926] py-16 sm:py-20 z-10 overflow-hidden"
     >
       {/* Background Texture & Ambient Glow */}
       <div className="absolute inset-0 opacity-[0.025] bg-[radial-gradient(#0A1926_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none" />
@@ -178,6 +179,9 @@ export default function VisitAtAGlance() {
           })}
         </div>
       </div>
+
+      {/* Organic Wave Divider Transitioning into Visit FAQ (#0A1926) */}
+      <WaveDivider fill="#0A1926" />
     </section>
   );
 }
