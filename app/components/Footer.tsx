@@ -102,12 +102,14 @@ export default function Footer({ onOpenBooking }: FooterProps) {
                   />
                 </Link>
                 <span className="text-white font-bold tracking-wider uppercase text-xs">
-                  Bahrain Surf Park
+                  {isRtl ? "حديقة البحرين لركوب الأمواج" : "Bahrain Surf Park"}
                 </span>
               </div>
 
               <p className="text-white/70 text-xs sm:text-sm leading-relaxed mb-5 max-w-sm font-sans">
-                The world&apos;s most advanced wave technology meeting the spirit of island living in the heart of Bahrain.
+                {isRtl
+                  ? "أحدث تقنيات ركوب الأمواج في العالم تلتقي بروح الحياة الساحلية الفاخرة في قلب البحرين."
+                  : "The world's most advanced wave technology meeting the spirit of island living in the heart of Bahrain."}
               </p>
 
               {/* Official Google Maps Location Link */}
@@ -121,7 +123,7 @@ export default function Footer({ onOpenBooking }: FooterProps) {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                 </svg>
-                <span>Bilaj Al Jazayer, Kingdom of Bahrain</span>
+                <span>{isRtl ? "بلاج الجزائر، مملكة البحرين" : "Bilaj Al Jazayer, Kingdom of Bahrain"}</span>
                 <span className="text-[10px]">↗</span>
               </a>
             </div>
@@ -130,76 +132,48 @@ export default function Footer({ onOpenBooking }: FooterProps) {
             <div className="flex items-center gap-2 mt-6 pt-4 border-t border-white/10">
               <span className="w-2.5 h-2.5 rounded-full bg-[#00C8A0] animate-pulse shrink-0"></span>
               <span className="text-[11px] font-extrabold uppercase tracking-widest text-[#00C8A0]">
-                Live in Bilaj Al Jazayer
+                {isRtl ? "مباشر في بلاج الجزائر" : "Live in Bilaj Al Jazayer"}
               </span>
             </div>
           </div>
 
           {/* Column 2: Explore Navigation Links */}
           <div className="footer-animate lg:col-span-2">
-            <span className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#00C8A0] block mb-4">
-              EXPLORE
+            <span className={`text-xs font-extrabold uppercase mb-4 block text-[#00C8A0] ${isRtl ? "tracking-normal font-sans" : "tracking-[0.2em]"}`}>
+              {isRtl ? "استكشف" : "EXPLORE"}
             </span>
             <ul className="space-y-2.5 text-xs font-medium text-white/80">
-              <li>
-                <Link href="/surf" className="hover:text-[#00C8A0] transition-colors block py-0.5">
-                  Surf
-                </Link>
-              </li>
-              <li>
-                <Link href="/technology" className="hover:text-[#00C8A0] transition-colors block py-0.5">
-                  Technology
-                </Link>
-              </li>
-              <li>
-                <Link href="/find-your-wave" className="hover:text-[#00C8A0] transition-colors block py-0.5">
-                  The Wave
-                </Link>
-              </li>
-              <li>
-                <Link href="/academy" className="hover:text-[#00C8A0] transition-colors block py-0.5">
-                  Academy
-                </Link>
-              </li>
-              <li>
-                <Link href="/services" className="hover:text-[#00C8A0] transition-colors block py-0.5">
-                  Services
-                </Link>
-              </li>
-              <li>
-                <Link href="/cabanas" className="hover:text-[#00C8A0] transition-colors block py-0.5">
-                  Cabanas
-                </Link>
-              </li>
-              <li>
-                <Link href="/visit" className="hover:text-[#00C8A0] transition-colors block py-0.5">
-                  Plan Your Visit
-                </Link>
-              </li>
+              {navItems.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href} className="hover:text-[#00C8A0] transition-colors block py-0.5">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Column 3: Visit Details & Opening Badge */}
           <div className="footer-animate lg:col-span-3">
-            <span className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#00C8A0] block mb-4">
-              VISIT
+            <span className={`text-xs font-extrabold uppercase mb-4 block text-[#00C8A0] ${isRtl ? "tracking-normal font-sans" : "tracking-[0.2em]"}`}>
+              {isRtl ? "الزيارة" : "VISIT"}
             </span>
             <div className="space-y-3 text-xs text-white/75 font-sans leading-relaxed">
               <p>
-                <strong className="text-white block font-bold mb-0.5">Destination</strong>
-                Bilaj Al Jazayer, Southwest Coast, Kingdom of Bahrain
+                <strong className="text-white block font-bold mb-0.5">{isRtl ? "الوجهة" : "Destination"}</strong>
+                {isRtl ? "بلاج الجزائر، الساحل الجنوبي الغربي، مملكة البحرين" : "Bilaj Al Jazayer, Southwest Coast, Kingdom of Bahrain"}
               </p>
 
               <p>
-                <strong className="text-white block font-bold mb-0.5">Operating Hours</strong>
-                Open Daily from 7:00 AM to 10:00 PM
+                <strong className="text-white block font-bold mb-0.5">{isRtl ? "ساعات العمل" : "Operating Hours"}</strong>
+                {isRtl ? "مفتوح يوميًا من 7:00 صباحًا حتى 10:00 مساءً" : "Open Daily from 7:00 AM to 10:00 PM"}
               </p>
 
               {/* Opening 2026 Badge */}
               <div className="pt-2">
                 <span className="inline-flex items-center gap-2 bg-[#00C8A0]/15 border border-[#00C8A0]/40 text-[#00C8A0] text-[11px] font-extrabold tracking-[0.2em] uppercase px-3.5 py-1.5 rounded-full">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#00C8A0] animate-pulse"></span>
-                  <span>Opening 2026</span>
+                  <span>{isRtl ? "الافتتاح 2026" : "Opening 2026"}</span>
                 </span>
               </div>
             </div>
@@ -207,27 +181,29 @@ export default function Footer({ onOpenBooking }: FooterProps) {
 
           {/* Column 4: Stay Connected & Magnetic Social Icons */}
           <div className="footer-animate lg:col-span-3">
-            <span className="text-xs font-extrabold uppercase tracking-[0.2em] text-[#00C8A0] block mb-4">
-              STAY CONNECTED
+            <span className={`text-xs font-extrabold uppercase mb-4 block text-[#00C8A0] ${isRtl ? "tracking-normal font-sans" : "tracking-[0.2em]"}`}>
+              {isRtl ? "ابق على اتصال" : "STAY CONNECTED"}
             </span>
             <p className="text-xs text-white/75 leading-relaxed mb-4">
-              Receive early access updates and exclusive session booking invitations.
+              {isRtl
+                ? "احصل على التحديثات الحصرية ودعوات حجز الجلسات المباشرة."
+                : "Receive early access updates and exclusive session booking invitations."}
             </p>
 
             {/* Newsletter Email Form */}
             <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-2 mb-6">
               <input
                 type="email"
-                placeholder="Enter your email"
+                placeholder={isRtl ? "أدخل بريدك الإلكتروني" : "Enter your email"}
                 className="bg-[#082F3D] border border-white/15 rounded-lg px-3.5 py-2.5 text-xs text-white placeholder:text-white/40 focus:outline-none focus:border-[#00C8A0] transition-colors w-full"
               />
               <button
                 type="submit"
                 onMouseMove={handleMagneticMouseMove}
                 onMouseLeave={handleMagneticMouseLeave}
-                className="bg-[#00C8A0] hover:bg-[#00E5B3] text-[#061F2B] px-4 py-2.5 rounded-lg text-xs font-extrabold uppercase tracking-wider transition-all cursor-pointer shadow-md"
+                className={`bg-[#00C8A0] hover:bg-[#00E5B3] text-[#061F2B] px-4 py-2.5 rounded-lg text-xs font-extrabold ${isRtl ? "tracking-normal font-sans" : "uppercase tracking-wider"} transition-all cursor-pointer shadow-md`}
               >
-                GET EARLY ACCESS
+                {isRtl ? "احصل على وصول مبكر" : "GET EARLY ACCESS"}
               </button>
             </form>
 
@@ -281,21 +257,23 @@ export default function Footer({ onOpenBooking }: FooterProps) {
         {/* 3. Bottom Bar: Copyright & Stakeholder Partners Row */}
         <div className="border-t border-white/10 pt-8 mt-4 flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-white/60">
           <div>
-            <span>&copy; 2026 Bahrain Surf Park. All Rights Reserved.</span>
+            <span>
+              {isRtl
+                ? "© 2026 حديقة البحرين لركوب الأمواج. جميع الحقوق محفوظة."
+                : "© 2026 Bahrain Surf Park. All Rights Reserved."}
+            </span>
           </div>
 
-          {/* Stakeholder & Partner Logos Row per Spec Section 6 */}
-          {/* NOTE: Replace text wordmarks with official vector/raster logo assets in /public/images/partners/ when available */}
           <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6">
-            <span className="text-[10px] font-extrabold uppercase tracking-[0.2em] text-white/40">
-              DEVELOPMENT & TECHNOLOGY PARTNERS
+            <span className={`text-[10px] font-extrabold uppercase text-white/40 ${isRtl ? "tracking-normal font-sans" : "tracking-[0.2em]"}`}>
+              {isRtl ? "شركاء التطوير والتكنولوجيا" : "DEVELOPMENT & TECHNOLOGY PARTNERS"}
             </span>
             <div className="flex items-center gap-4 sm:gap-6 text-white/75 font-serif tracking-widest text-[11px] uppercase font-bold">
-              <span className="hover:text-[#00C8A0] transition-colors cursor-default">EDAMAH</span>
+              <span className="hover:text-[#00C8A0] transition-colors cursor-default">{isRtl ? "إدامة" : "EDAMAH"}</span>
               <span className="text-white/20">•</span>
-              <span className="hover:text-[#00C8A0] transition-colors cursor-default">GFH FINANCIAL GROUP</span>
+              <span className="hover:text-[#00C8A0] transition-colors cursor-default">{isRtl ? "مجموعة GFH المالية" : "GFH FINANCIAL GROUP"}</span>
               <span className="text-white/20">•</span>
-              <span className="hover:text-[#00C8A0] transition-colors cursor-default">WAVEGARDEN</span>
+              <span className="hover:text-[#00C8A0] transition-colors cursor-default">{isRtl ? "ويف جاردن" : "WAVEGARDEN"}</span>
             </div>
           </div>
         </div>

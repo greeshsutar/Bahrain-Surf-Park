@@ -200,10 +200,9 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const stored = localStorage.getItem("bsp_lang") as Language | null;
-      if (stored === "ar" || stored === "en") {
-        setLangState(stored);
-      }
+      // Always enforce English as default on initial load
+      document.documentElement.setAttribute("lang", "en");
+      document.documentElement.setAttribute("dir", "ltr");
     }
   }, []);
 

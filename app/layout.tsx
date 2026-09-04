@@ -31,6 +31,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      dir="ltr"
       className={`${canelaFallback.variable} ${manrope.variable} scroll-smooth bg-white text-[#0A1926]`}
     >
       <body className="bg-white text-[#0A1926] antialiased selection:bg-[#00C8A0]/30 selection:text-[#0B7FB5] m-0 p-0 relative">
