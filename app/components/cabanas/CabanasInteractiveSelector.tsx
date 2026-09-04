@@ -18,7 +18,7 @@ const CABANA_OPTIONS = [
     desc: "Positioned directly on the water's edge with unobstructed views of the surf lineup. Features climate-controlled indoor lounge, teak sun deck, plunge area, and dedicated butler service.",
     capacity: "UP TO 8 GUESTS",
     inclusions: ["Unobstructed Lagoon Views", "Climate-Controlled Lounge", "Dedicated Butler Service", "Private Outdoor Plunge Deck"],
-    img: "/images/cabanas/cabanas_hero.jpg",
+    img: "/images/vip.png",
   },
   {
     id: "terrace",

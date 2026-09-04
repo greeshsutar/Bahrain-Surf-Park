@@ -143,69 +143,59 @@ export default function ConciergeLauncher({ isOpen, onToggle, onOpen }: Concierg
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
             </svg>
           ) : (
-            /* Open State: Robot Character Launcher with Ocean Glass Background */
-            <div className="relative w-full h-full flex flex-col items-center justify-center bg-gradient-to-b from-[#0A1926] via-[#082332] to-[#041219] overflow-hidden">
-
-              {/* Subtle radial glow behind robot */}
+            /* Closed State: Minimalist Wave Concierge Brand Mark */
+            <div className="relative w-full h-full flex items-center justify-center bg-gradient-to-b from-[#071923] via-[#082332] to-[#041219] overflow-hidden">
+              {/* Subtle Soft Ambient Backlight */}
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="w-10 h-10 rounded-full bg-[#00C8A0]/25 blur-md" />
+                <div className="w-9 h-9 rounded-full bg-[#00C8A0]/15 blur-lg transition-opacity duration-300 group-hover:opacity-100 opacity-50" />
               </div>
 
-              {/* Robot Character */}
+              {/* Wave Concierge Symbol Container */}
               <div
-                className={`relative z-10 w-[78%] h-[78%] flex items-center justify-center animate-robot-float transition-transform duration-300 ${
-                  robotReacting ? "-translate-y-1.5 scale-105" : "group-hover:scale-[1.05]"
+                className={`relative z-10 flex items-center justify-center transition-all duration-200 ${
+                  robotReacting ? "-translate-y-0.5 scale-105" : "group-hover:scale-[1.04]"
                 }`}
               >
                 <svg
-                  viewBox="0 0 56 62"
+                  viewBox="0 0 48 48"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="w-full h-full drop-shadow-md transition-transform duration-300"
-                  aria-label="Surf Concierge Robot"
+                  className="w-8 h-8 sm:w-9 sm:h-9 transition-transform duration-300"
+                  aria-label="Surf Concierge"
                 >
-                  {/* Antenna */}
-                  <line x1="28" y1="7" x2="28" y2="13" stroke="#0B7FB5" strokeWidth="2" strokeLinecap="round"/>
-                  <circle cx="28" cy="5" r="2.5" fill="#00C8A0"/>
+                  <defs>
+                    <linearGradient id="conciergeBubbleGrad" x1="10" y1="10" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+                      <stop offset="0%" stopColor="#FFFFFF" />
+                      <stop offset="60%" stopColor="#F4F7F5" />
+                      <stop offset="100%" stopColor="#5DE4D0" />
+                    </linearGradient>
+                    <filter id="luxuryConciergeGlow" x="-20%" y="-20%" width="140%" height="140%">
+                      <feDropShadow dx="0" dy="2" stdDeviation="2" floodColor="#00C8A0" floodOpacity="0.3" />
+                    </filter>
+                  </defs>
 
-                  {/* Head */}
-                  <rect x="14" y="13" width="28" height="20" rx="7" fill="white" stroke="#C8E8F0" strokeWidth="1.5"/>
+                  {/* Primary Hero: Coastal Dialogue Bubble Silhouette */}
+                  <path
+                    d="M 14 35 C 9.5 31 8.5 21 15 14.5 C 21.5 8 32.5 9 36.5 15.5 C 41 22 39 30.5 32.5 34.5 L 32.5 39.5 L 26 35.5 C 21.5 37 17 37 14 35 Z"
+                    stroke="url(#conciergeBubbleGrad)"
+                    strokeWidth="2.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    filter="url(#luxuryConciergeGlow)"
+                  />
 
-                  {/* Eyes */}
-                  <circle cx="22" cy="23" r="4" fill="#0B7FB5"/>
-                  <circle cx="34" cy="23" r="4" fill="#0B7FB5"/>
-                  <circle cx="22" cy="23" r="2.2" fill="#00C8A0"/>
-                  <circle cx="34" cy="23" r="2.2" fill="#00C8A0"/>
-                  <circle cx="23" cy="22" r="0.8" fill="white"/>
-                  <circle cx="35" cy="22" r="0.8" fill="white"/>
+                  {/* Secondary Hero: Flowing Hydrodynamic Surf Wave Crest */}
+                  <path
+                    d="M 16.5 24 C 20.5 19.5, 25.5 27, 30.5 21.5 C 33.5 18, 35.5 20.5, 36.5 19.5"
+                    stroke="#00C8A0"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                  />
 
-                  {/* Mouth / panel */}
-                  <rect x="22" y="29" width="12" height="2.5" rx="1.25" fill="#C8E8F0"/>
-
-                  {/* Neck */}
-                  <rect x="25" y="33" width="6" height="3" rx="1.5" fill="#D0EAF0"/>
-
-                  {/* Body */}
-                  <rect x="12" y="36" width="32" height="20" rx="8" fill="white" stroke="#C8E8F0" strokeWidth="1.5"/>
-
-                  {/* Chest badge */}
-                  <rect x="21" y="42" width="14" height="8" rx="3" fill="#0B7FB5"/>
-                  <circle cx="25" cy="46" r="1.5" fill="#00C8A0"/>
-                  <circle cx="28" cy="46" r="1.5" fill="#00E5B3"/>
-                  <circle cx="31" cy="46" r="1.5" fill="#00C8A0"/>
-
-                  {/* Arms */}
-                  <rect x="3" y="37" width="9" height="14" rx="4.5" fill="white" stroke="#C8E8F0" strokeWidth="1.5"/>
-                  <rect x="44" y="37" width="9" height="14" rx="4.5" fill="white" stroke="#C8E8F0" strokeWidth="1.5"/>
-
-                  {/* Hand dots */}
-                  <circle cx="7.5" cy="53" r="1.5" fill="#C8E8F0"/>
-                  <circle cx="48.5" cy="53" r="1.5" fill="#C8E8F0"/>
+                  {/* Single Integrated AI Spark Node */}
+                  <circle cx="30.5" cy="21.5" r="1.8" fill="#FFFFFF" />
                 </svg>
               </div>
-
-              {/* Shadow under robot */}
-              <div className="absolute bottom-1 z-0 w-8 h-1.5 rounded-full bg-[#0A1926]/20 blur-sm animate-robot-shadow pointer-events-none" />
             </div>
           )}
         </button>
