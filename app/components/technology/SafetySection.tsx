@@ -70,7 +70,7 @@ export default function SafetySection() {
             <MediaPlaceholder
               aspectRatio="aspect-[16/9]"
               label="SAFETY & MONITORING CROP"
-              fallbackImage="/images/bahrain_surf_park_clean.jpg"
+              fallbackImage="/images/precise.png"
             />
           </div>
 

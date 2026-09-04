@@ -369,7 +369,7 @@ export default function Technology() {
           preload="none"
           className="w-full h-full object-cover object-[center_35%] opacity-85"
         >
-          <source src="/videos/ocean.mp4" type="video/mp4" />
+          <source src="/videos/wavecove.mp4" type="video/mp4" />
         </video>
       </div>
 

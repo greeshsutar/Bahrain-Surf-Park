@@ -147,8 +147,8 @@ export default function Visit({ onOpenBooking }: VisitProps) {
             <div className="visit-anim-item relative rounded-3xl p-2 bg-gradient-to-b from-white/15 via-white/5 to-transparent backdrop-blur-xl border border-white/10 shadow-2xl group">
               <div className="relative rounded-2xl overflow-hidden aspect-[16/11] bg-[#0A1926]">
                 <img
-                  src="/images/bahrain_surf_park_clean.jpg"
-                  alt="Bahrain Surf Park Bilaj Al Jazayer Location"
+                  src="/images/coastal.jpeg"
+                  alt="Bahrain Surf Park Coastal Haven Bilaj Al Jazayer"
                   loading="lazy"
                   decoding="async"
                   className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"

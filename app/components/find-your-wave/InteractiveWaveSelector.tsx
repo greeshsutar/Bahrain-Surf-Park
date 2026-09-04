@@ -187,8 +187,13 @@ export default function InteractiveWaveSelector({ onOpenBooking }: InteractiveWa
       ctx.fillStyle = bgGradient;
       ctx.fillRect(0, 0, width, height);
 
-      // Draw hydrodynamic grid background lines
-      ctx.strokeStyle = "rgba(0, 200, 160, 0.08)";
+      // Draw hydrodynamic grid, confined to the sky area above the wave envelope only
+      const skyLimit = centerY - 100; // highest tier's amplitude ceiling, keeps grid out of the water
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(0, 0, width, Math.max(skyLimit, 0));
+      ctx.clip();
+      ctx.strokeStyle = "rgba(0, 200, 160, 0.06)";
       ctx.lineWidth = 1;
       const gridSpacing = 40;
       for (let x = 0; x < width; x += gridSpacing) {
@@ -203,6 +208,7 @@ export default function InteractiveWaveSelector({ onOpenBooking }: InteractiveWa
         ctx.lineTo(width, y);
         ctx.stroke();
       }
+      ctx.restore();
 
       // Render 3 overlapping wave layers for depth
       const waveLayers = [
@@ -264,9 +270,57 @@ export default function InteractiveWaveSelector({ onOpenBooking }: InteractiveWa
         ctx.lineWidth = layer.strokeWidth;
         ctx.globalAlpha = layer.opacity + 0.15;
         ctx.stroke();
+
+        // Foam/whitecap glow along the crest — makes it read as moving liquid, not a flat curve
+        if (layer.opacity > 0.5) {
+          ctx.save();
+          ctx.shadowColor = "rgba(255, 255, 255, 0.9)";
+          ctx.shadowBlur = 8;
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.55)";
+          ctx.lineWidth = 1.2;
+          ctx.globalAlpha = 0.5;
+          ctx.beginPath();
+          for (let x = 0; x <= width; x += 4) {
+            const normX = x / width;
+            const wavePhase = (x * currentParamsRef.current.frequency) - time + layer.offset;
+            const sineVal = Math.sin(wavePhase);
+            const envelope = Math.sin(normX * Math.PI);
+            const steepVal = Math.pow(Math.abs(sineVal), 1 + currentParamsRef.current.steepness * 0.8) * Math.sign(sineVal);
+            const y = centerY - steepVal * currentParamsRef.current.amplitude * envelope;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+          ctx.restore();
+        }
       });
 
       ctx.globalAlpha = 1.0;
+
+      // Fine shimmer/caustic layer — small fast high-frequency ripple for surface sparkle
+      ctx.save();
+      ctx.globalAlpha = 0.12;
+      ctx.strokeStyle = "#FFFFFF";
+      ctx.lineWidth = 0.8;
+      ctx.beginPath();
+      for (let x = 0; x <= width; x += 3) {
+        const shimmerPhase = x * 0.08 - time * 3;
+        const y = centerY + Math.sin(shimmerPhase) * 3;
+        if (x === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+      ctx.restore();
+
+      // Glossy light-reflection overlay — soft highlight top-left, like light glinting off water
+      const sheenGradient = ctx.createRadialGradient(
+        width * 0.25, height * 0.15, 0,
+        width * 0.25, height * 0.15, width * 0.55
+      );
+      sheenGradient.addColorStop(0, "rgba(255, 255, 255, 0.08)");
+      sheenGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+      ctx.fillStyle = sheenGradient;
+      ctx.fillRect(0, 0, width, height);
 
       animationFrameId = requestAnimationFrame(render);
     };

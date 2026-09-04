@@ -22,7 +22,7 @@ export default function Academy() {
         ".academy-home-anim",
         { opacity: 0, y: 24 },
         {
-          opacity: 1,
+          opacity: 0.9,
           y: 0,
           duration: MOTION.ENTRANCE_DURATION,
           ease: MOTION.ENTRANCE_EASE,

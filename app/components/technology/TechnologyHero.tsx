@@ -17,7 +17,7 @@ export default function TechnologyHero() {
           poster="/images/wave_engineering.jpg"
           className="w-full h-full object-cover object-center opacity-85"
         >
-          <source src="/videos/wave.mp4" type="video/mp4" />
+          <source src="/videos/wavecove.mp4" type="video/mp4" />
         </video>
 
         {/* Top Dark Scrim Overlay to ensure Navbar readability */}

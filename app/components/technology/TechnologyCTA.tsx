@@ -16,11 +16,11 @@ export default function TechnologyCTA() {
           loop
           playsInline
           poster="/images/wave_engineering.jpg"
-          className="w-full h-full object-cover opacity-40"
+          className="w-full h-full object-cover opacity-85"
         >
-          <source src="/videos/ocean.mp4" type="video/mp4" />
+          <source src="/videos/wavecove.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0A1926] via-[#031923]/70 to-[#031923]/80"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A1926]/80 via-[#031923]/40 to-[#031923]/45"></div>
       </div>
 
       <div className="max-w-4xl mx-auto px-6 lg:px-12 relative z-10 text-center">

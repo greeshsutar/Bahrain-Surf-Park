@@ -18,7 +18,7 @@ export default function AcademyHero({ onOpenBooking }: AcademyHeroProps) {
   useEffect(() => {
     if (isReducedMotion()) {
       if (bgRef.current) {
-        gsap.set(bgRef.current, { filter: "blur(0px)", opacity: 1, scale: 1 });
+        gsap.set(bgRef.current, { filter: "none", opacity: 1, scale: 1 });
       }
       gsap.set(".acad-hero-eyebrow, .acad-hero-headline, .acad-hero-body, .acad-hero-cta", {
         opacity: 1,
@@ -28,8 +28,8 @@ export default function AcademyHero({ onOpenBooking }: AcademyHeroProps) {
     }
 
     const ctx = gsap.context(() => {
-      // Set initial states for entrance sequence
-      gsap.set(bgRef.current, { filter: "blur(12px)", opacity: 0.6, scale: 1.04 });
+      // Clear initial blur and keep background sharp & bright from start
+      gsap.set(bgRef.current, { filter: "none", opacity: 0.95, scale: 1.02 });
       gsap.set(".acad-hero-eyebrow", { opacity: 0, y: 15 });
       gsap.set(".acad-hero-headline", { opacity: 0, y: 25 });
       gsap.set(".acad-hero-body", { opacity: 0, y: 20 });
@@ -45,8 +45,8 @@ export default function AcademyHero({ onOpenBooking }: AcademyHeroProps) {
         .to(".acad-hero-body", { opacity: 1, y: 0, duration: 0.7 }, 0.75)
         // 950ms CTA
         .to(".acad-hero-cta", { opacity: 1, y: 0, duration: 0.7 }, 0.95)
-        // 1200-1600ms visual becomes sharp
-        .to(bgRef.current, { filter: "blur(0px)", opacity: 1, scale: 1, duration: 0.8, ease: "power2.out" }, 1.2);
+        // Visual image settles smoothly
+        .to(bgRef.current, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" }, 0.6);
     }, containerRef);
 
     return () => ctx.revert();
@@ -69,11 +69,11 @@ export default function AcademyHero({ onOpenBooking }: AcademyHeroProps) {
         <img
           src="/images/academy_hero.jpg"
           alt="Bahrain Surf Park Academy instruction"
-          className="w-full h-full object-cover object-center opacity-85"
+          className="w-full h-full object-cover object-center opacity-100"
         />
 
-        {/* Deep Ocean Scrim Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#02141C] via-[#02141C]/60 to-[#02141C]/80 pointer-events-none" />
+        {/* Light & Moderate Deep Ocean Scrim Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#02141C]/65 via-[#02141C]/25 to-[#02141C]/30 pointer-events-none" />
       </div>
 
       {/* Hero Content */}
