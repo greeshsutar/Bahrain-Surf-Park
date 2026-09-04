@@ -13,6 +13,7 @@ import WelcomeModal from "./WelcomeModal";
 import { BookingProvider } from "../context/BookingContext";
 import { LanguageProvider } from "../context/LanguageContext";
 import SurfConcierge from "./concierge/SurfConcierge";
+import PageLoader from "./PageLoader";
 
 export default function SiteShell({ children }: { children: React.ReactNode }) {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -86,6 +87,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
   return (
     <LanguageProvider>
       <BookingProvider value={{ onOpenBooking: handleOpenBooking }}>
+        <PageLoader />
         {isHomePage ? (
           children
         ) : (

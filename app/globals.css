@@ -648,9 +648,31 @@ a.rounded-full,
   .animate-robot-float,
   .animate-robot-shadow,
   .animate-vertical-up,
-  .animate-vertical-down {
+  .animate-vertical-down,
+  .animate-loader-pulse,
+  .animate-loader-wave-draw {
     animation: none !important;
     transition: none !important;
     transform: none !important;
   }
+}
+
+/* Page Loader Animations */
+@keyframes loaderLogoPulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.85; }
+}
+
+.animate-loader-pulse {
+  animation: loaderLogoPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes loaderWaveDraw {
+  0% { stroke-dasharray: 240; stroke-dashoffset: 240; opacity: 0; }
+  15% { opacity: 1; }
+  100% { stroke-dasharray: 240; stroke-dashoffset: 0; opacity: 1; }
+}
+
+.animate-loader-wave-draw {
+  animation: loaderWaveDraw 1.4s cubic-bezier(0.65, 0, 0.35, 1) forwards;
 }
