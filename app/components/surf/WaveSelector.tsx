@@ -333,12 +333,12 @@ export default function WaveSelector() {
       ref={sectionRef}
       id="find-your-wave-selector"
       className="relative bg-[#061F2B] text-white selection:bg-[#00C8A0] selection:text-[#061F2B] border-b border-white/10"
-      style={{ overflow: "visible" }}
+      style={{ overflow: "hidden" }}
     >
       {/* ── Pinned viewport — GSAP pins this element on desktop ──────────────── */}
       <div
         ref={viewportRef}
-        className="relative w-full flex flex-col justify-between overflow-hidden h-[100dvh] py-4 sm:py-6"
+        className="relative w-full flex flex-col justify-between overflow-hidden min-h-screen lg:h-screen pt-16 sm:pt-20 lg:pt-20 pb-3 sm:pb-4"
       >
         {/* Background Atmosphere Layers & Contour Lines */}
         <div
@@ -363,26 +363,26 @@ export default function WaveSelector() {
 
         {/* ── STATIC HEADING (Fixed inside pinned viewport) ─────────────────── */}
         <div className="max-w-7xl mx-auto w-full px-6 lg:px-12 relative z-10 text-left shrink-0">
-          <span className={`text-[#00C8A0] text-[11px] sm:text-xs font-extrabold mb-1 block ${isRtl ? "tracking-normal font-sans" : "tracking-[0.25em] uppercase"}`}>
+          <span className={`text-[#00C8A0] text-[10px] sm:text-xs font-extrabold mb-0.5 block ${isRtl ? "tracking-normal font-sans" : "tracking-[0.25em] uppercase"}`}>
             {isRtl ? "محدد الأمواج المتميز" : "SIGNATURE WAVE SELECTOR"}
           </span>
-          <h2 className={`font-serif text-2xl sm:text-4xl lg:text-[3.25rem] font-bold text-white leading-[1.08] mb-1 ${isRtl ? "tracking-normal font-sans" : "tracking-tight"}`}>
+          <h2 className={`font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight mb-0.5 ${isRtl ? "tracking-normal font-sans" : "tracking-tight"}`}>
             {isRtl ? "اطلب موجتك." : "FIND YOUR WAVE."}
           </h2>
-          <p className="text-white/80 text-xs sm:text-base font-serif italic max-w-2xl">
+          <p className="text-white/80 text-xs sm:text-sm lg:text-base font-serif italic max-w-2xl">
             {isRtl ? "مكان واحد. لكل مستوى من مستويات التطور." : "ONE PLACE. EVERY LEVEL OF PROGRESSION."}
           </p>
         </div>
 
         {/* ── CARD TRACK VIEWPORT ──────────────────────────────────────────── */}
-        <div className="relative flex-1 w-full overflow-hidden z-10 flex items-center min-h-0 py-2">
+        <div className="relative flex-1 w-full overflow-hidden z-10 flex items-center min-h-0 py-2 sm:py-3">
           {/* GSAP-controlled card track — horizontal translation driven by vertical scroll */}
           <div
             ref={trackRef}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
-            className="carousel-track flex items-center gap-4 sm:gap-6 py-2 will-change-transform"
+            className="carousel-track flex items-center gap-4 sm:gap-6 py-2 h-full items-center will-change-transform"
             style={{
               ...(isMobile ? { paddingLeft: "8vw", paddingRight: "8vw" } : {}),
             }}
@@ -399,7 +399,7 @@ export default function WaveSelector() {
         </div>
 
         {/* ── PAGINATION & CONTROLS FOOTER (Fixed in Pinned Viewport) ──────── */}
-        <div className="max-w-7xl mx-auto w-full px-6 lg:px-12 flex items-center justify-between relative z-10 shrink-0">
+        <div className="max-w-7xl mx-auto w-full px-6 lg:px-12 flex items-center justify-between relative z-10 shrink-0 pt-1">
           {/* Level Indicators */}
           <div className="flex items-center gap-2">
             {WAVE_LEVELS.map((item, idx) => (
