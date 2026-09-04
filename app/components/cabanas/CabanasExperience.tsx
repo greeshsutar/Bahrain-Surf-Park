@@ -18,7 +18,7 @@ const SCENES = [
     tag: "RELAX",
     title: "PERSONAL BUTLER & AMENITIES",
     desc: "Dedicated butler service, chilled facial towels, cold-pressed juices, tropical fruit platters, and private outdoor rain showers.",
-    img: "/images/cabanas/cabanas_private_haven.jpg",
+    img: "/images/cabnas.png",
   },
   {
     num: "03",

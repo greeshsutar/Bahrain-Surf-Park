@@ -1,51 +1,16 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import gsap from "gsap";
 import { isReducedMotion } from "../../constants/motion";
 
 export default function TechnologyEngineeringMedia() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const pathRef = useRef<SVGPathElement>(null);
-  const nodeRef = useRef<SVGCircleElement>(null);
   const [isHovered, setIsHovered] = useState(false);
-
-  useEffect(() => {
-    const reduced = isReducedMotion();
-    if (reduced) return;
-
-    // Continuous smooth node animation along the hydrodynamic wave path
-    const pathNode = pathRef.current;
-    const circleNode = nodeRef.current;
-    if (!pathNode || !circleNode) return;
-
-    const pathLength = pathNode.getTotalLength();
-    const progressObj = { value: 0 };
-
-    const tween = gsap.to(progressObj, {
-      value: 1,
-      duration: 5,
-      ease: "sine.inOut",
-      repeat: -1,
-      yoyo: true,
-      onUpdate: () => {
-        const point = pathNode.getPointAtLength(progressObj.value * pathLength);
-        circleNode.setAttribute("cx", point.x.toString());
-        circleNode.setAttribute("cy", point.y.toString());
-      },
-    });
-
-    return () => {
-      tween.kill();
-    };
-  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isReducedMotion() || !containerRef.current || !videoRef.current) return;
-    const rect = containerRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
 
     gsap.to(videoRef.current, {
       scale: 1.025,
@@ -53,16 +18,6 @@ export default function TechnologyEngineeringMedia() {
       ease: "power2.out",
       overwrite: "auto",
     });
-
-    // Move glowing trajectory focus node slightly toward cursor offset
-    if (nodeRef.current) {
-      const targetX = (x / rect.width) * 400;
-      gsap.to(nodeRef.current, {
-        r: 6,
-        duration: 0.3,
-        overwrite: "auto",
-      });
-    }
   };
 
   const handleMouseLeave = () => {
@@ -75,14 +30,6 @@ export default function TechnologyEngineeringMedia() {
       ease: "power2.out",
       overwrite: "auto",
     });
-
-    if (nodeRef.current) {
-      gsap.to(nodeRef.current, {
-        r: 4.5,
-        duration: 0.3,
-        overwrite: "auto",
-      });
-    }
   };
 
   return (
@@ -109,47 +56,7 @@ export default function TechnologyEngineeringMedia() {
       {/* 2. Soft Dark Scrim for Pristine Readout Legibility */}
       <div className="absolute inset-0 bg-gradient-to-t from-[#092531]/80 via-transparent to-[#092531]/50 pointer-events-none z-10" />
 
-      {/* 3. Hydrodynamic Wave Trajectory SVG Layer */}
-      <svg
-        className="absolute inset-0 w-full h-full pointer-events-none z-20"
-        viewBox="0 0 400 250"
-        preserveAspectRatio="none"
-      >
-        <defs>
-          <linearGradient id="waveLineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#00C8A0" stopOpacity="0.1" />
-            <stop offset="50%" stopColor="#00C8A0" stopOpacity="0.75" />
-            <stop offset="100%" stopColor="#0B7FB5" stopOpacity="0.2" />
-          </linearGradient>
-          <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feDropShadow dx="0" dy="0" stdDeviation="3" floodColor="#00C8A0" floodOpacity="0.9" />
-          </filter>
-        </defs>
-
-        {/* Sinusoidal Wave Trajectory Curve */}
-        <path
-          ref={pathRef}
-          d="M 10 180 C 100 210, 160 80, 240 130 C 300 170, 350 90, 390 120"
-          fill="none"
-          stroke="url(#waveLineGradient)"
-          strokeWidth="2"
-          strokeDasharray="4 3"
-          className="tech-hud-trajectory transition-opacity duration-300 opacity-70 group-hover:opacity-100"
-        />
-
-        {/* Glowing Trajectory Node */}
-        <circle
-          ref={nodeRef}
-          cx="240"
-          cy="130"
-          r="4.5"
-          fill="#00C8A0"
-          filter="url(#nodeGlow)"
-          className="transition-all duration-300"
-        />
-      </svg>
-
-      {/* 4. Interactive Engineering HUD Overlay */}
+      {/* 3. Interactive Engineering HUD Overlay */}
       <div className="absolute inset-0 p-5 sm:p-6 flex flex-col justify-between pointer-events-none z-30 font-sans text-white">
         
         {/* Top Readout Bar */}
@@ -201,3 +108,4 @@ export default function TechnologyEngineeringMedia() {
     </div>
   );
 }
+
