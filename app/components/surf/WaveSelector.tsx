@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import WaveCard, { WaveLevelData } from "./WaveCard";
 import { useLanguage } from "../../context/LanguageContext";
+import { isReducedMotion } from "../../constants/motion";
 
 const WAVE_LEVELS: WaveLevelData[] = [
   {
@@ -63,167 +67,372 @@ const WAVE_LEVELS: WaveLevelData[] = [
     height: "1.8 – 2.2m",
     ride: "200m",
     board: "Step-Up",
-    img: "/images/tier5.jpg",
+    img: "/images/expertsurf.png",
   },
 ];
+
+function getCardPositions(viewport: HTMLElement, track: HTMLElement) {
+  const cards = Array.from(
+    track.querySelectorAll<HTMLElement>("[data-wave-card]")
+  );
+  if (!cards.length) return null;
+
+  const vw = viewport.clientWidth;
+  const firstCard = cards[0];
+  const lastCard = cards[cards.length - 1];
+
+  const firstCenter = firstCard.offsetLeft + firstCard.offsetWidth / 2;
+  const lastCenter = lastCard.offsetLeft + lastCard.offsetWidth / 2;
+
+  const firstX = vw / 2 - firstCenter;
+  const lastX = vw / 2 - lastCenter;
+  const distance = firstX - lastX;
+
+  return { firstX, lastX, distance };
+}
 
 export default function WaveSelector() {
   const { lang } = useLanguage();
   const isRtl = lang === "ar";
-  const [activeIndex, setActiveIndex] = useState<number>(2); // Default PROGRESSIVE
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const activeIndexRef = useRef<number>(0);
+
+  const sectionRef = useRef<HTMLElement>(null);
+  const viewportRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLElement>(null);
-  const isDraggingRef = useRef<boolean>(false);
-  const startXRef = useRef<number>(0);
-  const scrollLeftRef = useRef<number>(0);
 
-  // Center active card
-  const scrollToCard = (index: number) => {
-    setActiveIndex(index);
-    if (!trackRef.current) return;
-    const cards = trackRef.current.children;
-    if (cards[index]) {
-      const card = cards[index] as HTMLElement;
-      const trackWidth = trackRef.current.parentElement?.clientWidth || window.innerWidth;
-      const cardOffset = card.offsetLeft;
-      const cardWidth = card.clientWidth;
-      const scrollPos = cardOffset - trackWidth / 2 + cardWidth / 2;
-      trackRef.current.parentElement?.scrollTo({ left: scrollPos, behavior: "smooth" });
-    }
-  };
+  const stRef = useRef<ScrollTrigger | null>(null);
 
+  const [isMobile, setIsMobile] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+
+  const reduced = isReducedMotion();
+
+  // Mobile breakpoint
   useEffect(() => {
-    scrollToCard(activeIndex);
+    if (typeof window === "undefined") return;
+
+    const mql = window.matchMedia("(max-width: 767px)");
+    setIsMobile(mql.matches);
+
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
   }, []);
 
-  // Keyboard navigation
+  // Mobile positioning logic
+  const updateMobilePosition = useCallback((index: number) => {
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!viewport || !track) return;
+
+    const cards = Array.from(
+      track.querySelectorAll<HTMLElement>("[data-wave-card]")
+    );
+    if (!cards.length) return;
+
+    const clampedIdx = Math.max(0, Math.min(cards.length - 1, index));
+    const targetCard = cards[clampedIdx];
+    if (!targetCard) return;
+
+    const vw = viewport.clientWidth;
+    const cardCenter = targetCard.offsetLeft + targetCard.offsetWidth / 2;
+    const targetX = vw / 2 - cardCenter;
+
+    gsap.to(track, {
+      x: targetX,
+      duration: 0.4,
+      ease: "power2.out",
+      overwrite: "auto",
+    });
+  }, []);
+
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") {
-        setActiveIndex((prev) => {
-          const next = Math.max(0, prev - 1);
-          scrollToCard(next);
-          return next;
-        });
-      } else if (e.key === "ArrowRight") {
-        setActiveIndex((prev) => {
-          const next = Math.min(WAVE_LEVELS.length - 1, prev + 1);
-          scrollToCard(next);
-          return next;
-        });
-      }
+    if (!isMobile) return;
+    updateMobilePosition(activeIndex);
+  }, [isMobile, activeIndex, updateMobilePosition]);
+
+  useEffect(() => {
+    if (!isMobile) return;
+    const handleResize = () => {
+      updateMobilePosition(activeIndexRef.current);
     };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isMobile, updateMobilePosition]);
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  // Main Desktop ScrollTrigger pin + horizontal scrub
+  useEffect(() => {
+    if (reduced || isMobile) return;
+    if (typeof window === "undefined") return;
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!trackRef.current?.parentElement) return;
-    isDraggingRef.current = true;
-    startXRef.current = e.pageX - trackRef.current.parentElement.offsetLeft;
-    scrollLeftRef.current = trackRef.current.parentElement.scrollLeft;
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+    const section = sectionRef.current;
+    const viewport = viewportRef.current;
+    const track = trackRef.current;
+    if (!section || !viewport || !track) return;
+
+    const ctx = gsap.context(() => {
+      const pos = getCardPositions(viewport, track);
+      if (!pos) return;
+
+      // Initial position for Card 01 centered
+      gsap.set(track, { x: pos.firstX });
+
+      const tween = gsap.fromTo(
+        track,
+        {
+          x: () => getCardPositions(viewport, track)?.firstX ?? 0,
+        },
+        {
+          x: () => getCardPositions(viewport, track)?.lastX ?? 0,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: () => {
+              const p = getCardPositions(viewport, track);
+              return `+=${p?.distance ?? 2000}`;
+            },
+            pin: viewport,
+            pinSpacing: true,
+            scrub: 0.6,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            snap: {
+              snapTo: 1 / (WAVE_LEVELS.length - 1),
+              duration: { min: 0.3, max: 0.6 },
+              ease: "power2.inOut",
+              inertia: false,
+            },
+            onUpdate: (self) => {
+              const index = Math.round(
+                self.progress * (WAVE_LEVELS.length - 1)
+              );
+              if (activeIndexRef.current !== index) {
+                activeIndexRef.current = index;
+                setActiveIndex(index);
+              }
+            },
+          },
+        }
+      );
+
+      stRef.current = tween.scrollTrigger ?? null;
+    }, sectionRef);
+
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 150);
+
+    return () => {
+      clearTimeout(timer);
+      ctx.revert();
+      stRef.current = null;
+    };
+  }, [reduced, isMobile]);
+
+  // Direct card navigation handler
+  const navigateTo = useCallback(
+    (targetIdx: number) => {
+      const clampedIdx = Math.max(0, Math.min(WAVE_LEVELS.length - 1, targetIdx));
+
+      if (isMobile) {
+        activeIndexRef.current = clampedIdx;
+        setActiveIndex(clampedIdx);
+        updateMobilePosition(clampedIdx);
+        return;
+      }
+
+      const st = stRef.current;
+      if (!st) return;
+
+      const targetProgress = clampedIdx / (WAVE_LEVELS.length - 1);
+      const targetScrollY = st.start + targetProgress * (st.end - st.start);
+
+      gsap.to(window, {
+        scrollTo: { y: targetScrollY, autoKill: false },
+        duration: 0.8,
+        ease: "power2.inOut",
+        overwrite: "auto",
+      });
+    },
+    [isMobile, updateMobilePosition]
+  );
+
+  const handlePrev = () => navigateTo(activeIndexRef.current - 1);
+  const handleNext = () => navigateTo(activeIndexRef.current + 1);
+  const handleSelectCard = (index: number) => navigateTo(index);
+
+  // Mobile swipe handlers
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!isMobile) return;
+    touchStartX.current = e.touches[0].clientX;
+    touchEndX.current = e.touches[0].clientX;
   };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDraggingRef.current || !trackRef.current?.parentElement) return;
-    e.preventDefault();
-    const x = e.pageX - trackRef.current.parentElement.offsetLeft;
-    const walk = (x - startXRef.current) * 1.5;
-    trackRef.current.parentElement.scrollLeft = scrollLeftRef.current - walk;
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isMobile) return;
+    touchEndX.current = e.touches[0].clientX;
   };
 
-  const handleMouseUp = () => {
-    isDraggingRef.current = false;
+  const handleTouchEnd = () => {
+    if (!isMobile || touchStartX.current === null || touchEndX.current === null)
+      return;
+    const diff = touchStartX.current - touchEndX.current;
+    const minSwipeDistance = 35;
+
+    if (Math.abs(diff) > minSwipeDistance) {
+      if (diff > 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
+    }
+    touchStartX.current = null;
+    touchEndX.current = null;
   };
 
-  return (
-    <section
-      id="find-your-wave-selector"
-      ref={containerRef}
-      className="bg-[#061F2B] text-white py-14 sm:py-20 relative z-10 overflow-hidden border-b border-white/10"
-    >
-      {/* Background Atmosphere Layers */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-[#00C8A0]/[0.07] rounded-full blur-3xl pointer-events-none"></div>
-      
-      {/* Contour Lines */}
-      <div className="absolute inset-0 pointer-events-none opacity-10">
-        <svg className="w-full h-full" viewBox="0 0 1440 800" fill="none" stroke="#00C8A0" strokeWidth="1">
-          <path d="M-100,150 C300,100 600,300 1000,200 C1300,150 1500,350 1700,280" />
-          <path d="M-100,350 C300,300 600,500 1000,400 C1300,350 1500,550 1700,480" />
-        </svg>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 text-left mb-12">
-        <span className={`text-[#00C8A0] text-xs font-extrabold mb-3 block ${isRtl ? "tracking-normal font-sans" : "tracking-[0.25em] uppercase"}`}>
-          {isRtl ? "محدد الأمواج المتميز" : "SIGNATURE WAVE SELECTOR"}
-        </span>
-        <h2 className={`font-serif text-3xl sm:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.08] mb-4 ${isRtl ? "tracking-normal font-sans" : "tracking-tight"}`}>
-          {isRtl ? "اطلب موجتك." : "FIND YOUR WAVE."}
-        </h2>
-        <p className="text-white/80 text-base sm:text-xl font-serif italic max-w-2xl">
-          {isRtl ? "مكان واحد. لكل مستوى من مستويات التطور." : "ONE PLACE. EVERY LEVEL OF PROGRESSION."}
-        </p>
-      </div>
-
-      {/* Carousel Scroll Viewport */}
-      <div
-        className="w-full overflow-x-auto no-scrollbar py-8 px-4 cursor-grab active:cursor-grabbing"
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseUp}
+  // Reduced motion fallback
+  if (reduced) {
+    return (
+      <section
+        id="find-your-wave-selector"
+        className="bg-[#061F2B] text-white py-14 sm:py-20 relative z-10 border-b border-white/10"
       >
-        <div
-          ref={trackRef}
-          className="flex items-center gap-4 sm:gap-6 w-max mx-auto px-[8vw] sm:px-[20vw]"
-        >
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 text-left mb-8">
+          <span className={`text-[#00C8A0] text-xs font-extrabold mb-3 block ${isRtl ? "tracking-normal font-sans" : "tracking-[0.25em] uppercase"}`}>
+            {isRtl ? "محدد الأمواج المتميز" : "SIGNATURE WAVE SELECTOR"}
+          </span>
+          <h2 className={`font-serif text-3xl sm:text-5xl lg:text-[3.5rem] font-bold text-white leading-[1.08] mb-4 ${isRtl ? "tracking-normal font-sans" : "tracking-tight"}`}>
+            {isRtl ? "اطلب موجتك." : "FIND YOUR WAVE."}
+          </h2>
+          <p className="text-white/80 text-base sm:text-xl font-serif italic max-w-2xl">
+            {isRtl ? "مكان واحد. لكل مستوى من مستويات التطور." : "ONE PLACE. EVERY LEVEL OF PROGRESSION."}
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-6 max-w-xl mx-auto px-4">
           {WAVE_LEVELS.map((card, idx) => (
             <WaveCard
               key={card.id}
               card={card}
               isActive={idx === activeIndex}
-              onClick={() => scrollToCard(idx)}
+              onClick={() => setActiveIndex(idx)}
             />
           ))}
         </div>
-      </div>
+      </section>
+    );
+  }
 
-      {/* Pagination & Controls Footer */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 mt-8 flex items-center justify-between relative z-10">
-        
-        {/* Level Indicators */}
-        <div className="flex items-center gap-2">
-          {WAVE_LEVELS.map((item, idx) => (
+  return (
+    <section
+      ref={sectionRef}
+      id="find-your-wave-selector"
+      className="relative bg-[#061F2B] text-white selection:bg-[#00C8A0] selection:text-[#061F2B] border-b border-white/10"
+      style={{ overflow: "visible" }}
+    >
+      {/* ── Pinned viewport — GSAP pins this element on desktop ──────────────── */}
+      <div
+        ref={viewportRef}
+        className="relative w-full flex flex-col justify-between overflow-hidden h-[100dvh] py-4 sm:py-6"
+      >
+        {/* Background Atmosphere Layers & Contour Lines */}
+        <div
+          aria-hidden="true"
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-[#00C8A0]/[0.07] rounded-full blur-3xl pointer-events-none z-0"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 pointer-events-none opacity-10 z-0"
+        >
+          <svg
+            className="w-full h-full"
+            viewBox="0 0 1440 800"
+            fill="none"
+            stroke="#00C8A0"
+            strokeWidth="1"
+          >
+            <path d="M-100,150 C300,100 600,300 1000,200 C1300,150 1500,350 1700,280" />
+            <path d="M-100,350 C300,300 600,500 1000,400 C1300,350 1500,550 1700,480" />
+          </svg>
+        </div>
+
+        {/* ── STATIC HEADING (Fixed inside pinned viewport) ─────────────────── */}
+        <div className="max-w-7xl mx-auto w-full px-6 lg:px-12 relative z-10 text-left shrink-0">
+          <span className={`text-[#00C8A0] text-[11px] sm:text-xs font-extrabold mb-1 block ${isRtl ? "tracking-normal font-sans" : "tracking-[0.25em] uppercase"}`}>
+            {isRtl ? "محدد الأمواج المتميز" : "SIGNATURE WAVE SELECTOR"}
+          </span>
+          <h2 className={`font-serif text-2xl sm:text-4xl lg:text-[3.25rem] font-bold text-white leading-[1.08] mb-1 ${isRtl ? "tracking-normal font-sans" : "tracking-tight"}`}>
+            {isRtl ? "اطلب موجتك." : "FIND YOUR WAVE."}
+          </h2>
+          <p className="text-white/80 text-xs sm:text-base font-serif italic max-w-2xl">
+            {isRtl ? "مكان واحد. لكل مستوى من مستويات التطور." : "ONE PLACE. EVERY LEVEL OF PROGRESSION."}
+          </p>
+        </div>
+
+        {/* ── CARD TRACK VIEWPORT ──────────────────────────────────────────── */}
+        <div className="relative flex-1 w-full overflow-hidden z-10 flex items-center min-h-0 py-2">
+          {/* GSAP-controlled card track — horizontal translation driven by vertical scroll */}
+          <div
+            ref={trackRef}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            className="carousel-track flex items-center gap-4 sm:gap-6 py-2 will-change-transform"
+            style={{
+              ...(isMobile ? { paddingLeft: "8vw", paddingRight: "8vw" } : {}),
+            }}
+          >
+            {WAVE_LEVELS.map((card, idx) => (
+              <WaveCard
+                key={card.id}
+                card={card}
+                isActive={idx === activeIndex}
+                onClick={() => handleSelectCard(idx)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* ── PAGINATION & CONTROLS FOOTER (Fixed in Pinned Viewport) ──────── */}
+        <div className="max-w-7xl mx-auto w-full px-6 lg:px-12 flex items-center justify-between relative z-10 shrink-0">
+          {/* Level Indicators */}
+          <div className="flex items-center gap-2">
+            {WAVE_LEVELS.map((item, idx) => (
+              <button
+                key={item.id}
+                onClick={() => handleSelectCard(idx)}
+                className={`h-2.5 rounded-full transition-all duration-300 ${
+                  idx === activeIndex ? "w-8 bg-[#00C8A0]" : "w-2.5 bg-white/20 hover:bg-white/40"
+                }`}
+                aria-label={`Go to ${item.title}`}
+              />
+            ))}
+          </div>
+
+          {/* Navigation Arrows */}
+          <div className="flex items-center gap-3">
             <button
-              key={item.id}
-              onClick={() => scrollToCard(idx)}
-              className={`h-2.5 rounded-full transition-all duration-300 ${
-                idx === activeIndex ? "w-8 bg-[#00C8A0]" : "w-2.5 bg-white/20 hover:bg-white/40"
-              }`}
-              aria-label={`Go to ${item.title}`}
-            />
-          ))}
-        </div>
-
-        {/* Navigation Arrows */}
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => scrollToCard(Math.max(0, activeIndex - 1))}
-            disabled={activeIndex === 0}
-            className="w-10 h-10 rounded-full border border-white/20 bg-white/5 text-white hover:bg-white/15 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all cursor-pointer"
-            aria-label="Previous Wave Level"
-          >
-            ←
-          </button>
-          <button
-            onClick={() => scrollToCard(Math.min(WAVE_LEVELS.length - 1, activeIndex + 1))}
-            disabled={activeIndex === WAVE_LEVELS.length - 1}
-            className="w-10 h-10 rounded-full border border-white/20 bg-white/5 text-white hover:bg-white/15 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all cursor-pointer"
-            aria-label="Next Wave Level"
-          >
-            →
-          </button>
+              onClick={handlePrev}
+              disabled={activeIndex === 0}
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white/20 bg-white/5 text-white hover:bg-white/15 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all cursor-pointer"
+              aria-label="Previous Wave Level"
+            >
+              ←
+            </button>
+            <button
+              onClick={handleNext}
+              disabled={activeIndex === WAVE_LEVELS.length - 1}
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-white/20 bg-white/5 text-white hover:bg-white/15 disabled:opacity-30 disabled:cursor-not-allowed flex items-center justify-center transition-all cursor-pointer"
+              aria-label="Next Wave Level"
+            >
+              →
+            </button>
+          </div>
         </div>
 
       </div>

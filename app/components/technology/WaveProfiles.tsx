@@ -75,7 +75,7 @@ const PROFILES: WaveProfile[] = [
     ride: "200m",
     board: "Step-Up",
     price: "FROM 85 BHD",
-    img: "/images/tier5.jpg",
+    img: "/images/expertsurf.png",
   },
 ];
 

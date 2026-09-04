@@ -97,7 +97,7 @@ export default function BookingModal({ isOpen, onClose, selectedTier }: BookingM
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#063B45]/60 backdrop-blur-sm p-4 sm:p-6 transition-opacity duration-200"
+      className="fixed inset-0 z-[100001] flex items-center justify-center bg-[#063B45]/60 backdrop-blur-sm p-4 sm:p-6 transition-opacity duration-200"
       aria-modal="true"
       role="dialog"
       aria-labelledby="booking-modal-title"

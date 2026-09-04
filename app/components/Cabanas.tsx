@@ -53,6 +53,8 @@ export default function Cabanas() {
               <img
                 src="/images/cabanas/cabanas_hero.jpg"
                 alt="Bahrain Surf Park Luxury Cabana"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A1926]/60 via-transparent to-transparent pointer-events-none" />

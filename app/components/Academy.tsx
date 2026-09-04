@@ -88,6 +88,8 @@ export default function Academy() {
               <img
                 src="/images/academy_coaching.jpg"
                 alt="Bahrain Surf Park Academy Coaching"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A1926]/60 via-transparent to-transparent pointer-events-none" />

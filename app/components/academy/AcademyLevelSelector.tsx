@@ -38,7 +38,7 @@ const LEVELS = [
     title: "ADVANCED",
     subtitle: "Tube Riding & Technical Maneuvers",
     desc: "Engineered for experienced surfers mastering steep drops, heavy barrels, and high-line maneuvers. Fine-tune your speed positioning and barrel technique with multi-angle video analysis.",
-    img: "/images/tier5.jpg",
+    img: "/images/expertsurf.png",
     height: "1.8 – 2.2m",
     board: "Performance Step-Up",
     focus: ["Steep Drop Positioning", "High-Line Speed Runs", "Deep Tube Riding & Barrel Vision", "Frame-by-Frame Video Analytics"],

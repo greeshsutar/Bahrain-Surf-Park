@@ -76,7 +76,7 @@ const CARDS_DATA = [
     tierLabel: "TIER 05",
     title: "EXPERT",
     desc: "Powerful, head-high barreling waves engineered for advanced maneuvers and heavy barrels. Reserved for surfers who know their way around a barrel.",
-    img: "/images/bahrain_surf_park_clean.jpg",
+    img: "/images/expertsurf.png",
     height: "1.8 – 2.2m",
     ride: "200m",
     board: "Step-Up",
@@ -345,6 +345,8 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                 <img
                   src={card.img}
                   alt={card.title}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-48 object-cover rounded-xl mb-4"
                 />
                 <h3 className="font-serif text-2xl font-bold mb-2">
@@ -645,6 +647,8 @@ export default function FindYourWave({ onOpenBooking }: FindYourWaveProps) {
                     <img
                       src={card.img}
                       alt={`${cardTitle} wave session`}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent pointer-events-none" />

@@ -107,7 +107,7 @@ const PROFILES: WaveProfileData[] = [
     board: "Step-Up",
     character: "Head-High Barreling Reef",
     desc: "Powerful, head-high barreling waves engineered for advanced maneuvers and heavy barrels. Reserved for experienced surfers who know their way around a steep drop.",
-    img: "/images/tier5.jpg",
+    img: "/images/expertsurf.png",
     amplitude: 95,
     frequency: 0.026,
     speed: 0.055,

@@ -149,6 +149,8 @@ export default function Visit({ onOpenBooking }: VisitProps) {
                 <img
                   src="/images/bahrain_surf_park_clean.jpg"
                   alt="Bahrain Surf Park Bilaj Al Jazayer Location"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                 />
 

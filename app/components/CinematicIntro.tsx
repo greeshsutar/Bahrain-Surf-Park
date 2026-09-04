@@ -12,6 +12,7 @@ export default function CinematicIntro({ onOpenBooking }: CinematicIntroProps) {
   const { lang, setLang } = useLanguage();
   const isRtl = lang === "ar";
 
+  const [isMounted, setIsMounted] = useState(false);
   // State: "playing" | "ended" | "revealing" | "completed"
   const [introState, setIntroState] = useState<"playing" | "ended" | "revealing" | "completed">("playing");
 
@@ -21,7 +22,22 @@ export default function CinematicIntro({ onOpenBooking }: CinematicIntroProps) {
   const surfboardRef = useRef<HTMLDivElement>(null);
   const overlayLayerRef = useRef<HTMLDivElement>(null);
 
-  // 1. Prevent scrolling while intro is active
+  // 1. Client Hydration & First-Visit Check from localStorage
+  useEffect(() => {
+    setIsMounted(true);
+    try {
+      const seen =
+        localStorage.getItem("bahrain-surf-intro-seen") ||
+        localStorage.getItem("bsp_intro_seen");
+      if (seen === "true") {
+        setIntroState("completed");
+      }
+    } catch {
+      // LocalStorage fallback
+    }
+  }, []);
+
+  // 2. Lock page scroll while intro is active; restore when completed
   useEffect(() => {
     if (introState !== "completed") {
       document.body.style.overflow = "hidden";
@@ -33,7 +49,7 @@ export default function CinematicIntro({ onOpenBooking }: CinematicIntroProps) {
     };
   }, [introState]);
 
-  // 2. Video end handler
+  // 3. Video end handler
   const handleVideoEnded = () => {
     setIntroState("ended");
   };
@@ -44,21 +60,34 @@ export default function CinematicIntro({ onOpenBooking }: CinematicIntroProps) {
     setIntroState("ended");
   };
 
-  // 3. Animate Logo + Explore CTA when video ends
+  // 4. Animate Explore CTA entrance when video naturally ends
   useEffect(() => {
     if (introState === "ended" && logoCtaRef.current) {
-      gsap.fromTo(
-        logoCtaRef.current,
-        { opacity: 0, y: 30, scale: 0.95 },
-        { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: "power3.out" }
-      );
+      const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (prefersReducedMotion) {
+        gsap.set(logoCtaRef.current, { opacity: 1, y: 0 });
+      } else {
+        gsap.fromTo(
+          logoCtaRef.current,
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+        );
+      }
     }
   }, [introState]);
 
-  // 4. Handle "EXPLORE NOW" Click -> Signature Surfboard Reveal
+  // 5. Handle "EXPLORE NOW" Click -> Save Persistent Flag & Signature Surfboard Reveal
   const handleExploreClick = () => {
     if (introState === "revealing" || introState === "completed") return;
     setIntroState("revealing");
+
+    // ONLY mark intro as completed in persistent storage upon EXPLORE NOW click
+    try {
+      localStorage.setItem("bahrain-surf-intro-seen", "true");
+      localStorage.setItem("bsp_intro_seen", "true");
+    } catch {
+      // LocalStorage fallback
+    }
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -86,7 +115,7 @@ export default function CinematicIntro({ onOpenBooking }: CinematicIntroProps) {
     const surfboard = surfboardRef.current;
 
     if (overlay && surfboard) {
-      // Animate Surfboard from Left (-300px) to Right (115vw)
+      // Animate Surfboard from Left (-25vw) to Right (115vw)
       tl.fromTo(
         surfboard,
         { x: "-25vw", opacity: 1, rotation: -4 },
@@ -114,7 +143,8 @@ export default function CinematicIntro({ onOpenBooking }: CinematicIntroProps) {
     }
   };
 
-  if (introState === "completed") {
+  // Returning users or unmounted SSR -> Return null immediately with zero render overhead
+  if (!isMounted || introState === "completed") {
     return null;
   }
 
@@ -135,9 +165,9 @@ export default function CinematicIntro({ onOpenBooking }: CinematicIntroProps) {
           willChange: "clip-path",
         }}
       >
-        {/* 1. TOP HEADER OVER THE VIDEO (LEFT: Logo | RIGHT: EN | AR + GET EARLY ACCESS CTA) */}
+        {/* 1. TOP HEADER OVER THE VIDEO (LEFT: Header Logo | RIGHT: EN | AR + GET EARLY ACCESS CTA) */}
         <header className="absolute top-0 left-0 right-0 z-30 px-6 sm:px-12 py-5 sm:py-6 flex items-center justify-between pointer-events-auto">
-          {/* LEFT: Existing Bahrain Surf Park Logo */}
+          {/* LEFT: Existing Bahrain Surf Park Header Logo */}
           <div className="flex items-center shrink-0">
             <img
               src="/images/logo.png"
@@ -175,7 +205,7 @@ export default function CinematicIntro({ onOpenBooking }: CinematicIntroProps) {
               </button>
             </div>
 
-            {/* GET EARLY ACCESS CTA (Reuses onOpenBooking) */}
+            {/* GET EARLY ACCESS CTA (Reuses onOpenBooking without completing intro) */}
             <button
               onClick={() => onOpenBooking && onOpenBooking("Early Access")}
               className={`bg-[#00C8A0] hover:bg-[#00B590] text-[#02141C] font-extrabold px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-xl text-xs sm:text-sm transition-all duration-300 cursor-pointer shadow-xl hover:shadow-[#00C8A0]/50 hover:scale-105 active:scale-95 border border-[#00C8A0] ${
@@ -200,20 +230,13 @@ export default function CinematicIntro({ onOpenBooking }: CinematicIntroProps) {
           <source src="/videos/resortintro.mp4" type="video/mp4" />
         </video>
 
-        {/* 3. CENTER LOGO + EXPLORE NOW CTA (Revealed when video ends) */}
+        {/* 3. EXPLORE NOW CTA (Revealed smoothly after video naturally ends - NO DUPLICATE LOGO) */}
         {introState === "ended" && (
           <div
             ref={logoCtaRef}
-            className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-black/20 backdrop-blur-[2px] transition-all z-20"
+            className="absolute inset-x-0 bottom-16 sm:bottom-20 flex flex-col items-center justify-center p-6 z-20 pointer-events-auto"
           >
-            {/* Existing Bahrain Surf Park Logo */}
-            <img
-              src="/images/logo.png"
-              alt="Bahrain Surf Park"
-              className="h-28 sm:h-36 md:h-44 w-auto object-contain drop-shadow-[0_10px_25px_rgba(0,0,0,0.7)] mb-8"
-            />
-
-            {/* Accessible Explore Now Button */}
+            {/* Smooth Accessible Explore Now Button */}
             <button
               onClick={handleExploreClick}
               onKeyDown={(e) => {

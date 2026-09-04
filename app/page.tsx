@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+import dynamic from "next/dynamic";
+
 import CinematicIntro from "./components/CinematicIntro";
 import Navbar from "./components/Navbar";
 import ScrollTracker from "./components/ScrollTracker";
@@ -16,8 +18,9 @@ import Academy from "./components/Academy";
 import Cabanas from "./components/Cabanas";
 import Visit from "./components/Visit";
 import Footer from "./components/Footer";
-import BookingModal from "./components/BookingModal";
-import WelcomeModal from "./components/WelcomeModal";
+
+const BookingModal = dynamic(() => import("./components/BookingModal"), { ssr: false });
+const WelcomeModal = dynamic(() => import("./components/WelcomeModal"), { ssr: false });
 
 export default function Home() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
