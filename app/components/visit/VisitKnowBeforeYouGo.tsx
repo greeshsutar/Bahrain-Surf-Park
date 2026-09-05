@@ -14,7 +14,7 @@ const GUIDELINES = [
     title: "WHAT TO BRING",
     paragraph: "Proper swimwear (boardshorts, swimsuits, or rashguards), a fresh towel, reef-safe sunscreen, and dry clothes for after your session. Soft-top surfboards and personal lockers are provided for all guests.",
     meta: "PROVIDED: Surfboard, Locker, Suite Access",
-    image: "/images/tier1.jpg",
+    image: "/images/know.png",
     alt: "Surfboard equipment and gear fitting at Bahrain Surf Park",
   },
   {
@@ -24,7 +24,7 @@ const GUIDELINES = [
     title: "SAFETY & WATER RULES",
     paragraph: "All sessions operate under continuous supervision from ISA-certified surf coaches and professional ocean lifeguards. Guests undergo a mandatory lagoon safety overview before entering the wave basin.",
     meta: "SUPERVISION: ISA Coaches & Ocean Lifeguards",
-    image: "/images/tier2.jpg",
+    image: "/images/safety.png",
     alt: "ISA certified surf coach and ocean lifeguard safety supervision",
   },
   {
@@ -34,7 +34,7 @@ const GUIDELINES = [
     title: "ARRIVAL PROCEDURES",
     paragraph: "Arrive 45 minutes prior to your scheduled water time. This allows ample time for guest check-in, wetsuit or gear fitting, locker setup, and the mandatory pre-session safety briefing.",
     meta: "CHECK-IN: 45 Minutes Prior to Session",
-    image: "/images/tier3.jpg",
+    image: "/images/arrive.png",
     alt: "Bahrain Surf Park guest reception and check-in lobby",
   },
   {
@@ -44,7 +44,7 @@ const GUIDELINES = [
     title: "FACILITIES & GUEST SPACES",
     paragraph: "Enjoy private changing suites, hot freshwater showers, secure personal lockers, spectator viewing decks, and beachside lounge dining facing the wave lagoon.",
     meta: "AMENITIES: Changing Suites, Showers, Lounge",
-    image: "/images/tier4.jpg",
+    image: "/images/accesibilty.png",
     alt: "Private changing suites and spectator viewing deck",
   },
   {
@@ -54,7 +54,7 @@ const GUIDELINES = [
     title: "ACCESSIBILITY & ADAPTIVE SERVICES",
     paragraph: "Wheelchair-accessible pathways seamlessly connect guest parking, reception, changing suites, viewing decks, and lagoon access points. Adaptive surf programs are available with advance notice.",
     meta: "ACCESSIBLE: Barrier-Free Pathways & Restrooms",
-    image: "/images/tier5.jpg",
+    image: "/images/accesicibiltys.png",
     alt: "Barrier-free accessible resort pathways and lagoon access",
   },
 ];
