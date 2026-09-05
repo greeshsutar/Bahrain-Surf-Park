@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useLanguage } from "../context/LanguageContext";
 
 interface NavbarProps {
@@ -13,6 +13,7 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const { lang, setLang, navItems, bookNowText } = useLanguage();
 
   useEffect(() => {
@@ -28,6 +29,24 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    try {
+      localStorage.removeItem("bahrain-surf-intro-seen");
+      localStorage.removeItem("bsp_intro_seen");
+    } catch {
+      // ignore storage errors
+    }
+
+    if (pathname === "/") {
+      // Already home — the page won't remount, so fire a manual replay signal
+      e.preventDefault();
+      window.dispatchEvent(new Event("bsp:replay-intro"));
+      window.scrollTo({ top: 0, behavior: "instant" as ScrollBehavior });
+    }
+    // If not on "/", let the Link navigate normally — localStorage is already
+    // cleared, so CinematicIntro will show itself naturally on fresh mount.
+  };
 
   const isRtl = lang === "ar";
 
@@ -45,6 +64,7 @@ export default function Navbar({ onOpenBooking }: NavbarProps) {
           {/* Logo */}
           <Link
             href="/"
+            onClick={handleLogoClick}
             className="flex items-center group focus:outline-none shrink-0"
           >
             <img

@@ -224,11 +224,11 @@ export default function VisitKnowBeforeYouGo() {
               <div className="absolute inset-0 bg-gradient-to-t from-[#0A1926]/85 via-transparent to-transparent pointer-events-none" />
 
               {/* Contextual Image Label Overlay */}
-              <div className="absolute bottom-6 left-6 right-6 p-5 rounded-2xl bg-white/95 backdrop-blur-md border border-white/80 text-[#0A1926] shadow-xl">
+              <div className="absolute bottom-6 left-6 right-6 p-5 rounded-2xl bg-[#061C27]/60 backdrop-blur-xl border border-white/20 text-white shadow-2xl transition-all duration-300">
                 <span className="text-[10px] font-extrabold uppercase tracking-widest text-[#00C8A0] block mb-1">
                   {displayedGuideline.num} — {displayedGuideline.eyebrow}
                 </span>
-                <p className="text-sm font-serif font-bold">
+                <p className="text-sm sm:text-base font-serif font-bold text-white tracking-wide">
                   {displayedGuideline.title}
                 </p>
               </div>

@@ -311,7 +311,7 @@ export default function Technology() {
                 muted
                 loop
                 playsInline
-                preload="none"
+                preload="auto"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.02]"
               >
                 <source src="/videos/wave.mp4" type="video/mp4" />
@@ -366,10 +366,10 @@ export default function Technology() {
           muted
           loop
           playsInline
-          preload="none"
-          className="w-full h-full object-cover object-[center_35%] opacity-85"
+          preload="auto"
+          className="w-full h-full object-cover object-center opacity-85"
         >
-          <source src="/videos/wavecove.mp4" type="video/mp4" />
+          <source src="/videos/ocean.mp4" type="video/mp4" />
         </video>
       </div>
 
