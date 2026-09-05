@@ -53,11 +53,11 @@ export default function FindYourWaveCTA({ onOpenBooking }: FindYourWaveCTAProps)
           loop
           playsInline
           poster="/images/bahrain_surf_park_clean.jpg"
-          className="w-full h-full object-cover opacity-40"
+          className="w-full h-full object-cover opacity-80"
         >
           <source src="/videos/ocean.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-t from-[#02141C] via-[#02141C]/75 to-[#02141C]/85" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#02141C]/50 via-[#02141C]/25 to-[#02141C]/15" />
       </div>
 
       <div className="max-w-4xl mx-auto px-6 lg:px-12 relative z-10 text-center fyw-cta-anim mb-20">

@@ -67,17 +67,11 @@ export default function FindYourWaveHero({ onOpenBooking }: FindYourWaveHeroProp
     >
       {/* Cinematic Background Video */}
       <div ref={bgRef} className="absolute inset-0 w-full h-full z-0 overflow-hidden will-change-transform">
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/images/tier5.jpg"
+        <img
+          src="/images/wavepage.png"
+          alt="Bahrain Surf Park Find Your Wave"
           className="w-full h-full object-cover object-center opacity-95"
-        >
-          <source src="/videos/surfing.mp4" type="video/mp4" />
-          <source src="/videos/ocean.mp4" type="video/mp4" />
-        </video>
+        />
 
         {/* Deep Ocean Scrim Overlay - Lightened for 25-35% clearer video & surfer detail */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#02141C] via-[#02141C]/35 to-[#02141C]/25 pointer-events-none" />
