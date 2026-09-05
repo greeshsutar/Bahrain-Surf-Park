@@ -104,9 +104,9 @@ export default function WaveProfiles() {
 
   return (
     <section id="tech-section-05" className="bg-[#F0EEE7] text-[#092531] py-14 sm:py-20 relative z-10 border-b border-slate-200/80 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 text-left">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 mb-12 flex flex-col items-center md:flex-row md:items-end justify-between gap-6 text-center md:text-left">
         
-        <div className="max-w-xl">
+        <div className="max-w-xl flex flex-col items-center md:items-start">
           <span className="font-mono text-xs sm:text-sm font-extrabold text-[#007F91] block mb-3">
             05
           </span>

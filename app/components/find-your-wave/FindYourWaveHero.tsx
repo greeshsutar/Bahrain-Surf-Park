@@ -84,7 +84,7 @@ export default function FindYourWaveHero({ onOpenBooking }: FindYourWaveHeroProp
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-20 max-w-7xl mx-auto w-full px-6 sm:px-12 pt-36 sm:pt-40 md:pt-44 pb-16 my-auto flex flex-col justify-center text-left">
+      <div className="relative z-20 max-w-7xl mx-auto w-full px-6 sm:px-12 pt-36 sm:pt-40 md:pt-44 pb-16 my-auto flex flex-col items-center sm:items-start justify-center text-center sm:text-left">
         <div className="max-w-2xl">
           <span className={`fyw-hero-eyebrow text-[#00C8A0] text-xs sm:text-sm font-extrabold mb-4 block ${isRtl ? "tracking-normal font-sans" : "tracking-[0.25em] uppercase"}`}>
             {isRtl ? "اطلب موجتك" : "FIND YOUR WAVE"}
@@ -108,7 +108,7 @@ export default function FindYourWaveHero({ onOpenBooking }: FindYourWaveHeroProp
               : "From first-time surfers to experienced riders, find the wave precisely designed for your level."}
           </p>
 
-          <div className="fyw-hero-cta flex flex-wrap items-center gap-4 sm:gap-5">
+          <div className="fyw-hero-cta flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-5">
             <button
               onClick={handleScrollToSelector}
               onMouseMove={handleMagneticMouseMove}

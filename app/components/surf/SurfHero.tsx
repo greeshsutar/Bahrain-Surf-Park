@@ -84,8 +84,8 @@ export default function SurfHero() {
       </div>
 
       {/* 2. Main Hero Editorial Typography Layer */}
-      <div className="relative z-20 max-w-7xl mx-auto w-full px-6 sm:px-12 my-auto py-12 flex flex-col justify-center">
-        <div className="max-w-2xl text-left">
+      <div className="relative z-20 max-w-7xl mx-auto w-full px-6 sm:px-12 my-auto py-12 flex flex-col items-center sm:items-start justify-center">
+        <div className="max-w-2xl text-center sm:text-left">
           
           {/* Eyebrow with Animated Turquoise Line Accent */}
           <div className="flex items-center gap-3 mb-4">
@@ -106,7 +106,7 @@ export default function SurfHero() {
           </p>
 
           {/* Dual CTAs */}
-          <div className="surf-hero-ctas flex flex-wrap items-center gap-4 sm:gap-6">
+          <div className="surf-hero-ctas flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-6">
             <a
               href="#find-your-wave-selector"
               className="bg-[#00C8A0] hover:bg-[#00B590] text-[#061F2B] font-extrabold px-8 py-4 rounded-xl text-xs uppercase tracking-widest transition-all shadow-xl hover:shadow-[#00C8A0]/20 inline-flex items-center gap-2"

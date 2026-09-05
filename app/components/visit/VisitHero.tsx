@@ -86,7 +86,7 @@ export default function VisitHero({ onOpenBooking }: VisitHeroProps) {
       </div>
 
       {/* Asymmetric Hero Content Block */}
-      <div className="relative z-20 max-w-7xl mx-auto w-full px-6 sm:px-12 pt-36 sm:pt-44 pb-24 flex flex-col justify-center text-left my-auto">
+      <div className="relative z-20 max-w-7xl mx-auto w-full px-6 sm:px-12 pt-36 sm:pt-44 pb-24 flex flex-col items-center sm:items-start justify-center text-center sm:text-left my-auto">
         <div className="max-w-3xl">
           <span className={`visit-hero-anim text-[#00C8A0] text-xs sm:text-sm font-extrabold mb-4 block ${isRtl ? "tracking-normal font-sans" : "tracking-[0.28em] uppercase"}`}>
             {isRtl ? "خطط لزيارتك" : "PLAN YOUR VISIT"}
@@ -110,7 +110,7 @@ export default function VisitHero({ onOpenBooking }: VisitHeroProps) {
               : "Find your route to Bilaj Al Jazayer, explore guest preparation guides, parking access, resort amenities, and safety details to ensure your arrival on Bahrain's southwest coast is effortless."}
           </p>
 
-          <div className="visit-hero-anim flex flex-wrap items-center gap-4 sm:gap-6">
+          <div className="visit-hero-anim flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-6">
             <button
               onClick={handleGetDirections}
               onMouseMove={handleMagneticMouseMove}

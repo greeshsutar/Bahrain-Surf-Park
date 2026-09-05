@@ -77,7 +77,7 @@ export default function AcademyHero({ onOpenBooking }: AcademyHeroProps) {
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-20 max-w-7xl mx-auto w-full px-6 sm:px-12 pt-36 sm:pt-40 md:pt-44 pb-16 my-auto flex flex-col justify-center text-left">
+      <div className="relative z-20 max-w-7xl mx-auto w-full px-6 sm:px-12 pt-36 sm:pt-40 md:pt-44 pb-16 my-auto flex flex-col items-center sm:items-start justify-center text-center sm:text-left">
         <div className="max-w-2xl">
           <span className={`acad-hero-eyebrow text-[#00C8A0] text-xs sm:text-sm font-extrabold mb-4 block ${isRtl ? "tracking-normal font-sans" : "tracking-[0.25em] uppercase"}`}>
             {isRtl ? "أكاديمية ركوب الأمواج" : "THE SURF ACADEMY"}
@@ -101,7 +101,7 @@ export default function AcademyHero({ onOpenBooking }: AcademyHeroProps) {
               : "From your first paddle to your next breakthrough, build confidence, technique and flow with expert ISA-certified coaching."}
           </p>
 
-          <div className="acad-hero-cta flex flex-wrap items-center gap-4 sm:gap-5">
+          <div className="acad-hero-cta flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-5">
             <button
               onClick={() => onOpenBooking()}
               onMouseMove={handleMagneticMouseMove}

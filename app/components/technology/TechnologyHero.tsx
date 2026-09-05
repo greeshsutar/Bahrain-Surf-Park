@@ -36,7 +36,7 @@ export default function TechnologyHero() {
       </div>
 
       {/* Hero Content (Positioned safely below floating Navbar) */}
-      <div className="relative z-20 max-w-7xl mx-auto w-full px-6 sm:px-12 pt-36 sm:pt-40 md:pt-44 pb-12 my-auto flex flex-col justify-center text-left">
+      <div className="relative z-20 max-w-7xl mx-auto w-full px-6 sm:px-12 pt-36 sm:pt-40 md:pt-44 pb-12 my-auto flex flex-col items-center sm:items-start justify-center text-center sm:text-left">
         <div className="max-w-[650px]">
           
           {/* Aqua Eyebrow Label */}
@@ -57,7 +57,7 @@ export default function TechnologyHero() {
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-wrap items-center gap-4 sm:gap-5">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-5">
             <a
               href="#technology-intro"
               className="bg-[#00C8A0] hover:bg-[#00B590] text-[#02141C] font-extrabold px-8 py-4 rounded-xl text-xs uppercase tracking-widest transition-all shadow-xl hover:shadow-[#00C8A0]/30 cursor-pointer inline-flex items-center gap-2"

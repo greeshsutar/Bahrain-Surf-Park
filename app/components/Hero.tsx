@@ -281,8 +281,8 @@ export default function Hero({ onOpenBooking }: HeroProps) {
       </div>
 
       {/* Crisp UI & Asymmetric Left-Aligned Text Block (Reveals sequentially after media resolves) */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 my-auto pt-28 pb-16 flex flex-col justify-end">
-        <div className="max-w-xl lg:max-w-2xl text-left">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 sm:px-12 my-auto pt-28 pb-16 flex flex-col items-center sm:items-start justify-end">
+        <div className="max-w-xl lg:max-w-2xl text-center sm:text-left">
           {/* Location Eyebrow */}
           <div className="hero-eyebrow mb-3 flex items-center gap-2 opacity-0">
             <span className="inline-flex items-center gap-2 bg-[#00C8A0]/15 backdrop-blur-md border border-[#00C8A0]/40 text-[#00C8A0] text-xs font-extrabold tracking-[0.2em] uppercase px-3.5 py-1.5 rounded-full shadow-sm">
@@ -326,7 +326,7 @@ export default function Hero({ onOpenBooking }: HeroProps) {
           </p>
 
           {/* Left-Aligned Dual Action Buttons */}
-          <div className="hero-buttons flex flex-wrap items-center gap-6 opacity-0">
+          <div className="hero-buttons flex flex-wrap items-center justify-center sm:justify-start gap-6 opacity-0">
             {/* Primary Action Button */}
             <a
               href="#find-your-wave"

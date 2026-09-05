@@ -78,7 +78,7 @@ export default function ServicesHero({ onOpenBooking }: ServicesHeroProps) {
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-20 max-w-7xl mx-auto w-full px-6 sm:px-12 pt-36 sm:pt-40 md:pt-44 pb-16 my-auto flex flex-col justify-center text-left">
+      <div className="relative z-20 max-w-7xl mx-auto w-full px-6 sm:px-12 pt-36 sm:pt-40 md:pt-44 pb-16 my-auto flex flex-col items-center sm:items-start justify-center text-center sm:text-left">
         <div className="max-w-2xl">
           <span className={`srv-hero-eyebrow text-[#00C8A0] text-xs sm:text-sm font-extrabold mb-4 block ${isRtl ? "tracking-normal font-sans" : "tracking-[0.25em] uppercase"}`}>
             {isRtl ? "الخدمات والضيافة" : "SERVICES"}
@@ -102,7 +102,7 @@ export default function ServicesHero({ onOpenBooking }: ServicesHeroProps) {
               : "Discover the curated services designed to make your time at Bahrain Surf Park seamless, comfortable and unforgettable."}
           </p>
 
-          <div className="srv-hero-cta flex flex-wrap items-center gap-4 sm:gap-5">
+          <div className="srv-hero-cta flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-5">
             <button
               onClick={handleScrollToStack}
               onMouseMove={handleMagneticMouseMove}

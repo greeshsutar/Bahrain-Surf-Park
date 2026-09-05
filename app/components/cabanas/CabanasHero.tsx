@@ -75,7 +75,7 @@ export default function CabanasHero({ onOpenBooking }: CabanasHeroProps) {
       </div>
 
       {/* Hero Content */}
-      <div className="relative z-20 max-w-7xl mx-auto w-full px-6 sm:px-12 pt-36 sm:pt-40 md:pt-44 pb-16 my-auto flex flex-col justify-center text-left">
+      <div className="relative z-20 max-w-7xl mx-auto w-full px-6 sm:px-12 pt-36 sm:pt-40 md:pt-44 pb-16 my-auto flex flex-col items-center sm:items-start justify-center text-center sm:text-left">
         <div className="max-w-2xl">
           <span className="cab-hero-eyebrow text-[#00C8A0] text-xs sm:text-sm font-extrabold tracking-[0.25em] uppercase mb-4 block">
             SIGNATURE CABANAS
@@ -89,7 +89,7 @@ export default function CabanasHero({ onOpenBooking }: CabanasHeroProps) {
             A private space to slow down, recharge and experience the park your way.
           </p>
 
-          <div className="cab-hero-cta flex flex-wrap items-center gap-4 sm:gap-5">
+          <div className="cab-hero-cta flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-5">
             <button
               onClick={handleScrollToHaven}
               onMouseMove={handleMagneticMouseMove}
